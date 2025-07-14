@@ -5,16 +5,15 @@ export default function Home() {
   return (
     <div className="relative min-h-screen">
       {/* 1. Gradient Background */}
-      <div className="fixed inset-0 -z-10">
+      <div className="absolute inset-0 -z-10">
         <div
           className="w-[2000px] h-[900px] opacity-10 pointer-events-none"
           style={{
-        background: "linear-gradient(180deg, #714BED 0%, #402B87 100%)",
-        filter: "blur(200px)",
-        position: "absolute",
-        top: "200px", 
-        left: 0,
-        right: 0,
+            background: "linear-gradient(180deg, #714BED 0%, #402B87 100%)",
+            filter: "blur(200px)",
+            top: "200px",
+            left: 0,
+            right: 0,
           }}
         />
       </div>
@@ -66,8 +65,8 @@ export default function Home() {
             </div>
         </section>
 
-        {/* 5. How it works (of andere sectie) */}
-        <section className="mt-5 w-full max-w-[1800px] bg-[#EFECF9] h-[700px] rounded-2xl xl:max-w-[1800px]">
+        {/* 5. How it works */}
+        <section className="mt-10 w-full max-w-[1800px] bg-[#EFECF9] h-[700px] rounded-2xl xl:max-w-[1800px]">
             <h1 className="font-poppins text-center text-4xl sm:text-5xl font-bold text-[#1E293B] mb-4 mt-15" style={{ fontFamily: "Poppins, sans-serif" }}>
             How It Works
             </h1>
@@ -93,6 +92,24 @@ export default function Home() {
               </Button>
             </div>
         </section>
+
+
+        {/* 6. Key Features */}
+        <h1 className="font-poppins text-center text-4xl sm:text-5xl font-bold text-[#1E293B] mb-4 mt-25" style={{ fontFamily: "Poppins, sans-serif" }}>Key features</h1>
+        <p
+          className="text-[#64748B] text-center font-poppins text-sm sm:text-sm max-w-2xl mx-auto mt-2"
+          style={{ fontFamily: "Poppins, sans-serif", wordBreak: "normal", whiteSpace: "normal" }}
+        >
+          Effortlessly create professional resumes with AI-driven content suggestions, customizable templates, real-time feedback, and one-click downloads. Stand out with tailored achievements, modern design, and seamless editing—all in one place.
+        </p>
+
+        {/* Cards section (Key Features) */}
+        <section className="-mt-25 mr-10">
+          <img src="/keyFeatures.png" alt="Key Features" className="mx-auto" />
+        </section>
+
+        {/* Our Templates */}
+        
       </main>
     </div>
   );
