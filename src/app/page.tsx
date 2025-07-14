@@ -109,7 +109,6 @@ export default function Home() {
         </section>
 
         {/* Our Templates */}
-        
       </main>
     </div>
   );

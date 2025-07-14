@@ -14,7 +14,7 @@ import CreativeTemplate from '@/components/templates/CreativeTemplate';
 import { ExecutiveTemplate } from '@/components/templates/ExecutiveTemplate';
 import { MinimalistTemplate } from '@/components/templates/MinimalistTemplate';
 import { PortfolioTemplate } from '@/components/templates/PortfolioTemplate';
-import ProfessionalTemplate from '@/components/templates/ProfessionalTemplate';
+import { ProfessionalTemplate } from '@/components/templates/ProfessionalTemplate';
 
 const templates = [
   { id: 1, Comp: BasicTemplate },

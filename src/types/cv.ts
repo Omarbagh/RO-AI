@@ -4,6 +4,7 @@ export type Experience = {
   company: string;
   period?: string;
   description: string;
+  year?: string;
 };
 
 // Definieert de structuur voor een enkele opleiding
