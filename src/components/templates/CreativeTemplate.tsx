@@ -1,139 +1,140 @@
-import { CVTemplateProps } from '@/types/cv';
-import { Briefcase, GraduationCap, User, Calendar } from 'lucide-react';
+import { CVTemplateProps } from "@/types/cv";
+import { Palette, Sparkles, Heart } from "lucide-react";
 
 export default function CreativeTemplate({ data }: CVTemplateProps) {
-  
   return (
-    <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden font-serif">
-      {/* Header */}
-      <div
-        className="flex flex-col md:flex-row items-center p-8 md:space-x-6 border-b"
-        style={{
-          background: 'linear-gradient(to right, var(--accent), #fff 70%)',
-          borderColor: 'var(--accent)',
-        }}
-      >
-        Foto
-        {data.personal.photoUrl && (
-          <div
-            className="w-28 h-28 rounded-full overflow-hidden border-4"
-            style={{ borderColor: 'var(--accent)' }}
-          >
-            <img
-              src={data.personal.photoUrl}
-              alt="Profielfoto"
-              className="object-cover w-full h-full"
-            />
+    <div className="max-w-5xl mx-auto bg-gradient-to-br from-purple-50 to-pink-50 overflow-hidden">
+      {/* Artistic Header */}
+      <div className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 p-10 text-white">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="relative z-10">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-5xl font-bold mb-3 text-shadow">
+                {data.personal.name}
+              </h1>
+              <p className="text-2xl text-yellow-200 font-light">
+                {data.personal.title}
+              </p>
+              <div className="mt-6 flex items-center gap-6 text-lg">
+                <span className="bg-white/20 px-4 py-2 rounded-full">
+                  {data.personal.email}
+                </span>
+                <span className="bg-white/20 px-4 py-2 rounded-full">
+                  {data.personal.phone}
+                </span>
+              </div>
+            </div>
+            {data.personal.photoUrl && (
+              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-white/50 shadow-2xl">
+                <img
+                  src={data.personal.photoUrl}
+                  alt={data.personal.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
           </div>
-        )}
-        {/* Naam & Titel */}
-        <div className="mt-4 md:mt-0 text-center md:text-left space-y-1">
-          <h1
-            className="text-4xl font-bold tracking-tight"
-            style={{ color: 'var(--accent)' }}
-          >
-            {data.personal.name}
-          </h1>
-          <p className="text-md italic text-gray-600">{data.personal.title}</p>
-          <p className="text-sm text-gray-500 mt-1">
-            <User size={16} style={{ color: 'var(--accent)' }} className="inline-block mr-1" />
-            {data.personal.email} •{' '}
-            <Calendar size={16} style={{ color: 'var(--accent)' }} className="inline-block mx-1" />
-            {data.personal.phone}
-          </p>
+        </div>
+        {/* Decorative elements */}
+        <div className="absolute top-4 right-4 text-white/30">
+          <Sparkles className="w-8 h-8" />
+        </div>
+        <div className="absolute bottom-4 left-4 text-white/30">
+          <Heart className="w-6 h-6" />
         </div>
       </div>
 
-      <div className="p-8 space-y-10 bg-gray-50">
-        {/* Profiel */}
-        <section className="space-y-3">
-          <div
-            className="flex items-center gap-2"
-            style={{ color: 'var(--accent)' }}
-          >
-            <User size={20} />
-            <h2 className="text-xl font-semibold uppercase">Profiel</h2>
+      <div className="p-10">
+        {/* Creative Vision */}
+        <section className="mb-10">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+              <Palette className="w-5 h-5 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Creative Vision
+            </h2>
           </div>
-          <p className="text-sm text-gray-700 leading-relaxed">{data.profile}</p>
+          <div className="bg-white rounded-2xl p-8 shadow-lg border border-purple-100">
+            <p className="text-gray-700 leading-relaxed text-lg italic">
+              &quot;{data.profile}&quot;
+            </p>
+          </div>
         </section>
 
-        {/* Werkervaring */}
-        <section className="space-y-6">
-          <div
-            className="flex items-center gap-2"
-            style={{ color: 'var(--accent)' }}
-          >
-            <Briefcase size={20} />
-            <h2 className="text-xl font-semibold uppercase">Werkervaring</h2>
-          </div>
+        {/* Portfolio & Experience */}
+        <section className="mb-10">
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-8">
+            Creative Journey
+          </h2>
           <div className="space-y-6">
             {data.experience.map((exp, i) => (
-              <div key={i} className="flex flex-col md:flex-row md:justify-between md:items-start">
-                <div className="md:w-2/3">
-                  <h3 className="text-lg font-semibold text-gray-900">{exp.job}</h3>
-                  <p
-                    className="text-sm font-medium"
-                    style={{ color: 'var(--accent)' }}
-                  >
-                    {exp.company}
-                  </p>
-                </div>
-                <p className="md:w-1/3 mt-2 md:mt-0 text-sm text-gray-600">{exp.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Opleiding */}
-        <section className="space-y-4">
-          <div
-            className="flex items-center gap-2"
-            style={{ color: 'var(--accent)' }}
-          >
-            <GraduationCap size={20} />
-            <h2 className="text-xl font-semibold uppercase">Opleiding</h2>
-          </div>
-          <div className="space-y-4">
-            {data.education.map((edu, i) => (
-              <div key={i} className="flex justify-between items-center">
-                <div>
-                  <p className="text-lg font-semibold text-gray-900">{edu.degree}</p>
-                  <p className="text-sm text-gray-600">{edu.school}</p>
-                </div>
-                <span
-                  className="text-sm"
-                  style={{ color: 'var(--accent)' }}
-                >
-                  {edu.year}
-                </span>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Skills */}
-        <section className="space-y-3">
-          <h2
-            className="text-xl font-semibold uppercase"
-            style={{ color: 'var(--accent)' }}
-          >
-            Skills
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {data.skills.map((skill, i) => (
-              <span
+              <div
                 key={i}
-                className="px-4 py-1 rounded-full text-sm font-medium"
-                style={{
-                  backgroundColor: 'var(--accent)',
-                  color: '#fff',
-                }}
+                className="bg-white rounded-2xl p-8 shadow-lg border-l-4 border-gradient-to-b from-purple-500 to-pink-500 transform hover:scale-105 transition-transform duration-300"
               >
-                {skill}
-              </span>
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-800">
+                      {exp.job}
+                    </h3>
+                    <p className="text-lg text-purple-600 font-semibold">
+                      {exp.company}
+                    </p>
+                  </div>
+                  <div className="bg-gradient-to-r from-purple-500 to-pink-500 w-12 h-12 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold">{i + 1}</span>
+                  </div>
+                </div>
+                <p className="text-gray-700 leading-relaxed">
+                  {exp.description}
+                </p>
+              </div>
             ))}
           </div>
         </section>
+
+        {/* Skills & Education */}
+        <div className="grid md:grid-cols-2 gap-10">
+          <section>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">
+              Creative Skills
+            </h2>
+            <div className="bg-white rounded-2xl p-6 shadow-lg">
+              <div className="flex flex-wrap gap-3">
+                {data.skills.map((skill, i) => (
+                  <div
+                    key={i}
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full font-semibold shadow-lg transform hover:scale-110 transition-transform duration-200"
+                  >
+                    {skill}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">
+              Learning Path
+            </h2>
+            <div className="space-y-4">
+              {data.education.map((edu, i) => (
+                <div
+                  key={i}
+                  className="bg-white rounded-xl p-6 shadow-lg border border-purple-100"
+                >
+                  <h3 className="font-bold text-gray-800 text-lg">
+                    {edu.degree}
+                  </h3>
+                  <p className="text-purple-600 font-semibold">{edu.school}</p>
+                  <p className="text-gray-600">{edu.year}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   );

@@ -40,117 +40,7 @@ import {
 } from "lucide-react";
 import { CVData } from "@/types/cv";
 
-import BasicTemplate from "@/components/templates/basicTemplate";
-import ModernTemplate from "@/components/templates/ModernTemplate";
-import CreativeTemplate from "@/components/templates/CreativeTemplate";
-import { ExecutiveTemplate } from "@/components/templates/ExecutiveTemplate";
-import { MinimalistTemplate } from "@/components/templates/MinimalistTemplate";
-import { PortfolioTemplate } from "@/components/templates/PortfolioTemplate";
-import { ProfessionalTemplate } from "@/components/templates/ProfessionalTemplate";
-import { SidebarDarkTemplate } from "@/components/templates/SidebarDarkTemplate";
-import { ClassicTemplate } from "@/components/templates/ClassicTemplate";
-
-const templates = [
-  {
-    id: 1,
-    name: "Essential",
-    comp: BasicTemplate,
-    pro: false,
-    category: "Starter",
-    description: "Perfect foundation for any professional resume",
-    features: ["Clean layout", "ATS-friendly", "Easy to customize"],
-    popularity: 95,
-    color: "from-blue-500 to-blue-600",
-  },
-  {
-    id: 2,
-    name: "Modern Pro",
-    comp: ModernTemplate,
-    pro: false,
-    category: "Popular",
-    description: "Contemporary design that stands out professionally",
-    features: ["Sidebar layout", "Modern typography", "Color accents"],
-    popularity: 98,
-    color: "from-indigo-500 to-purple-600",
-  },
-  {
-    id: 3,
-    name: "Creative Studio",
-    comp: CreativeTemplate,
-    pro: true,
-    category: "Premium",
-    description: "Bold design for creative professionals and designers",
-    features: ["Artistic layout", "Color gradients", "Visual impact"],
-    popularity: 87,
-    color: "from-pink-500 to-rose-600",
-  },
-  {
-    id: 4,
-    name: "Executive Elite",
-    comp: ExecutiveTemplate,
-    pro: true,
-    category: "Leadership",
-    description: "Premium design for C-level executives and leaders",
-    features: ["Luxury styling", "Executive summary", "Achievement focus"],
-    popularity: 92,
-    color: "from-amber-500 to-orange-600",
-  },
-  {
-    id: 5,
-    name: "Minimal Zen",
-    comp: MinimalistTemplate,
-    pro: true,
-    category: "Elegant",
-    description: "Ultra-clean design focusing on content clarity",
-    features: ["Whitespace design", "Typography focus", "Distraction-free"],
-    popularity: 89,
-    color: "from-gray-600 to-gray-700",
-  },
-  {
-    id: 6,
-    name: "Portfolio Showcase",
-    comp: PortfolioTemplate,
-    pro: true,
-    category: "Creative",
-    description: "Perfect for showcasing your work and projects",
-    features: ["Project highlights", "Visual portfolio", "Work samples"],
-    popularity: 84,
-    color: "from-green-500 to-emerald-600",
-  },
-  {
-    id: 7,
-    name: "Corporate Pro",
-    comp: ProfessionalTemplate,
-    pro: true,
-    category: "Business",
-    description: "Traditional corporate styling for any industry",
-    features: ["Conservative design", "Industry standard", "Professional"],
-    popularity: 91,
-    color: "from-blue-600 to-blue-700",
-  },
-  {
-    id: 8,
-    name: "Dark Mode Pro",
-    comp: SidebarDarkTemplate,
-    pro: false,
-    category: "Modern",
-    description: "Contemporary dark theme with sophisticated appeal",
-    features: ["Dark theme", "Modern contrast", "Eye-catching"],
-    popularity: 86,
-    color: "from-slate-700 to-slate-800",
-  },
-  {
-    id: 9,
-    name: "Classic Elite",
-    comp: ClassicTemplate,
-    pro: false,
-    category: "Timeless",
-    description: "Timeless design with proven effectiveness",
-    features: ["Traditional layout", "Time-tested", "Universally accepted"],
-    popularity: 93,
-    color: "from-slate-600 to-slate-700",
-  },
-];
+import { allTemplates } from "@/lib/allTemplates";
 
 const defaultAccent = "#6366f1";
 
@@ -216,6 +106,40 @@ interface TemplateType {
   popularity: number;
   color: string;
 }
+
+interface AllTemplate {
+  name: string;
+  component: React.ComponentType<{ data: CVData }>;
+  category?: string;
+  description: string;
+  color: string;
+}
+
+const templates: TemplateType[] = allTemplates.map(
+  (template: AllTemplate, index: number): TemplateType => {
+    const category = template.category ?? "general";
+    return {
+      id: index + 1,
+      name: template.name,
+      comp: template.component,
+      pro: template.name !== "Free Template",
+      category: category.charAt(0).toUpperCase() + category.slice(1),
+      description: template.description,
+      features: [
+        "Professional design",
+        "ATS-friendly",
+        "Easy to customize",
+        category === "professional"
+          ? "Corporate styling"
+          : category === "creative"
+            ? "Visual impact"
+            : "Modern layout",
+      ],
+      popularity: 75 + Math.floor(Math.random() * 25), // Random popularity between 75-100%
+      color: template.color,
+    };
+  }
+);
 
 function TemplateCard({
   template,
@@ -790,7 +714,7 @@ export default function UltraProfessionalEditor() {
 
   const TemplateComponent =
     selectedTemplate != null
-      ? templates.find((t) => t.id === selectedTemplate)!.comp
+      ? templates.find((t) => t.id === selectedTemplate)?.comp
       : null;
 
   // Template Selection Step
@@ -826,7 +750,9 @@ export default function UltraProfessionalEditor() {
             {/* Stats */}
             <div className="flex justify-center gap-8 mb-8">
               <div className="text-center">
-                <div className="text-3xl font-bold text-indigo-600">30+</div>
+                <div className="text-3xl font-bold text-indigo-600">
+                  {allTemplates.length}+
+                </div>
                 <div className="text-sm text-gray-600">Templates</div>
               </div>
               <div className="text-center">
@@ -1218,7 +1144,10 @@ export default function UltraProfessionalEditor() {
                           <li>• List your highest degree first</li>
                           <li>• Include relevant certifications</li>
                           <li>• Add honors or distinctions if applicable</li>
-                          <li>• Year format: &quot;2020&quot; or &quot;2018-2020&quot;</li>
+                          <li>
+                            • Year format: &quot;2020&quot; or
+                            &quot;2018-2020&quot;
+                          </li>
                         </ul>
                       </div>
                     </div>

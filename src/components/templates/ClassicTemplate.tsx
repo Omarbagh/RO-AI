@@ -1,102 +1,102 @@
-import { CVTemplateProps } from '@/types/cv';
-import { Mail, Phone } from 'lucide-react';
+import { CVTemplateProps } from "@/types/cv";
+import { Mail, Phone, Calendar } from "lucide-react";
 
-export function ClassicTemplate({ data }: CVTemplateProps) {
+export default function ClassicTemplate({ data }: CVTemplateProps) {
   return (
-    <div className="max-w-3xl mx-auto bg-white shadow-lg font-sans">
-      <div className="grid grid-cols-3">
-        <aside className="col-span-1 bg-gray-100 p-8 text-center">
-          {data.personal.photoUrl && (
-            <img
-              src={data.personal.photoUrl}
-              alt=""
-              className="mx-auto w-32 h-32 rounded-full mb-4"
-            />
-          )}
-          <h1
-            className="text-2xl font-bold"
-            style={{ color: "var(--accent)" }} // <-- Accent op naam
-          >
-            {data.personal.name}
-          </h1>
-          <p className="italic text-gray-600">{data.personal.title}</p>
-          <div className="mt-6 space-y-2 text-sm text-gray-700">
-            <p className="flex items-center gap-2">
-              <Mail size={16} style={{ color: "var(--accent)" }} /> {/* Icon accent */}
-              {data.personal.email}
-            </p>
-            <p className="flex items-center gap-2">
-              <Phone size={16} style={{ color: "var(--accent)" }} /> {/* Icon accent */}
-              {data.personal.phone}
-            </p>
+    <div className="max-w-4xl mx-auto bg-white shadow-lg">
+      {/* Header */}
+      <div className="bg-navy-900 text-white p-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold mb-2">{data.personal.name}</h1>
+            <p className="text-xl text-blue-200">{data.personal.title}</p>
           </div>
-        </aside>
-        <main className="col-span-2 p-8 space-y-6">
-          <section>
-            <h2
-              className="text-lg font-semibold border-b pb-1"
-              style={{ color: "var(--accent)" }} // <-- Accent section titles
-            >
-              Profile
-            </h2>
-            <p className="mt-2 text-sm text-gray-800">{data.profile}</p>
-          </section>
-          <section>
-            <h2
-              className="text-lg font-semibold border-b pb-1"
-              style={{ color: "var(--accent)" }}
-            >
-              Experience
-            </h2>
-            {data.experience.map((e, i) => (
-              <div key={i} className="mt-4">
-                <p className="font-semibold">
-                  {e.job} @ {e.company}{' '}
-                  <span className="text-xs text-gray-500">{e.year}</span>
-                </p>
-                <p className="text-sm text-gray-700 mt-1">{e.description}</p>
+          {data.personal.photoUrl && (
+            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white/20">
+              <img
+                src={data.personal.photoUrl}
+                alt={data.personal.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+        </div>
+        <div className="mt-6 flex flex-wrap gap-6 text-sm">
+          <div className="flex items-center gap-2">
+            <Mail className="w-4 h-4" />
+            {data.personal.email}
+          </div>
+          <div className="flex items-center gap-2">
+            <Phone className="w-4 h-4" />
+            {data.personal.phone}
+          </div>
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4" />
+            {new Date().getFullYear()}
+          </div>
+        </div>
+      </div>
+
+      <div className="p-8">
+        {/* Profile */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-blue-600 pb-2">
+            Professioneel Profiel
+          </h2>
+          <p className="text-gray-700 leading-relaxed">{data.profile}</p>
+        </section>
+
+        {/* Experience */}
+        <section className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-blue-600 pb-2">
+            Werkervaring
+          </h2>
+          <div className="space-y-6">
+            {data.experience.map((exp, i) => (
+              <div key={i} className="border-l-4 border-blue-600 pl-6">
+                <h3 className="text-lg font-semibold text-gray-800">
+                  {exp.job}
+                </h3>
+                <p className="text-blue-600 font-medium mb-2">{exp.company}</p>
+                <p className="text-gray-700">{exp.description}</p>
               </div>
             ))}
-          </section>
+          </div>
+        </section>
+
+        {/* Education & Skills */}
+        <div className="grid md:grid-cols-2 gap-8">
           <section>
-            <h2
-              className="text-lg font-semibold border-b pb-1"
-              style={{ color: "var(--accent)" }}
-            >
-              Education
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-blue-600 pb-2">
+              Opleiding
             </h2>
-            {data.education.map((edu, i) => (
-              <div key={i} className="mt-4">
-                <p className="font-medium">{edu.degree}</p>
-                <p className="text-sm text-gray-700">
-                  {edu.school} • {edu.year}
-                </p>
-              </div>
-            ))}
-          </section>
-          <section>
-            <h2
-              className="text-lg font-semibold border-b pb-1"
-              style={{ color: "var(--accent)" }}
-            >
-              Skills
-            </h2>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {data.skills.map((s, i) => (
-                <span
-                  key={i}
-                  className="px-3 py-1 rounded-full text-xs"
-                  style={{
-                    backgroundColor: "var(--accent)",
-                    color: "#fff",
-                  }}
-                >
-                  {s}
-                </span>
+            <div className="space-y-4">
+              {data.education.map((edu, i) => (
+                <div key={i}>
+                  <h3 className="font-semibold text-gray-800">{edu.degree}</h3>
+                  <p className="text-blue-600">{edu.school}</p>
+                  <p className="text-gray-600 text-sm">{edu.year}</p>
+                </div>
               ))}
             </div>
           </section>
-        </main>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-blue-600 pb-2">
+              Vaardigheden
+            </h2>
+            <div className="grid grid-cols-2 gap-2">
+              {data.skills.map((skill, i) => (
+                <div
+                  key={i}
+                  className="bg-blue-50 text-blue-800 px-3 py-2 rounded text-sm"
+                >
+                  {skill}
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   );
