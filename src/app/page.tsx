@@ -79,9 +79,9 @@ export default function Home() {
               Download and apply with confidence!
             </p>
             <div className="flex justify-center items-center gap-8 mt-8">
-              <img src="/how_it_works_1.png" alt="Step 1" className="w-85 h-auto" />
-              <img src="/how_it_works_2.png" alt="Step 2" className="w-85 h-auto" />
-              <img src="/how_it_works_3.png" alt="Step 3" className="w-85 h-auto" />
+              <img src="/how_it_works_1.png" alt="Step 1" className="w-80 h-auto" />
+              <img src="/how_it_works_2.png" alt="Step 2" className="w-80 h-auto" />
+              <img src="/how_it_works_3.png" alt="Step 3" className="w-80 h-auto" />
             </div>
             <div className="flex justify-center mt-8">
               <Button
