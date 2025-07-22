@@ -44,7 +44,7 @@ export default function RootLayout({
             <header
             className={`
               flex items-center px-4 md:px-20 py-4 h-25
-              mr-10 ml-10 relative sticky top-0
+              mr-10 ml-10 relative top-0
               z-50 rounded-3xl transition-all duration-300 bg-[#1F2937]
               shadow-lg
               ${scrolled ? 'mt-4 shadow-xl' : 'mt-8'}
@@ -155,7 +155,7 @@ export default function RootLayout({
               <SignedOut>
               <SignInButton>
                 <Button
-                className="w-[100px] h-[36px] rounded-full bg-[#818CF8] py-2 px-3 text-sm md:w-[130px] md:h-[40px] md:px-4 md:text-base transition-transform duration-200 text-white"
+                className="w-[100px] h-[36px] rounded-full bg-[#818CF8] py-2 px-3 text-sm md:w-[130px] md:h-[40px] md:px-4 md:text-base transition-transform duration-200 text-white cursor-pointer"
                 style={{
                   fontFamily: 'Poppins, sans-serif',
                   fontWeight: 600,
