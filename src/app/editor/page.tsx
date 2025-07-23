@@ -1,488 +1,22 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { HexColorPicker } from "react-colorful";
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Plus,
-  Trash2,
-  Zap,
-  Palette,
-  CheckCircle,
-  ArrowRight,
-  ArrowLeft,
-  Download,
-  FileText,
-  Star,
-  Sparkles,
-  Crown,
-  Upload,
-  User,
-  Briefcase,
-  GraduationCap,
-  Target,
-  Eye,
-  Loader2,
-  Award,
-  Rocket,
-  TrendingUp,
-  Globe,
-  Camera,
-  Edit3,
-  ChevronRight,
-  Wand2,
-  MessageSquare,
-} from "lucide-react";
-import { CVData } from "@/types/cv";
+import { Download, FileText, ArrowRight, ArrowLeft, Loader2, Wand2, Sparkles, Edit3, CheckCircle, Zap, Globe, Trash2, Camera, Upload, Target, Briefcase, Plus, GraduationCap, Award } from "lucide-react";
 
-import { allTemplates } from "@/lib/allTemplates";
+import { templates } from "./utils/templateMap";
+import { TemplateCard } from "./components/TemplateCard";
+import { AnimatedStepIndicator } from "./components/AnimatedStepIndicator";
+import { ColorPicker } from "./components/ColorPicker";
+import { CVData } from "@/types/cv";
 
 const defaultAccent = "#6366f1";
 
-const dummyPreviewData: CVData = {
-  personal: {
-    name: "Alexandra Chen",
-    title: "Senior Product Designer & UX Strategist",
-    email: "alexandra.chen@email.com",
-    phone: "+1 (555) 123-4567",
-    photoUrl:
-      "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
-  },
-  profile:
-    "Award-winning product designer with 6+ years of experience creating user-centered digital experiences for Fortune 500 companies. Proven track record in leading design systems, increasing user engagement by 40%, and driving product growth through data-driven design decisions.",
-  experience: [
-    {
-      job: "Senior Product Designer",
-      company: "TechFlow Industries",
-      description:
-        "Led design for flagship mobile app with 2M+ users. Spearheaded design system implementation, resulting in 60% faster development cycles. Mentored junior designers and established design ops workflows.",
-      period: "2022-Present",
-    },
-    {
-      job: "UX Designer",
-      company: "Digital Innovations Co.",
-      description:
-        "Designed end-to-end user experiences for B2B SaaS platform serving 10k+ businesses. Collaborated with engineering teams to implement design systems and optimize conversion rates.",
-      period: "2020-2022",
-    },
-  ],
-  education: [
-    {
-      school: "Stanford University",
-      degree: "Master of Human-Computer Interaction",
-      year: "2020",
-    },
-    {
-      school: "UC Berkeley",
-      degree: "Bachelor of Fine Arts in Digital Design",
-      year: "2018",
-    },
-  ],
-  skills: [
-    "Figma & Sketch",
-    "Design Systems",
-    "User Research",
-    "Prototyping",
-    "HTML/CSS/JS",
-    "Data Analysis",
-  ],
-};
-
-const stepIcons = [FileText, User, Target, Briefcase, GraduationCap, Award];
-
-interface TemplateType {
-  id: number;
-  name: string;
-  comp: React.ComponentType<{ data: CVData }>;
-  pro: boolean;
-  category: string;
-  description: string;
-  features: string[];
-  popularity: number;
-  color: string;
-}
-
-interface AllTemplate {
-  name: string;
-  component: React.ComponentType<{ data: CVData }>;
-  category?: string;
-  description: string;
-  color: string;
-}
-
-const templates: TemplateType[] = allTemplates.map(
-  (template: AllTemplate, index: number): TemplateType => {
-    const category = template.category ?? "general";
-    return {
-      id: index + 1,
-      name: template.name,
-      comp: template.component,
-      pro: template.name !== "Free Template",
-      category: category.charAt(0).toUpperCase() + category.slice(1),
-      description: template.description,
-      features: [
-        "Professional design",
-        "ATS-friendly",
-        "Easy to customize",
-        category === "professional"
-          ? "Corporate styling"
-          : category === "creative"
-            ? "Visual impact"
-            : "Modern layout",
-      ],
-      popularity: 75 + Math.floor(Math.random() * 25), // Random popularity between 75-100%
-      color: template.color,
-    };
-  }
-);
-
-function TemplateCard({
-  template,
-  isSelected,
-  onSelect,
-  isPro,
-  index,
-}: {
-  template: TemplateType;
-  isSelected: boolean;
-  onSelect: () => void;
-  isPro: boolean;
-  index: number;
-}) {
-  const [isHovered, setIsHovered] = useState(false);
-  const Preview = template.comp;
-  const isLocked = template.pro && !isPro;
-
-  return (
-    <div
-      className={`group cursor-pointer transition-all duration-500 hover:scale-[1.02] relative overflow-hidden animate-fade-in-up`}
-      style={{
-        animationDelay: `${index * 100}ms`,
-        animationFillMode: "both",
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={isLocked ? undefined : onSelect}
-    >
-      <Card
-        className={`h-full transition-all duration-300 ${
-          isSelected
-            ? "ring-2 ring-indigo-500 shadow-2xl border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50"
-            : "border-gray-200 hover:border-indigo-300 hover:shadow-xl"
-        } ${isLocked ? "opacity-75" : ""}`}
-      >
-        {/* Premium Badge */}
-        {template.pro && (
-          <div className="absolute top-4 left-4 z-20">
-            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-lg">
-              <Crown className="w-3 h-3 mr-1" />
-              PRO
-            </Badge>
-          </div>
-        )}
-
-        {/* Popularity Badge */}
-        <div className="absolute top-4 right-4 z-20">
-          <Badge
-            variant="secondary"
-            className="bg-white/90 backdrop-blur-sm text-gray-700 border-0 shadow-lg"
-          >
-            <TrendingUp className="w-3 h-3 mr-1" />
-            {template.popularity}%
-          </Badge>
-        </div>
-
-        {/* Selection Indicator */}
-        {isSelected && (
-          <div className="absolute top-4 right-16 z-20 bg-indigo-500 text-white rounded-full p-1.5 shadow-lg animate-bounce">
-            <CheckCircle className="w-4 h-4" />
-          </div>
-        )}
-
-        {/* Lock Overlay */}
-        {isLocked && (
-          <div className="absolute inset-0 z-30 bg-black/30 backdrop-blur-[2px] flex items-center justify-center">
-            <div className="bg-white rounded-xl p-6 shadow-2xl text-center max-w-48">
-              <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Crown className="w-6 h-6 text-white" />
-              </div>
-              <h4 className="font-semibold text-gray-900 mb-2">
-                Premium Template
-              </h4>
-              <p className="text-sm text-gray-600 mb-3">
-                Upgrade to unlock this design
-              </p>
-              <Button
-                size="sm"
-                className="bg-gradient-to-r from-amber-500 to-orange-500"
-              >
-                Upgrade Now
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Template Preview */}
-        <div className="h-64 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden rounded-t-lg relative">
-          <div
-            className={`absolute inset-0 bg-gradient-to-br ${template.color} opacity-5`}
-          ></div>
-          <div className="relative z-5 transform scale-[0.28] origin-top-left w-[357%] h-[357%] pointer-events-none">
-            <div className="bg-white rounded-lg shadow-sm">
-              <Preview data={dummyPreviewData} />
-            </div>
-          </div>
-
-          {/* Hover Overlay */}
-          <div
-            className={`absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-300 ${
-              isHovered && !isLocked ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <Button
-              size="lg"
-              className="bg-white text-gray-900 hover:bg-gray-100 shadow-xl transform scale-110"
-            >
-              <Eye className="w-5 h-5 mr-2" />
-              Preview Template
-            </Button>
-          </div>
-        </div>
-
-        <CardContent className="p-6">
-          {/* Header */}
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <h3 className="font-bold text-lg text-gray-900 mb-1">
-                {template.name}
-              </h3>
-              <Badge
-                variant="outline"
-                className={`text-xs bg-gradient-to-r ${template.color} text-white border-0`}
-              >
-                {template.category}
-              </Badge>
-            </div>
-            <div className="flex items-center gap-1">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-3 h-3 ${
-                    i < Math.floor(template.popularity / 20)
-                      ? "fill-amber-400 text-amber-400"
-                      : "text-gray-300"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Description */}
-          <p className="text-sm text-gray-600 leading-relaxed mb-4">
-            {template.description}
-          </p>
-
-          {/* Features */}
-          <div className="space-y-2 mb-4">
-            {template.features.map((feature: string, idx: number) => (
-              <div key={idx} className="flex items-center gap-2 text-xs">
-                <CheckCircle className="w-3 h-3 text-green-500" />
-                <span className="text-gray-600">{feature}</span>
-              </div>
-            ))}
-          </div>
-
-          {/* Action Button */}
-          <Button
-            size="sm"
-            className={`w-full transition-all duration-300 ${
-              isSelected
-                ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg"
-                : isLocked
-                  ? "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
-                  : "bg-gradient-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700"
-            }`}
-            disabled={isLocked}
-          >
-            {isSelected ? (
-              <>
-                <CheckCircle className="w-4 h-4 mr-2" />
-                Selected Template
-              </>
-            ) : isLocked ? (
-              <>
-                <Crown className="w-4 h-4 mr-2" />
-                Upgrade to Use
-              </>
-            ) : (
-              <>
-                <ChevronRight className="w-4 h-4 mr-2" />
-                Select Template
-              </>
-            )}
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-
-function AnimatedStepIndicator({
-  steps,
-  currentStep,
-}: {
-  steps: string[];
-  currentStep: number;
-}) {
-  return (
-    <div className="relative">
-      {/* Background Line */}
-      <div className="absolute top-5 left-0 right-0 h-0.5 bg-gray-200"></div>
-
-      {/* Progress Line */}
-      <div
-        className="absolute top-5 left-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-700 ease-out"
-        style={{
-          width: `${(currentStep / (steps.length - 1)) * 100}%`,
-        }}
-      ></div>
-
-      {/* Steps */}
-      <div className="relative flex justify-between">
-        {steps.map((step, index) => {
-          const Icon = stepIcons[index];
-          const isCompleted = index < currentStep;
-          const isCurrent = index === currentStep;
-
-          return (
-            <div key={step} className="flex flex-col items-center">
-              <div
-                className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
-                  isCompleted
-                    ? "bg-gradient-to-r from-indigo-500 to-purple-500 border-transparent text-white shadow-lg scale-110"
-                    : isCurrent
-                      ? "bg-white border-indigo-500 text-indigo-500 shadow-lg scale-110 animate-pulse"
-                      : "bg-gray-100 border-gray-300 text-gray-400"
-                }`}
-              >
-                {isCompleted ? (
-                  <CheckCircle className="w-5 h-5" />
-                ) : (
-                  <Icon className="w-5 h-5" />
-                )}
-              </div>
-              <span
-                className={`text-xs mt-2 font-medium transition-colors duration-300 ${
-                  isCompleted || isCurrent ? "text-indigo-600" : "text-gray-400"
-                }`}
-              >
-                {step}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function ColorPicker({
-  color,
-  onChange,
-  isOpen,
-  onToggle,
-}: {
-  color: string;
-  onChange: (color: string) => void;
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
-  const presetColors = [
-    "#6366f1",
-    "#8b5cf6",
-    "#ec4899",
-    "#f59e0b",
-    "#10b981",
-    "#3b82f6",
-    "#ef4444",
-    "#6b7280",
-  ];
-
-  return (
-    <div className="relative">
-      <div className="flex items-center gap-3">
-        <label className="text-sm font-medium text-gray-700">Brand Color</label>
-        <button
-          className="w-12 h-8 rounded-lg border-2 border-white shadow-lg transition-transform hover:scale-110 relative overflow-hidden"
-          style={{ backgroundColor: color }}
-          onClick={onToggle}
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
-          <Palette className="w-4 h-4 text-white mx-auto" />
-        </button>
-      </div>
-
-      {isOpen && (
-        <div className="absolute right-0 mt-2 z-50 bg-white p-6 rounded-2xl shadow-2xl border border-gray-100 w-72">
-          <div className="space-y-4">
-            <div className="text-center">
-              <h4 className="font-semibold text-gray-900 mb-2">
-                Choose Your Brand Color
-              </h4>
-              <p className="text-sm text-gray-600">
-                This color will be used throughout your resume
-              </p>
-            </div>
-
-            <div className="flex justify-center">
-              <HexColorPicker color={color} onChange={onChange} />
-            </div>
-
-            <div className="space-y-3">
-              <h5 className="text-sm font-medium text-gray-700">
-                Quick Select
-              </h5>
-              <div className="grid grid-cols-4 gap-2">
-                {presetColors.map((presetColor) => (
-                  <button
-                    key={presetColor}
-                    className={`w-12 h-8 rounded-lg border-2 transition-all hover:scale-110 ${
-                      color === presetColor
-                        ? "border-gray-400 ring-2 ring-gray-300"
-                        : "border-gray-200"
-                    }`}
-                    style={{ backgroundColor: presetColor }}
-                    onClick={() => onChange(presetColor)}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Hex:</span>
-              <Input
-                className="text-sm font-mono"
-                value={color}
-                onChange={(e) => onChange(e.target.value)}
-              />
-            </div>
-
-            <Button onClick={onToggle} className="w-full">
-              Apply Color
-            </Button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-export default function UltraProfessionalEditor() {
+export default function EditorPage() {
   const { isSignedIn } = useUser();
   const [step, setStep] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
@@ -499,11 +33,9 @@ export default function UltraProfessionalEditor() {
   const [loadingSave, setLoadingSave] = useState(false);
   const [accent, setAccent] = useState(defaultAccent);
   const [showColorPicker, setShowColorPicker] = useState(false);
-  const [animateIn, setAnimateIn] = useState(false);
 
   useEffect(() => {
     document.documentElement.style.setProperty("--accent", accent);
-    setAnimateIn(true);
   }, [accent]);
 
   const steps = [
@@ -515,7 +47,7 @@ export default function UltraProfessionalEditor() {
     "Skills",
   ];
 
-  // Helper functions (same as before but with improved error handling)
+  // --- Form logic helpers (zoals in jouw originele code) ---
   const updatePersonal = (field: keyof CVData["personal"], value: string) => {
     setFormData((d) => ({ ...d, personal: { ...d.personal, [field]: value } }));
   };
@@ -525,7 +57,6 @@ export default function UltraProfessionalEditor() {
       alert("File size must be less than 5MB");
       return;
     }
-
     const reader = new FileReader();
     reader.onload = (e) => {
       updatePersonal("photoUrl", e.target?.result as string);
@@ -655,6 +186,7 @@ export default function UltraProfessionalEditor() {
     link.click();
   };
 
+  // --- Onboarding screen if not signed in ---
   if (!isSignedIn) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50">
@@ -662,11 +194,8 @@ export default function UltraProfessionalEditor() {
           {/* Background decoration */}
           <div className="absolute -top-20 -left-20 w-40 h-40 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full opacity-20 animate-pulse"></div>
           <div className="absolute -bottom-20 -right-20 w-32 h-32 bg-gradient-to-r from-pink-400 to-orange-400 rounded-full opacity-20 animate-pulse"></div>
-
           <Card className="w-full max-w-md relative overflow-hidden shadow-2xl border-0">
-            {/* Card header gradient */}
             <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
-
             <CardHeader className="text-center pb-6 pt-8">
               <div className="w-20 h-20 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
                 <Edit3 className="w-10 h-10 text-white" />
@@ -678,7 +207,6 @@ export default function UltraProfessionalEditor() {
                 Create stunning, professional resumes in minutes
               </p>
             </CardHeader>
-
             <CardContent className="px-8 pb-8">
               <div className="space-y-4 mb-6">
                 <div className="flex items-center gap-3 text-sm text-gray-600">
@@ -694,14 +222,12 @@ export default function UltraProfessionalEditor() {
                   <span>Instant PDF Download</span>
                 </div>
               </div>
-
               <SignInButton>
                 <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-4 text-lg font-semibold shadow-xl">
                   <Sparkles className="w-5 h-5 mr-2" />
                   Start Creating Your Resume
                 </Button>
               </SignInButton>
-
               <p className="text-xs text-gray-500 text-center mt-4">
                 Free account • No credit card required
               </p>
@@ -712,46 +238,28 @@ export default function UltraProfessionalEditor() {
     );
   }
 
-  const TemplateComponent =
-    selectedTemplate != null
-      ? templates.find((t) => t.id === selectedTemplate)?.comp
-      : null;
-
-  // Template Selection Step
+  // --- Stap 0: Template selectie ---
   if (step === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full opacity-10 animate-float"></div>
-          <div className="absolute top-40 right-40 w-24 h-24 bg-gradient-to-r from-pink-400 to-orange-400 rounded-full opacity-10 animate-float-delayed"></div>
-          <div className="absolute bottom-40 left-1/3 w-16 h-16 bg-gradient-to-r from-green-400 to-blue-400 rounded-full opacity-10 animate-float"></div>
-        </div>
-
         <div className="relative container mx-auto px-6 py-12">
-          {/* Header */}
           <div className="text-center mb-16">
             <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full mb-8 shadow-2xl">
-              <Rocket className="w-12 h-12 text-white" />
+              <Wand2 className="w-12 h-12 text-white" />
             </div>
-
             <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-6 leading-tight">
               Choose Your Perfect
               <br />
               Resume Template
             </h1>
-
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
               Start with a professionally designed template. Each template is
-              crafted by experts to help you make the best first impression with
-              employers and pass ATS systems.
+              crafted by experts to help you make the best first impression.
             </p>
-
-            {/* Stats */}
             <div className="flex justify-center gap-8 mb-8">
               <div className="text-center">
                 <div className="text-3xl font-bold text-indigo-600">
-                  {allTemplates.length}+
+                  {templates.length}+
                 </div>
                 <div className="text-sm text-gray-600">Templates</div>
               </div>
@@ -765,8 +273,6 @@ export default function UltraProfessionalEditor() {
               </div>
             </div>
           </div>
-
-          {/* Templates Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {templates.map((template, index) => (
               <TemplateCard
@@ -779,8 +285,6 @@ export default function UltraProfessionalEditor() {
               />
             ))}
           </div>
-
-          {/* Continue Button */}
           <div className="text-center">
             <Button
               size="lg"
@@ -801,7 +305,6 @@ export default function UltraProfessionalEditor() {
                 "Select a Template to Continue"
               )}
             </Button>
-
             {selectedTemplate && (
               <p className="text-sm text-gray-600 mt-4">
                 You can change colors and customize everything in the next steps
@@ -813,20 +316,21 @@ export default function UltraProfessionalEditor() {
     );
   }
 
-  // Editor Steps
+  // --- Stap 1-5: De rest van de editor ---
+  const TemplateComponent =
+    selectedTemplate != null
+      ? templates.find((t) => t.id === selectedTemplate)?.comp
+      : null;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50">
       <div className="flex flex-col lg:flex-row">
         {/* Sidebar */}
         <div className="w-full lg:w-2/5 bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-2xl">
           <div className="p-8 h-full flex flex-col">
-            {/* Header */}
+            {/* Steps */}
             <div className="mb-8">
-              <AnimatedStepIndicator
-                steps={steps.slice(1)}
-                currentStep={step - 1}
-              />
-
+              <AnimatedStepIndicator steps={steps.slice(1)} currentStep={step - 1} />
               <div className="text-center mt-8">
                 <div className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-full px-4 py-2 mb-4">
                   <span className="text-sm font-medium text-indigo-700">
@@ -836,17 +340,8 @@ export default function UltraProfessionalEditor() {
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">
                   {steps[step]} Information
                 </h2>
-                <p className="text-gray-600">
-                  {step === 1 && "Tell us about yourself"}
-                  {step === 2 && "Write a compelling summary"}
-                  {step === 3 && "Add your work experience"}
-                  {step === 4 && "Include your education"}
-                  {step === 5 && "List your key skills"}
-                </p>
               </div>
             </div>
-
-            {/* Color Picker */}
             <div className="mb-8 p-4 bg-gradient-to-r from-gray-50 to-indigo-50 rounded-xl">
               <ColorPicker
                 color={accent}
@@ -855,8 +350,6 @@ export default function UltraProfessionalEditor() {
                 onToggle={() => setShowColorPicker(!showColorPicker)}
               />
             </div>
-
-            {/* Form Content */}
             <div className="flex-1 space-y-6 overflow-y-auto">
               {step === 1 && (
                 <div className="space-y-6">
@@ -1291,7 +784,6 @@ export default function UltraProfessionalEditor() {
                 </div>
               )}
             </div>
-
             {/* Navigation */}
             <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
               <Button
@@ -1303,7 +795,6 @@ export default function UltraProfessionalEditor() {
                 <ArrowLeft className="w-4 h-4" />
                 Previous
               </Button>
-
               {step < steps.length - 1 ? (
                 <Button
                   onClick={() => setStep((s) => s + 1)}
@@ -1332,8 +823,6 @@ export default function UltraProfessionalEditor() {
                 </Button>
               )}
             </div>
-
-            {/* Success State */}
             {saveSuccess && resumeId && (
               <Card className="mt-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 shadow-xl">
                 <CardContent className="p-6">
@@ -1350,7 +839,6 @@ export default function UltraProfessionalEditor() {
                       </p>
                     </div>
                   </div>
-
                   <div className="space-y-3">
                     <Button
                       onClick={() => downloadResume(resumeId, "pdf", !isPro)}
@@ -1359,7 +847,6 @@ export default function UltraProfessionalEditor() {
                       <Download className="w-5 h-5 mr-2" />
                       Download PDF {!isPro && "(with watermark)"}
                     </Button>
-
                     <Button
                       onClick={() => downloadResume(resumeId, "docx", false)}
                       disabled={!isPro}
@@ -1369,7 +856,6 @@ export default function UltraProfessionalEditor() {
                       <FileText className="w-5 h-5 mr-2" />
                       Download DOCX {!isPro && "(Pro Feature)"}
                     </Button>
-
                     <div className="grid grid-cols-2 gap-3">
                       <Button
                         onClick={() => alert("AI Summary feature coming soon!")}
@@ -1394,11 +880,9 @@ export default function UltraProfessionalEditor() {
             )}
           </div>
         </div>
-
         {/* Preview */}
         <div className="w-full lg:w-3/5 bg-gradient-to-br from-gray-50 to-indigo-50 p-8 overflow-auto">
           <div className="max-w-4xl mx-auto">
-            {/* Preview Header */}
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="text-xl font-semibold text-gray-900">
@@ -1422,8 +906,6 @@ export default function UltraProfessionalEditor() {
                 ></div>
               </div>
             </div>
-
-            {/* Preview Content */}
             <div
               className="bg-white rounded-2xl shadow-2xl overflow-hidden relative"
               style={{ borderTop: `6px solid ${accent}` }}
@@ -1448,76 +930,9 @@ export default function UltraProfessionalEditor() {
                 </div>
               )}
             </div>
-
-            {/* Tips */}
-            <div className="mt-6 p-4 bg-white/50 backdrop-blur-sm rounded-xl border border-white/20">
-              <div className="flex items-start gap-3">
-                <MessageSquare className="w-5 h-5 text-indigo-600 mt-0.5" />
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-1">Pro Tip</h4>
-                  <p className="text-sm text-gray-600">
-                    {step === 1 &&
-                      "Add a professional photo to make your resume stand out. Studies show resumes with photos get 38% more callbacks."}
-                    {step === 2 &&
-                      "Keep your summary concise but impactful. Recruiters spend only 6 seconds scanning each resume."}
-                    {step === 3 &&
-                      "Use action verbs and quantify your achievements. Numbers make your accomplishments more credible."}
-                    {step === 4 &&
-                      "List education in reverse chronological order. Include relevant coursework for entry-level positions."}
-                    {step === 5 &&
-                      "Match skills to the job description. Use keywords from the job posting to pass ATS filters."}
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes fade-in-up {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-20px);
-          }
-        }
-
-        @keyframes float-delayed {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-15px);
-          }
-        }
-
-        .animate-fade-in-up {
-          animation: fade-in-up 0.6s ease-out;
-        }
-
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-
-        .animate-float-delayed {
-          animation: float-delayed 8s ease-in-out infinite;
-        }
-      `}</style>
     </div>
   );
 }
