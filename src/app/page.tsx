@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Award } from "lucide-react";
 
 import { useEffect, useState } from "react";
+import { SignUpButton } from "@clerk/nextjs";
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
@@ -76,12 +77,14 @@ export default function Home() {
             designed, fully tailored to your experience, and optimized to help you land
             your next big opportunity with confidence.
           </p>
-          <Button
-            className="bg-black w-full max-w-[230px] h-[60px] rounded-full font-poppins font-600 text-sm sm:text-base shadow-lg hover:scale-105 transition-transform duration-300 animate-fade-in-up"
-            style={{ fontFamily: "Poppins, sans-serif", animationDelay: "0.7s" }}
-          >
-            Get Started Today
-          </Button>
+          <SignUpButton>
+            <Button
+              className="bg-black w-full max-w-[230px] h-[60px] rounded-full font-poppins font-600 text-sm sm:text-base shadow-lg hover:scale-105 transition-transform duration-300 animate-fade-in-up"
+              style={{ fontFamily: "Poppins, sans-serif", animationDelay: "0.7s" }}
+            >
+              Get Started Today
+            </Button>
+          </SignUpButton>
         </section>
 
         {/* Minimal Animations */}
