@@ -32,7 +32,6 @@ import { SportsTemplate } from "@/components/templates/SportTemplate";
 import BasicTemplate from "@/components/templates/BasicTemplate";
 
 export const allTemplates: TemplateInfo[] = [
-  // Professional Templates (1-10)
   {
     id: "basic",
     name: "Free Template",
@@ -40,6 +39,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-slate-800 to-slate-900",
     preview: "Basic template for free users",
     component: BasicTemplate,
+    fileName: "BasicTemplate.tsx",
   },
   {
     id: "modern",
@@ -49,6 +49,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-slate-800 to-slate-900",
     preview: "Modern sidebar with dark gradient and clean typography",
     component: ModernTemplate,
+    fileName: "ModernTemplate.tsx",
   },
   {
     id: "classic",
@@ -58,6 +59,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-blue-900 to-blue-800",
     preview: "Navy header with structured content sections",
     component: ClassicTemplate,
+    fileName: "ClassicTemplate.tsx",
   },
   {
     id: "executive",
@@ -67,6 +69,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-gray-900 to-gray-800",
     preview: "Gold accents with executive summary focus",
     component: ExecutiveTemplate,
+    fileName: "ExecutiveTemplate.tsx",
   },
   {
     id: "minimal",
@@ -76,6 +79,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-gray-50 to-white",
     preview: "Ultra-clean layout with excellent typography",
     component: MinimalistTemplate,
+    fileName: "MinimalistTemplate.tsx",
   },
   {
     id: "corporate-blue",
@@ -85,6 +89,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-blue-900 to-blue-700",
     preview: "Classic blue corporate design",
     component: CorporateBlueTemplate,
+    fileName: "CorporateTemplate.tsx",
   },
   {
     id: "consulting",
@@ -94,6 +99,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-blue-600 to-blue-500",
     preview: "Executive summary focused design",
     component: ConsultingTemplate,
+    fileName: "ConsultingTemplate.tsx",
   },
   {
     id: "finance",
@@ -103,6 +109,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-gray-900 to-yellow-500",
     preview: "Financial professional layout with credentials",
     component: FinanceTemplate,
+    fileName: "FinanceTemplate.tsx",
   },
   {
     id: "medical",
@@ -112,6 +119,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-blue-600 to-teal-600",
     preview: "Medical-themed with color coding",
     component: MedicalTemplate,
+    fileName: "MedicalTemplate.tsx",
   },
   {
     id: "sales",
@@ -121,6 +129,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-green-600 to-blue-600",
     preview: "Achievement-focused sales layout",
     component: SalesTemplate,
+    fileName: "SalesTemplate.tsx",
   },
 
   // Creative Templates (11-20)
@@ -132,6 +141,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-purple-600 to-pink-600",
     preview: "Artistic layout with gradient backgrounds",
     component: CreativeTemplate,
+    fileName: "CreativeTemplate.tsx",
   },
   {
     id: "magazine",
@@ -141,6 +151,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-red-600 to-red-500",
     preview: "Magazine-inspired column layout",
     component: MagazineTemplate,
+    fileName: "MagazineTemplate.tsx",
   },
   {
     id: "geometric",
@@ -150,6 +161,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-blue-500 to-yellow-400",
     preview: "Modern geometric shapes and colors",
     component: GeometricTemplate,
+    fileName: "GeometricTemplate.tsx",
   },
   {
     id: "architect",
@@ -159,6 +171,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-gray-900 to-gray-600",
     preview: "Architectural portfolio layout",
     component: ArchitectTemplate,
+    fileName: "architectTemplate.tsx",
   },
   {
     id: "fashion",
@@ -168,6 +181,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-rose-600 to-pink-600",
     preview: "Fashion-forward elegant design",
     component: FashionTemplate,
+    fileName: "FashionTemplate.tsx",
   },
   {
     id: "marketing",
@@ -177,6 +191,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-orange-500 to-red-500",
     preview: "Marketing-focused bold layout",
     component: MarketingTemplate,
+    fileName: "MarketingTemplate.tsx",
   },
   {
     id: "influencer",
@@ -186,6 +201,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-pink-400 to-purple-500",
     preview: "Influencer-style modern design",
     component: InfluencerTemplate,
+    fileName: "InfluencerTemplate.tsx",
   },
   {
     id: "nonprofit",
@@ -195,6 +211,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-green-500 to-teal-500",
     preview: "Mission-driven design with heart",
     component: NonProfitTemplate,
+    fileName: "Non-profitTemplate.tsx",
   },
 
   // Modern/Tech Templates (21-30)
@@ -206,6 +223,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-gray-900 to-green-400",
     preview: "Code terminal aesthetic",
     component: TechTemplate,
+    fileName: "TechTemplate.tsx",
   },
   {
     id: "modern-card",
@@ -215,6 +233,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-blue-600 to-indigo-600",
     preview: "Modern card-based design",
     component: ModernCardTemplate,
+    fileName: "ModernCardTemplate.tsx",
   },
   {
     id: "timeline",
@@ -224,6 +243,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-slate-600 to-slate-500",
     preview: "Visual timeline layout",
     component: TimelineTemplate,
+    fileName: "TimelineTemplate.tsx",
   },
   {
     id: "bold",
@@ -233,6 +253,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-black to-red-600",
     preview: "Bold typography with impact",
     component: BoldTemplate,
+    fileName: "BoldTemplate.tsx",
   },
   {
     id: "elegant",
@@ -242,6 +263,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-amber-600 to-amber-500",
     preview: "Elegant serif fonts with gold accents",
     component: ElegantTemplate,
+    fileName: "ElegantTemplate.tsx",
   },
   {
     id: "newspaper",
@@ -251,6 +273,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-black to-gray-800",
     preview: "Editorial newspaper design",
     component: NewspaperTemplate,
+    fileName: "NewspaperTemplate.tsx",
   },
   {
     id: "gaming",
@@ -260,6 +283,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-gray-900 to-green-400",
     preview: "Gaming console aesthetic",
     component: GamingTemplate,
+    fileName: "gamingTemplate.tsx",
   },
   {
     id: "academic",
@@ -269,6 +293,7 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-blue-800 to-blue-600",
     preview: "Academic publication style",
     component: AcademicTemplate,
+    fileName: "AcademicTemplate.tsx",
   },
   {
     id: "sports",
@@ -278,8 +303,10 @@ export const allTemplates: TemplateInfo[] = [
     color: "from-orange-500 to-red-500",
     preview: "Athletic and energetic design",
     component: SportsTemplate,
+    fileName: "SportTemplate.tsx",
   },
 ];
+
 
 export const templatesByCategory = {
   professional: allTemplates.filter((t) => t.category === "professional"),

@@ -1,14 +1,15 @@
+// utils/templateMap.ts
 import { allTemplates } from "@/lib/allTemplates";
 import { TemplateType, AllTemplate } from "../types/templateTypes";
 
 export const templates: TemplateType[] = allTemplates.map(
-  (template: AllTemplate, index: number): TemplateType => {
+  (template: AllTemplate): TemplateType => {
     const category = template.category ?? "general";
     return {
-      id: index + 1,
+      id: template.id, // <-- string!
       name: template.name,
       comp: template.component,
-      pro: template.name !== "Free Template",
+      pro: false,
       category: category.charAt(0).toUpperCase() + category.slice(1),
       description: template.description,
       features: [
@@ -23,6 +24,7 @@ export const templates: TemplateType[] = allTemplates.map(
       ],
       popularity: 75 + Math.floor(Math.random() * 25),
       color: template.color,
+      fileName: template.fileName,
     };
   }
 );

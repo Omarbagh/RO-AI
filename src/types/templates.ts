@@ -8,6 +8,8 @@ export interface TemplateInfo {
   color: string;
   preview: string;
   component: React.ComponentType<CVTemplateProps>;
+  fileName: string;
+
 }
 
 export interface TemplateCategory {

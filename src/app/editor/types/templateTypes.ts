@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 
 export interface TemplateType {
-  id: number;
+  id: string;
   name: string;
   comp: React.ComponentType<{ data: CVData }>;
   pro: boolean;
@@ -18,14 +18,17 @@ export interface TemplateType {
   features: string[];
   popularity: number;
   color: string;
+  fileName: string;
 }
 
 export interface AllTemplate {
+  id: string;
   name: string;
   component: React.ComponentType<{ data: CVData }>;
   category?: string;
   description: string;
   color: string;
+  fileName: string;
 }
 
 export const stepIcons = [FileText, User, Target, Briefcase, GraduationCap, Award];
