@@ -8,10 +8,10 @@ import { getPuppeteer } from '@/lib/getPuppeteer';
 import { generateDocx } from '@/lib/generateDocx';
 
 // Direct imports of your templates
-import BasicTemplate from '@/components/templates/basicTemplate';
+import BasicTemplate from '@/components/templates/BasicTemplate';
 import ModernTemplate from '@/components/templates/ModernTemplate';
 import CreativeTemplate from '@/components/templates/CreativeTemplate';
-import { ExecutiveTemplate } from '@/components/templates/ExecutiveTemplate';
+import ExecutiveTemplate from '@/components/templates/ExecutiveTemplate';
 import { MinimalistTemplate } from '@/components/templates/MinimalistTemplate';
 import { PortfolioTemplate } from '@/components/templates/PortfolioTemplate';
 import { ProfessionalTemplate } from '@/components/templates/ProfessionalTemplate';
