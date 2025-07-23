@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
 import {
   ClerkProvider,
   SignInButton,
@@ -25,14 +25,6 @@ const poppins = Poppins({
 
 export default function RootLayout({ children }: RootLayoutProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  // Scroll-detectie voor header-transitie
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 0);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <ClerkProvider>
@@ -41,11 +33,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           {/* Header */}
           <header
             className={`
-              flex items-center px-4 md:px-20 py-4 h-25
-              mr-10 ml-10 relative top-0
-              z-50 rounded-3xl transition-all duration-300 bg-[#1F2937]
-              shadow-lg
-              ${scrolled ? 'mt-4 shadow-xl' : 'mt-8'}
+              flex items-center px-4 md:px-20 py-4 h-16 mt-5 relative
             `}
             style={{
               transition:
@@ -86,7 +74,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     <a
                       href="#"
                       className={`
-                        text-[#CBD5E1] hover:text-[#818CF8] transition-colors font-normal
+                        text-black hover:text-[#818CF8] transition-colors font-normal
                         relative
                         after:content-[''] after:block after:h-[2px] after:bg-[#818CF8] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300 after:origin-left
                       `}
