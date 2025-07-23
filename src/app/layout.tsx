@@ -112,9 +112,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <div className="flex-1 flex justify-end items-center gap-4">
               <SignedOut>
                 <SignInButton>
-                  <Button className="w-[100px] h-[36px] rounded-full bg-[#818CF8] py-2 px-3 text-sm md:w-[130px] md:h-[40px] md:px-4 md:text-base transition-transform duration-200 text-white" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
-                    <span className="hidden sm:inline">Login</span>
-                    <span className="inline sm:hidden">Log in</span>
+                  <Button className="w-[100px] h-[36px] rounded-full bg-black py-2 px-3 text-sm md:w-[170px] md:h-[40px] md:px-4 md:text-sm transition-transform duration-200 text-white" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}>
+                    <span className="hidden sm:inline">Get Started Today</span>
                   </Button>
                 </SignInButton>
               </SignedOut>

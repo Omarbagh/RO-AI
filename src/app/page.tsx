@@ -51,13 +51,14 @@ export default function Home() {
           style={{ fontFamily: "Poppins, sans-serif", marginTop: "-100px" }}
         >
           <span className="block animate-fade-in-down" style={{ animationDelay: "0.1s" }}>
-            Land your dream job
+            Create a
           </span>
-          <span className="block animate-fade-in-down" style={{ animationDelay: "0.3s" }}>
-            using an AI-powered&nbsp;
-            <span className="inline-block text-[#1E293B]">
-              <TypewriterTexts texts={["resume builder", "career tool"]} />
+          <span className="inline-block text-[#1E293B]">
+              <TypewriterTexts texts={["Job-Winning Resume", "Professional Resume", "AI-Generated CV"]} />
             </span>
+          <span className="block animate-fade-in-down" style={{ animationDelay: "0.3s" }}>
+            in under 5-minutes
+            
           </span>
         </h1>
 
@@ -76,7 +77,7 @@ export default function Home() {
             your next big opportunity with confidence.
           </p>
           <Button
-            className="bg-[#4F46E5] w-full max-w-[230px] h-[60px] rounded-full font-poppins font-600 text-sm sm:text-base shadow-lg hover:scale-105 transition-transform duration-300 animate-fade-in-up"
+            className="bg-black w-full max-w-[230px] h-[60px] rounded-full font-poppins font-600 text-sm sm:text-base shadow-lg hover:scale-105 transition-transform duration-300 animate-fade-in-up"
             style={{ fontFamily: "Poppins, sans-serif", animationDelay: "0.7s" }}
           >
             Get Started Today
