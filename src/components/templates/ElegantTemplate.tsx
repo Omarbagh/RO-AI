@@ -5,10 +5,16 @@ export default function ElegantTemplate({ data }: CVTemplateProps) {
   return (
     <div className="max-w-4xl mx-auto bg-white">
       {/* Elegant Header */}
-      <div className="border-b-4 border-gold-500 pb-8 mb-8">
+      <div
+        className="border-b-4 pb-8 mb-8"
+        style={{ borderColor: "var(--accent)" }}
+      >
         <div className="text-center">
           {data.personal.photoUrl && (
-            <div className="w-28 h-28 mx-auto rounded-full overflow-hidden border-4 border-gold-300 mb-6">
+            <div
+              className="w-28 h-28 mx-auto rounded-full overflow-hidden border-4 mb-6"
+              style={{ borderColor: "var(--accent)" }}
+            >
               <img
                 src={data.personal.photoUrl}
                 alt={data.personal.name}
@@ -19,7 +25,10 @@ export default function ElegantTemplate({ data }: CVTemplateProps) {
           <h1 className="text-5xl font-serif text-gray-800 mb-3">
             {data.personal.name}
           </h1>
-          <p className="text-2xl text-gold-600 font-light italic mb-6">
+          <p
+            className="text-2xl font-light italic mb-6"
+            style={{ color: "var(--accent)" }}
+          >
             {data.personal.title}
           </p>
           <div className="flex justify-center gap-8 text-gray-600">
@@ -37,7 +46,10 @@ export default function ElegantTemplate({ data }: CVTemplateProps) {
 
       <div className="px-8">
         <section className="mb-8">
-          <h2 className="text-2xl font-serif text-gray-800 mb-4 border-b border-gold-300 pb-2">
+          <h2
+            className="text-2xl font-serif text-gray-800 mb-4 border-b pb-2"
+            style={{ borderColor: "var(--accent)" }}
+          >
             Profiel
           </h2>
           <p className="text-gray-700 leading-relaxed font-light text-lg">
@@ -46,13 +58,25 @@ export default function ElegantTemplate({ data }: CVTemplateProps) {
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-serif text-gray-800 mb-6 border-b border-gold-300 pb-2">
+          <h2
+            className="text-2xl font-serif text-gray-800 mb-6 border-b pb-2"
+            style={{ borderColor: "var(--accent)" }}
+          >
             Ervaring
           </h2>
           {data.experience.map((exp, i) => (
-            <div key={i} className="mb-6 border-l-2 border-gold-300 pl-6">
+            <div
+              key={i}
+              className="mb-6 border-l-2 pl-6"
+              style={{ borderColor: "var(--accent)" }}
+            >
               <h3 className="text-xl font-serif text-gray-800">{exp.job}</h3>
-              <p className="text-gold-600 italic mb-2">{exp.company}</p>
+              <p
+                className="italic mb-2"
+                style={{ color: "var(--accent)" }}
+              >
+                {exp.company}
+              </p>
               <p className="text-gray-700 font-light">{exp.description}</p>
             </div>
           ))}
@@ -60,7 +84,10 @@ export default function ElegantTemplate({ data }: CVTemplateProps) {
 
         <div className="grid md:grid-cols-2 gap-8">
           <section>
-            <h2 className="text-2xl font-serif text-gray-800 mb-4 border-b border-gold-300 pb-2">
+            <h2
+              className="text-2xl font-serif text-gray-800 mb-4 border-b pb-2"
+              style={{ borderColor: "var(--accent)" }}
+            >
               Vaardigheden
             </h2>
             <div className="space-y-2">
@@ -72,13 +99,21 @@ export default function ElegantTemplate({ data }: CVTemplateProps) {
             </div>
           </section>
           <section>
-            <h2 className="text-2xl font-serif text-gray-800 mb-4 border-b border-gold-300 pb-2">
+            <h2
+              className="text-2xl font-serif text-gray-800 mb-4 border-b pb-2"
+              style={{ borderColor: "var(--accent)" }}
+            >
               Opleiding
             </h2>
             {data.education.map((edu, i) => (
               <div key={i} className="mb-4">
                 <h3 className="font-serif text-gray-800">{edu.degree}</h3>
-                <p className="text-gold-600 italic">{edu.school}</p>
+                <p
+                  className="italic"
+                  style={{ color: "var(--accent)" }}
+                >
+                  {edu.school}
+                </p>
                 <p className="text-gray-600 text-sm">{edu.year}</p>
               </div>
             ))}

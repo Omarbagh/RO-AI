@@ -1,6 +1,5 @@
 import { CVTemplateProps } from "@/types/cv";
 
-
 export function FinanceTemplate({ data }: CVTemplateProps) {
   return (
     <div className="max-w-4xl mx-auto bg-white">
@@ -15,7 +14,13 @@ export function FinanceTemplate({ data }: CVTemplateProps) {
             </div>
           </div>
           <div className="text-right">
-            <div className="bg-yellow-500 text-black px-4 py-2 rounded font-bold">
+            <div
+              className="px-4 py-2 rounded font-bold"
+              style={{
+                background: "var(--accent)",
+                color: "#111827",
+              }}
+            >
               CFA • MBA
             </div>
           </div>
@@ -23,19 +28,30 @@ export function FinanceTemplate({ data }: CVTemplateProps) {
       </div>
       <div className="p-8">
         <section className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4 border-b-2 border-yellow-500 pb-2">
+          <h2
+            className="text-2xl font-bold text-gray-900 mb-4 border-b-2 pb-2"
+            style={{ borderColor: "var(--accent)" }}
+          >
             Investment Philosophy
           </h2>
           <p className="text-gray-700 leading-relaxed">{data.profile}</p>
         </section>
         <section className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 border-b-2 border-yellow-500 pb-2">
+          <h2
+            className="text-2xl font-bold text-gray-900 mb-6 border-b-2 pb-2"
+            style={{ borderColor: "var(--accent)" }}
+          >
             Professional Experience
           </h2>
           {data.experience.map((exp, i) => (
             <div key={i} className="mb-6 bg-gray-50 p-4 rounded">
               <h3 className="text-lg font-semibold text-gray-900">{exp.job}</h3>
-              <p className="text-yellow-600 font-medium">{exp.company}</p>
+              <p
+                className="font-medium"
+                style={{ color: "var(--accent)" }}
+              >
+                {exp.company}
+              </p>
               <p className="text-gray-700 mt-2">{exp.description}</p>
             </div>
           ))}

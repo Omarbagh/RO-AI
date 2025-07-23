@@ -1,24 +1,41 @@
 import { CVTemplateProps } from "@/types/cv";
 
-
 export function FashionTemplate({ data }: CVTemplateProps) {
   return (
-    <div className="max-w-5xl mx-auto bg-gradient-to-br from-rose-50 to-pink-50">
+    <div
+      className="max-w-5xl mx-auto"
+      style={{
+        background: "var(--accent, #fda4af)", // achtergrond hoofdkleur
+      }}
+    >
       <div className="bg-white">
         <div className="relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-rose-200 to-pink-200 rounded-full -translate-y-32 translate-x-32"></div>
+          {/* Accent cirkel rechtsboven */}
+          <div
+            className="absolute top-0 right-0 w-64 h-64 rounded-full -translate-y-32 translate-x-32"
+            style={{
+              background: "var(--accent)",
+              opacity: 0.18,
+            }}
+          ></div>
           <div className="relative z-10 p-12">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-5xl font-light text-gray-900 mb-3">
                   {data.personal.name}
                 </h1>
-                <p className="text-2xl text-rose-600 italic">
+                <p
+                  className="text-2xl italic"
+                  style={{ color: "var(--accent)" }}
+                >
                   {data.personal.title}
                 </p>
               </div>
               {data.personal.photoUrl && (
-                <div className="w-32 h-32 rounded-lg overflow-hidden border-4 border-rose-300">
+                <div
+                  className="w-32 h-32 rounded-lg overflow-hidden border-4"
+                  style={{ borderColor: "var(--accent)" }}
+                >
                   <img
                     src={data.personal.photoUrl}
                     alt={data.personal.name}
@@ -31,7 +48,10 @@ export function FashionTemplate({ data }: CVTemplateProps) {
         </div>
         <div className="px-12 pb-12">
           <section className="mb-10">
-            <h2 className="text-3xl font-light text-rose-600 mb-6">
+            <h2
+              className="text-3xl font-light mb-6"
+              style={{ color: "var(--accent)" }}
+            >
               Style Philosophy
             </h2>
             <p className="text-lg text-gray-700 leading-relaxed italic">
@@ -39,16 +59,30 @@ export function FashionTemplate({ data }: CVTemplateProps) {
             </p>
           </section>
           <section className="mb-10">
-            <h2 className="text-3xl font-light text-rose-600 mb-8">
+            <h2
+              className="text-3xl font-light mb-8"
+              style={{ color: "var(--accent)" }}
+            >
               Fashion Portfolio
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
               {data.experience.map((exp, i) => (
-                <div key={i} className="bg-rose-50 rounded-lg p-6">
+                <div
+                  key={i}
+                  className="rounded-lg p-6"
+                  style={{
+                    background: "rgba(var(--accent-rgb,253,164,175),0.07)",
+                  }}
+                >
                   <h3 className="text-xl font-semibold text-gray-900">
                     {exp.job}
                   </h3>
-                  <p className="text-rose-600 italic">{exp.company}</p>
+                  <p
+                    className="italic"
+                    style={{ color: "var(--accent)" }}
+                  >
+                    {exp.company}
+                  </p>
                   <p className="text-gray-700 mt-3">{exp.description}</p>
                 </div>
               ))}

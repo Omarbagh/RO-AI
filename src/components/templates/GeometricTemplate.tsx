@@ -5,13 +5,24 @@ export function GeometricTemplate({ data }: CVTemplateProps) {
     <div className="max-w-5xl mx-auto bg-gray-100">
       <div className="bg-white">
         <div className="relative">
-          <div className="absolute top-0 left-0 w-32 h-32 bg-blue-500 transform rotate-45 -translate-x-16 -translate-y-16"></div>
-          <div className="absolute top-0 right-0 w-24 h-24 bg-yellow-400 rounded-full -translate-y-12 translate-x-12"></div>
+          <div
+            className="absolute top-0 left-0 w-32 h-32 transform rotate-45 -translate-x-16 -translate-y-16"
+            style={{ background: "var(--accent)" }}
+          ></div>
+          <div
+            className="absolute top-0 right-0 w-24 h-24 rounded-full -translate-y-12 translate-x-12"
+            style={{ background: "var(--accent)" }}
+          ></div>
           <div className="p-12 pt-20">
             <h1 className="text-5xl font-bold text-gray-900 mb-3">
               {data.personal.name}
             </h1>
-            <p className="text-2xl text-blue-600 mb-8">{data.personal.title}</p>
+            <p
+              className="text-2xl mb-8"
+              style={{ color: "var(--accent)" }}
+            >
+              {data.personal.title}
+            </p>
           </div>
         </div>
 
@@ -20,7 +31,10 @@ export function GeometricTemplate({ data }: CVTemplateProps) {
             <div className="md:col-span-2">
               <section className="mb-8">
                 <div className="flex items-center mb-4">
-                  <div className="w-4 h-4 bg-blue-500 mr-4"></div>
+                  <div
+                    className="w-4 h-4 mr-4"
+                    style={{ background: "var(--accent)" }}
+                  ></div>
                   <h2 className="text-xl font-bold">PROFILE</h2>
                 </div>
                 <p className="text-gray-700">{data.profile}</p>
@@ -28,13 +42,24 @@ export function GeometricTemplate({ data }: CVTemplateProps) {
 
               <section>
                 <div className="flex items-center mb-6">
-                  <div className="w-4 h-4 bg-yellow-400 mr-4"></div>
+                  <div
+                    className="w-4 h-4 mr-4"
+                    style={{ background: "var(--accent)" }}
+                  ></div>
                   <h2 className="text-xl font-bold">EXPERIENCE</h2>
                 </div>
                 {data.experience.map((exp, i) => (
-                  <div key={i} className="mb-6 border-l-4 border-blue-500 pl-4">
+                  <div
+                    key={i}
+                    className="mb-6 border-l-4 pl-4"
+                    style={{ borderColor: "var(--accent)" }}
+                  >
                     <h3 className="font-bold text-gray-900">{exp.job}</h3>
-                    <p className="text-blue-600">{exp.company}</p>
+                    <p
+                      style={{ color: "var(--accent)" }}
+                    >
+                      {exp.company}
+                    </p>
                     <p className="text-gray-700 text-sm">{exp.description}</p>
                   </div>
                 ))}
@@ -44,7 +69,10 @@ export function GeometricTemplate({ data }: CVTemplateProps) {
             <div>
               <section className="mb-8">
                 <div className="flex items-center mb-4">
-                  <div className="w-4 h-4 bg-green-500 mr-4"></div>
+                  <div
+                    className="w-4 h-4 mr-4"
+                    style={{ background: "var(--accent)" }}
+                  ></div>
                   <h2 className="text-xl font-bold">CONTACT</h2>
                 </div>
                 <div className="space-y-2 text-sm">
@@ -55,7 +83,10 @@ export function GeometricTemplate({ data }: CVTemplateProps) {
 
               <section className="mb-8">
                 <div className="flex items-center mb-4">
-                  <div className="w-4 h-4 bg-purple-500 mr-4"></div>
+                  <div
+                    className="w-4 h-4 mr-4"
+                    style={{ background: "var(--accent)" }}
+                  ></div>
                   <h2 className="text-xl font-bold">SKILLS</h2>
                 </div>
                 {data.skills.map((skill, i) => (
@@ -67,7 +98,10 @@ export function GeometricTemplate({ data }: CVTemplateProps) {
 
               <section>
                 <div className="flex items-center mb-4">
-                  <div className="w-4 h-4 bg-red-500 mr-4"></div>
+                  <div
+                    className="w-4 h-4 mr-4"
+                    style={{ background: "var(--accent)" }}
+                  ></div>
                   <h2 className="text-xl font-bold">EDUCATION</h2>
                 </div>
                 {data.education.map((edu, i) => (

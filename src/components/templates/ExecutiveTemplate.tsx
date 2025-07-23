@@ -5,11 +5,19 @@ export default function ExecutiveTemplate({ data }: CVTemplateProps) {
   return (
     <div className="max-w-5xl mx-auto bg-white">
       {/* Header */}
-      <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white p-10">
+      <div
+        className="p-10 text-white"
+        style={{
+          background: "#111827", // je mag var(--accent) gebruiken voor zwart of donkergrijs, maar nu alleen accent voor geel
+        }}
+      >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-8">
             {data.personal.photoUrl && (
-              <div className="w-28 h-28 rounded-lg overflow-hidden border-4 border-yellow-400">
+              <div
+                className="w-28 h-28 rounded-lg overflow-hidden border-4"
+                style={{ borderColor: "var(--accent)" }}
+              >
                 <img
                   src={data.personal.photoUrl}
                   alt={data.personal.name}
@@ -19,7 +27,12 @@ export default function ExecutiveTemplate({ data }: CVTemplateProps) {
             )}
             <div>
               <h1 className="text-4xl font-bold mb-2">{data.personal.name}</h1>
-              <p className="text-xl text-yellow-300">{data.personal.title}</p>
+              <p
+                className="text-xl"
+                style={{ color: "var(--accent)" }}
+              >
+                {data.personal.title}
+              </p>
               <div className="mt-4 flex gap-6 text-sm">
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
@@ -33,7 +46,13 @@ export default function ExecutiveTemplate({ data }: CVTemplateProps) {
             </div>
           </div>
           <div className="text-right">
-            <div className="bg-yellow-400 text-gray-900 px-4 py-2 rounded-lg font-bold">
+            <div
+              className="px-4 py-2 rounded-lg font-bold"
+              style={{
+                background: "var(--accent)",
+                color: "#111827",
+              }}
+            >
               EXECUTIVE
             </div>
           </div>
@@ -44,12 +63,18 @@ export default function ExecutiveTemplate({ data }: CVTemplateProps) {
         {/* Executive Summary */}
         <section className="mb-10">
           <div className="flex items-center gap-3 mb-6">
-            <Award className="w-6 h-6 text-yellow-600" />
+            <Award className="w-6 h-6" style={{ color: "var(--accent)" }} />
             <h2 className="text-2xl font-bold text-gray-800">
               Executive Summary
             </h2>
           </div>
-          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-r-lg">
+          <div
+            className="p-6 rounded-r-lg"
+            style={{
+              background: "rgba( var(--accent-rgb,234,179,8),0.12 )",
+              borderLeft: "4px solid var(--accent)",
+            }}
+          >
             <p className="text-gray-700 leading-relaxed text-lg">
               {data.profile}
             </p>
@@ -59,7 +84,7 @@ export default function ExecutiveTemplate({ data }: CVTemplateProps) {
         {/* Professional Experience */}
         <section className="mb-10">
           <div className="flex items-center gap-3 mb-6">
-            <Building className="w-6 h-6 text-yellow-600" />
+            <Building className="w-6 h-6" style={{ color: "var(--accent)" }} />
             <h2 className="text-2xl font-bold text-gray-800">
               Professional Experience
             </h2>
@@ -68,14 +93,18 @@ export default function ExecutiveTemplate({ data }: CVTemplateProps) {
             {data.experience.map((exp, i) => (
               <div
                 key={i}
-                className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm"
+                className="bg-white border rounded-lg p-6 shadow-sm"
+                style={{ borderColor: "#e5e7eb" }}
               >
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h3 className="text-xl font-bold text-gray-800">
                       {exp.job}
                     </h3>
-                    <p className="text-lg text-yellow-600 font-semibold">
+                    <p
+                      className="text-lg font-semibold"
+                      style={{ color: "var(--accent)" }}
+                    >
                       {exp.company}
                     </p>
                   </div>
@@ -101,10 +130,18 @@ export default function ExecutiveTemplate({ data }: CVTemplateProps) {
               {data.education.map((edu, i) => (
                 <div
                   key={i}
-                  className="bg-gray-50 border-l-4 border-yellow-400 p-4 rounded-r-lg"
+                  className="bg-gray-50 p-4 rounded-r-lg"
+                  style={{
+                    borderLeft: "4px solid var(--accent)",
+                  }}
                 >
                   <h3 className="font-bold text-gray-800">{edu.degree}</h3>
-                  <p className="text-yellow-600 font-semibold">{edu.school}</p>
+                  <p
+                    className="font-semibold"
+                    style={{ color: "var(--accent)" }}
+                  >
+                    {edu.school}
+                  </p>
                   <p className="text-gray-600">{edu.year}</p>
                 </div>
               ))}
@@ -119,7 +156,11 @@ export default function ExecutiveTemplate({ data }: CVTemplateProps) {
               {data.skills.map((skill, i) => (
                 <div
                   key={i}
-                  className="bg-yellow-100 border border-yellow-300 px-4 py-3 rounded-lg"
+                  className="border px-4 py-3 rounded-lg"
+                  style={{
+                    background: "rgba( var(--accent-rgb,234,179,8),0.17 )",
+                    borderColor: "var(--accent)",
+                  }}
                 >
                   <span className="font-semibold text-gray-800">{skill}</span>
                 </div>

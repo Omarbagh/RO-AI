@@ -3,55 +3,101 @@ import { Code, Terminal, Cpu } from "lucide-react";
 
 export default function TechTemplate({ data }: CVTemplateProps) {
   return (
-    <div className="max-w-5xl mx-auto bg-gray-900 text-green-400 font-mono overflow-hidden">
+    <div
+      className="max-w-5xl mx-auto font-mono overflow-hidden"
+      style={{
+        background: "var(--accent-bg, #18181b)",
+        color: "var(--accent)",
+      }}
+    >
       {/* Terminal Header */}
-      <div className="bg-black border-b border-green-500 p-6">
+      <div
+        className="border-b p-6"
+        style={{
+          background: "#000",
+          borderBottom: "1px solid var(--accent)",
+        }}
+      >
         <div className="flex items-center gap-2 mb-4">
-          <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-          <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-          <span className="ml-4 text-green-400">
+          <div
+            className="w-3 h-3 rounded-full"
+            style={{ background: "var(--accent-red, #f87171)" }}
+          ></div>
+          <div
+            className="w-3 h-3 rounded-full"
+            style={{ background: "var(--accent-yellow, #fde68a)" }}
+          ></div>
+          <div
+            className="w-3 h-3 rounded-full"
+            style={{ background: "var(--accent)" }}
+          ></div>
+          <span className="ml-4" style={{ color: "var(--accent)" }}>
             terminal - developer_resume
           </span>
         </div>
 
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <Terminal className="w-4 h-4" />
-            <span className="text-blue-400">$</span>
+            <Terminal className="w-4 h-4" style={{ color: "var(--accent)" }} />
+            <span style={{ color: "var(--accent-blue, #38bdf8)" }}>$</span>
             <span className="text-white">whoami</span>
           </div>
           <div className="ml-6">
             <h1 className="text-3xl font-bold text-white">
               {data.personal.name}
             </h1>
-            <p className="text-cyan-400 text-xl">{data.personal.title}</p>
+            <p
+              className="text-xl"
+              style={{ color: "var(--accent-cyan, #22d3ee)" }}
+            >
+              {data.personal.title}
+            </p>
           </div>
 
           <div className="flex items-center gap-2 mt-4">
-            <span className="text-blue-400">$</span>
+            <span style={{ color: "var(--accent-blue, #38bdf8)" }}>$</span>
             <span className="text-white">cat contact.info</span>
           </div>
           <div className="ml-6 space-y-1">
-            <div className="text-green-300">📧 {data.personal.email}</div>
-            <div className="text-green-300">📱 {data.personal.phone}</div>
+            <div style={{ color: "var(--accent-light, #86efac)" }}>
+              📧 {data.personal.email}
+            </div>
+            <div style={{ color: "var(--accent-light, #86efac)" }}>
+              📱 {data.personal.phone}
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="p-8 bg-gray-900">
+      <div
+        className="p-8"
+        style={{
+          background: "var(--accent-bg, #18181b)",
+        }}
+      >
         {/* About/Profile */}
         <section className="mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-blue-400">$</span>
+            <span style={{ color: "var(--accent-blue, #38bdf8)" }}>$</span>
             <span className="text-white">cat README.md</span>
           </div>
-          <div className="bg-gray-800 border border-green-500 rounded p-6 ml-6">
-            <h2 className="text-xl font-bold text-cyan-400 mb-4"># About</h2>
-            <p className="text-gray-300 leading-relaxed">
-              ```
+          <div
+            className="rounded p-6 ml-6"
+            style={{
+              background: "var(--accent-darker, #27272a)",
+              border: "1px solid var(--accent)",
+            }}
+          >
+            <h2
+              className="text-xl font-bold mb-4"
+              style={{ color: "var(--accent-cyan, #22d3ee)" }}
+            >
+              # About
+            </h2>
+            <p className="leading-relaxed" style={{ color: "#d1d5db" }}>
+              <span className="text-gray-500">```</span>
               {data.profile}
-              ```
+              <span className="text-gray-500">```</span>
             </p>
           </div>
         </section>
@@ -59,19 +105,25 @@ export default function TechTemplate({ data }: CVTemplateProps) {
         {/* Experience */}
         <section className="mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-blue-400">$</span>
+            <span style={{ color: "var(--accent-blue, #38bdf8)" }}>$</span>
             <span className="text-white">git log --oneline</span>
           </div>
           <div className="ml-6 space-y-4">
             {data.experience.map((exp, i) => (
-              <div key={i} className="border-l-2 border-green-500 pl-6 pb-4">
+              <div
+                key={i}
+                className="pb-4 pl-6"
+                style={{ borderLeft: "2px solid var(--accent)" }}
+              >
                 <div className="flex items-center gap-2 mb-2">
-                  <Code className="w-4 h-4 text-yellow-400" />
+                  <Code className="w-4 h-4" style={{ color: "var(--accent-yellow, #fde047)" }} />
                   <h3 className="text-lg font-bold text-white">{exp.job}</h3>
-                  <span className="text-cyan-400">@{exp.company}</span>
+                  <span style={{ color: "var(--accent-cyan, #22d3ee)" }}>
+                    @{exp.company}
+                  </span>
                 </div>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                   {exp.description}
+                <p className="text-sm leading-relaxed" style={{ color: "#d1d5db" }}>
+                  {exp.description}
                 </p>
               </div>
             ))}
@@ -82,17 +134,23 @@ export default function TechTemplate({ data }: CVTemplateProps) {
         <div className="grid md:grid-cols-2 gap-8">
           <section>
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-blue-400">$</span>
+              <span style={{ color: "var(--accent-blue, #38bdf8)" }}>$</span>
               <span className="text-white">npm list --global</span>
             </div>
-            <div className="bg-gray-800 border border-green-500 rounded p-6 ml-6">
+            <div
+              className="rounded p-6 ml-6"
+              style={{
+                background: "var(--accent-darker, #27272a)",
+                border: "1px solid var(--accent)",
+              }}
+            >
               <div className="space-y-2">
                 {data.skills.map((skill, i) => (
                   <div key={i} className="flex items-center gap-2">
-                    <span className="text-green-400">├──</span>
-                    <Cpu className="w-4 h-4 text-yellow-400" />
+                    <span style={{ color: "var(--accent)" }}>├──</span>
+                    <Cpu className="w-4 h-4" style={{ color: "var(--accent-yellow, #fde047)" }} />
                     <span className="text-white">{skill}</span>
-                    <span className="text-green-400">@latest</span>
+                    <span style={{ color: "var(--accent)" }}>@latest</span>
                   </div>
                 ))}
               </div>
@@ -101,23 +159,31 @@ export default function TechTemplate({ data }: CVTemplateProps) {
 
           <section>
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-blue-400">$</span>
+              <span style={{ color: "var(--accent-blue, #38bdf8)" }}>$</span>
               <span className="text-white">cat education.json</span>
             </div>
-            <div className="bg-gray-800 border border-green-500 rounded p-6 ml-6">
+            <div
+              className="rounded p-6 ml-6"
+              style={{
+                background: "var(--accent-darker, #27272a)",
+                border: "1px solid var(--accent)",
+              }}
+            >
               <div className="space-y-4">
                 {data.education.map((edu, i) => (
                   <div key={i} className="text-sm">
-                    <div className="text-cyan-400">
-                      &quot;{edu.degree}&quot;: {`{`}
+                    <div style={{ color: "var(--accent-cyan, #22d3ee)" }}>
+                      &quot;{edu.degree}&quot;: {"{"}
                     </div>
-                    <div className="ml-4 text-gray-300">
+                    <div className="ml-4" style={{ color: "#d1d5db" }}>
                       &quot;institution&quot;: &quot;{edu.school}&quot;,
                     </div>
-                    <div className="ml-4 text-gray-300">
+                    <div className="ml-4" style={{ color: "#d1d5db" }}>
                       &quot;year&quot;: &quot;{edu.year}&quot;
                     </div>
-                    <div className="text-cyan-400">{`}`}</div>
+                    <div style={{ color: "var(--accent-cyan, #22d3ee)" }}>
+                      {"}"}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -127,18 +193,20 @@ export default function TechTemplate({ data }: CVTemplateProps) {
 
         {/* Footer */}
         <div className="mt-8 flex items-center gap-2">
-          <span className="text-blue-400">$</span>
+          <span style={{ color: "var(--accent-blue, #38bdf8)" }}>$</span>
           <span className="text-white">
             echo &quot;Thanks for reviewing my profile!&quot;
           </span>
         </div>
-        <div className="ml-6 text-green-400">
+        <div className="ml-6" style={{ color: "var(--accent)" }}>
           Thanks for reviewing my profile!
         </div>
 
         <div className="mt-2 flex items-center gap-2">
-          <span className="text-blue-400">$</span>
-          <span className="text-green-400 animate-pulse">_</span>
+          <span style={{ color: "var(--accent-blue, #38bdf8)" }}>$</span>
+          <span className="animate-pulse" style={{ color: "var(--accent)" }}>
+            _
+          </span>
         </div>
       </div>
     </div>
