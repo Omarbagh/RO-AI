@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Download, FileText, ArrowRight, ArrowLeft, Loader2, Wand2, Sparkles,
-  Edit3, CheckCircle, Zap, Globe, Trash2, Camera, Upload, Plus,
+  Edit3, CheckCircle, Globe, Trash2, Camera, Upload, Plus,
 } from "lucide-react";
 import { templates } from "./utils/templateMap";
 import { TemplateCard } from "./components/TemplateCard";
@@ -16,6 +16,8 @@ import { AnimatedStepIndicator } from "./components/AnimatedStepIndicator";
 import { ColorPicker } from "./components/ColorPicker";
 import { CVData } from "@/types/cv";
 import templateFields from "../../../scripts/template-fields.json"; 
+import { usePathname } from "next/navigation";
+import { SummaryAIField } from "./components/SummaryAIField";
 
 const defaultAccent = "#6366f1";
 
@@ -66,6 +68,13 @@ export default function EditorPage() {
   const [loadingSave, setLoadingSave] = useState(false);
   const [accent, setAccent] = useState(defaultAccent);
   const [showColorPicker, setShowColorPicker] = useState(false);
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setSaveSuccess(false);   
+  }, [pathname]);
+
 
   useEffect(() => {
     document.documentElement.style.setProperty("--accent", accent);
@@ -722,20 +731,17 @@ export default function EditorPage() {
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                               Description & Achievements *
                             </label>
+                            <SummaryAIField onFill={(generatedText) => updateExperienceItem(i, "description", generatedText)} />
                             <Textarea
                               value={exp.description}
-                              onChange={(e) =>
-                                updateExperienceItem(i, "description", e.target.value)
-                              }
-                              onBlur={() =>
-                                markTouched("experience", i, "description")
-                              }
+                              onChange={e => updateExperienceItem(i, "description", e.target.value)}
+                              onBlur={() => markTouched("experience", i, "description")}
                               className={
-                                experienceErrors[i]?.description &&
-                                typeof touched.experience === "object" &&
-                                (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.description
-                                  ? "border-red-500"
-                                  : ""
+                              experienceErrors[i]?.description &&
+                              typeof touched.experience === "object" &&
+                              (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.description
+                                ? "border-red-500"
+                                : ""
                               }
                             />
                             {experienceErrors[i]?.description &&
@@ -1000,19 +1006,11 @@ export default function EditorPage() {
                       <FileText className="w-5 h-5 mr-2" />
                       Download DOCX {!isPro && "(Pro Feature)"}
                     </Button>
-                    <div className="grid grid-cols-2 gap-3">
-                      <Button
-                        onClick={() => alert("AI Summary feature coming soon!")}
-                        variant="outline"
-                        className="border-indigo-300 text-indigo-600 hover:bg-indigo-50"
-                      >
-                        <Zap className="w-4 h-4 mr-2" />
-                        AI Enhance
-                      </Button>
+                    <div className="grid gap-3">
                       <Button
                         onClick={() => alert("Share feature coming soon!")}
                         variant="outline"
-                        className="border-purple-300 text-purple-600 hover:bg-purple-50"
+                        className="border-purple-300 text-purple-600 hover:bg-purple-50 w"
                       >
                         <Globe className="w-4 h-4 mr-2" />
                         Share Link
