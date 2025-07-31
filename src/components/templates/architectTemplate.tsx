@@ -1,8 +1,11 @@
 import { CVTemplateProps } from '@/types/cv';
 
 export function ArchitectTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
+
   return (
-    <div className="max-w-5xl mx-auto bg-white">
+    <div className="max-w-5xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
       <div className="grid grid-cols-4 min-h-screen">
         {/* Sidebar met accentkleur */}
         <div

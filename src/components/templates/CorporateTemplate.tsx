@@ -1,8 +1,10 @@
 import { CVTemplateProps } from "@/types/cv";
 
 export function CorporateBlueTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-lg">
+    <div className="max-w-4xl mx-auto bg-white shadow-lg" style={{ '--accent': accent } as React.CSSProperties}>
       <div
         className="p-8"
         style={{ backgroundColor: "var(--accent)", color: "#fff" }}

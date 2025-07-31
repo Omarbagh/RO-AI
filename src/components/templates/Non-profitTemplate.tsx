@@ -2,8 +2,10 @@ import { CVTemplateProps } from "@/types/cv";
 import { Users, Heart } from "lucide-react";
 
 export function NonProfitTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
-    <div className="max-w-4xl mx-auto bg-white">
+    <div className="max-w-4xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
       <div
         className="text-white p-8"
         style={{

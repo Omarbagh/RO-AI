@@ -1,12 +1,12 @@
 import { CVTemplateProps } from "@/types/cv";
 
 export function SportsTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
     <div
       className="max-w-5xl mx-auto"
-      style={{
-        background: "var(--accent-bg, #fff7ed)",
-      }}
+      style={{ '--accent': accent } as React.CSSProperties}
     >
       <div
         className="text-white p-10"

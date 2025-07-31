@@ -60,13 +60,15 @@ export default function EditorPage() {
     experience: [{ job: "", company: "", description: "", period: "" }],
     education: [{ school: "", degree: "", year: "" }],
     skills: [""],
+    settings: {
+      accent: "#1E40AF",
+    }
   });
   const [touched, setTouched] = useState<TouchedType>({});
   const [resumeId, setResumeId] = useState<string | null>(null);
   const [isPro, setIsPro] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
-  const [accent, setAccent] = useState(defaultAccent);
   const [showColorPicker, setShowColorPicker] = useState(false);
 
   const pathname = usePathname();
@@ -77,8 +79,12 @@ export default function EditorPage() {
 
 
   useEffect(() => {
-    document.documentElement.style.setProperty("--accent", accent);
-  }, [accent]);
+    document.documentElement.style.setProperty(
+      "--accent",
+      formData.settings?.accent || defaultAccent
+    );
+  }, [formData.settings?.accent]);
+
 
   // ------- DYNAMISCHE FIELDS PER TEMPLATE --------
   const currentTemplateMeta = useMemo(
@@ -471,11 +477,19 @@ export default function EditorPage() {
             </div>
             <div className="mb-8 p-4 bg-gradient-to-r from-gray-50 to-indigo-50 rounded-xl">
               <ColorPicker
-                color={accent}
-                onChange={setAccent}
-                isOpen={showColorPicker}
-                onToggle={() => setShowColorPicker(!showColorPicker)}
-              />
+                  color={formData.settings?.accent || "#1E40AF"}
+                  onChange={kleur =>
+                    setFormData(f => ({
+                      ...f,
+                      settings: {
+                        ...f.settings,
+                        accent: kleur
+                      }
+                    }))
+                  }
+                  isOpen={showColorPicker}
+                  onToggle={() => setShowColorPicker(!showColorPicker)}
+                />
             </div>
             <div className="flex-1 space-y-6 overflow-y-auto">
               {/* --- FIELDS PER STEP --- */}
@@ -1044,13 +1058,13 @@ export default function EditorPage() {
                 </Button>
                 <div
                   className="w-4 h-4 rounded-full border-2 border-white shadow-lg"
-                  style={{ backgroundColor: accent }}
+                  style={{ backgroundColor: formData.settings?.accent }}
                 ></div>
               </div>
             </div>
             <div
               className="bg-white rounded-2xl shadow-2xl overflow-hidden relative"
-              style={{ borderTop: `6px solid ${accent}` }}
+              style={{ borderTop: `6px solid ${formData.settings?.accent}` }}
             >
               {TemplateComponent ? (
                 <div className="p-8">

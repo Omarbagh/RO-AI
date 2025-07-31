@@ -2,8 +2,10 @@ import { CVTemplateProps } from "@/types/cv";
 import { Mail, Phone, Calendar, Briefcase, User } from "lucide-react";
 
 export default function ModernTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
-    <div className="max-w-5xl mx-auto bg-white shadow-2xl overflow-hidden rounded-lg print:shadow-none print:rounded-none">
+    <div className="max-w-5xl mx-auto bg-white shadow-2xl overflow-hidden rounded-lg print:shadow-none print:rounded-none" style={{ '--accent': accent } as React.CSSProperties}>
       <div className="flex flex-col lg:flex-row min-h-[297mm] print:min-h-[297mm]">
         {/* Sidebar */}
         <div

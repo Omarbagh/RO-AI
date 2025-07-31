@@ -2,8 +2,10 @@ import { CVTemplateProps } from '@/types/cv';
 import { Mail, Phone } from 'lucide-react';
 
 export function SidebarDarkTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
-    <div className="max-w-4xl mx-auto grid grid-cols-4 h-full">
+    <div className="max-w-4xl mx-auto grid grid-cols-4 h-full" style={{ '--accent': accent } as React.CSSProperties}>
       <aside
         className="col-span-1 text-white p-8 flex flex-col justify-between"
         style={{ backgroundColor: 'var(--accent)' }}

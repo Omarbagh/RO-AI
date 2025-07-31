@@ -1,8 +1,10 @@
 import { CVTemplateProps } from '@/types/cv';
 
 export function AcademicTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+  
   return (
-    <div className="max-w-4xl mx-auto bg-white">
+    <div className="max-w-4xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
       {/* Top border accent color */}
       <div
         className="border-t-8 pt-8 pb-6 mb-8"

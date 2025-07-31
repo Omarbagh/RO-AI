@@ -2,8 +2,10 @@ import { CVTemplateProps } from '@/types/cv';
 import { Mail, Phone, MapPin, Linkedin, Briefcase, User, GraduationCap } from 'lucide-react';
 
 export function ProfessionalTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-2xl font-sans grid grid-cols-1 md:grid-cols-[1fr,2.5fr]">
+    <div className="max-w-4xl mx-auto bg-white shadow-2xl font-sans grid grid-cols-1 md:grid-cols-[1fr,2.5fr]" style={{ '--accent': accent } as React.CSSProperties}>
       {/* Sidebar */}
       <aside
         className="p-8"

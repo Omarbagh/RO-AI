@@ -2,13 +2,13 @@ import { CVTemplateProps } from "@/types/cv";
 import { Mail, Phone } from "lucide-react";
 
 export function SalesTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
     <div className="max-w-5xl mx-auto bg-white">
       <div
         className="text-white p-10"
-        style={{
-          background: "var(--accent)",
-        }}
+        style={{ '--accent': accent } as React.CSSProperties}
       >
         <div className="flex justify-between items-center">
           <div>

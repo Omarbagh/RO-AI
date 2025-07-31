@@ -1,8 +1,10 @@
 import { CVTemplateProps } from "@/types/cv";
 
 export function GeometricTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+  
   return (
-    <div className="max-w-5xl mx-auto bg-gray-100">
+    <div className="max-w-5xl mx-auto bg-gray-100" style={{ '--accent': accent } as React.CSSProperties}>
       <div className="bg-white">
         <div className="relative">
           <div

@@ -2,13 +2,15 @@ import { CVTemplateProps } from "@/types/cv";
 import { Mail, Phone, Award, Building } from "lucide-react";
 
 export default function ExecutiveTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
-    <div className="max-w-5xl mx-auto bg-white">
+    <div className="max-w-5xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
       {/* Header */}
       <div
         className="p-10 text-white"
         style={{
-          background: "#111827", // je mag var(--accent) gebruiken voor zwart of donkergrijs, maar nu alleen accent voor geel
+          background: "#111827", 
         }}
       >
         <div className="flex items-center justify-between">

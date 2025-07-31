@@ -2,18 +2,18 @@ import { CVTemplateProps } from "@/types/cv";
 import { Palette, Sparkles, Heart } from "lucide-react";
 
 export default function CreativeTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
     <div
       className="max-w-5xl mx-auto overflow-hidden"
-      style={{
-        background: "var(--accent, #a21caf)", // Vervangt de bg-gradient-to-br
-      }}
+      style={{ "--accent": accent } as React.CSSProperties}
     >
       {/* Artistic Header */}
       <div
         className="relative p-10 text-white"
         style={{
-          background: "var(--accent, #a21caf)", // Vervangt de gradient in header
+          background: "var(--accent, #a21caf)",
         }}
       >
         <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.2)" }}></div>
@@ -25,7 +25,7 @@ export default function CreativeTemplate({ data }: CVTemplateProps) {
               </h1>
               <p
                 className="text-2xl font-light"
-                style={{ color: "#ffe999" }} // Subtiel geel, mag je aanpassen naar wit of --accent als je wil!
+                style={{ color: "#ffe999" }}
               >
                 {data.personal.title}
               </p>
