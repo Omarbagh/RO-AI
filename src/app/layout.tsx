@@ -133,9 +133,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
               </main>
             </>
           ) : (
-            <main>
+            <div>
               <Providers>{children}</Providers>
-            </main>
+            </div>
           )}
         </body>
       </html>
