@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "npm run build:css && next build",
     "start": "next start",
     "lint": "next lint",
     "build:resume-css": "tailwindcss -c tailwind-resume.config.js -i ./src/styles/resume-base.css -o ./lib/resume-styles.css --minify",
-    "dev:resume-css": "tailwindcss -c tailwind-resume.config.js -i ./src/styles/resume-base.css -o ./lib/resume-styles.css --watch"
+    "dev:resume-css": "tailwindcss -c tailwind-resume.config.js -i ./src/styles/resume-base.css -o ./lib/resume-styles.css --watch",
+    "build:css": "tailwindcss -i ./src/app/globals.css -o ./public/tailwind.css --minify"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.24.0",
@@ -24,8 +25,11 @@
     "clsx": "^2.1.1",
     "docx": "^9.5.1",
     "express": "^5.1.0",
+    "handlebars": "^4.7.8",
+    "html-to-docx": "^1.8.0",
     "html2canvas": "^1.4.1",
     "html2pdf.js": "^0.10.3",
+    "inquirer": "^12.9.0",
     "lucide-react": "^0.525.0",
     "next": "15.3.5",
     "next-intl": "^4.3.4",
@@ -36,6 +40,7 @@
     "react-colorful": "^5.6.1",
     "react-dom": "^19.0.0",
     "react-simple-typewriter": "^5.0.1",
+    "react-to-print": "^3.1.1",
     "tailwind-merge": "^3.3.1",
     "ts-node": "^10.9.2",
     "typewriter-effect": "^2.22.0"
@@ -44,6 +49,9 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/express": "^5.0.3",
+    "@types/handlebars": "^4.1.0",
+    "@types/html-to-docx": "^1.8.0",
+    "@types/inquirer": "^9.0.8",
     "@types/node": "^20",
     "@types/puppeteer": "^7.0.4",
     "@types/puppeteer-core": "^7.0.4",

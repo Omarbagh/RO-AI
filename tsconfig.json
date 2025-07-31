@@ -35,7 +35,7 @@
     ".next/types/**/*.ts",
     "src/app/editor/components/ScanTemplates.cts",
     "scripts/scanTemplates.ts"
-  ],
+, "scripts/create-template.js"  ],
   "exclude": [
     "node_modules"
   ]

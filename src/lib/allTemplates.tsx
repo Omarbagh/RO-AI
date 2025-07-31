@@ -29,8 +29,7 @@ import { FashionTemplate } from "@/components/templates/FashionTemplate";
 import { FinanceTemplate } from "@/components/templates/FinanceTemplate";
 import { NonProfitTemplate } from "@/components/templates/Non-profitTemplate";
 import { SportsTemplate } from "@/components/templates/SportTemplate";
-import BasicTemplate from "@/components/templates/BasicTemplate";
-
+import BasicTemplate from "@/components/templates/basicTemplate";
 export const allTemplates: TemplateInfo[] = [
   {
     id: "basic",
