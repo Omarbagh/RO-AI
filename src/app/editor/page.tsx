@@ -444,11 +444,6 @@ export default function EditorPage() {
               currentStep={step - 1}
             />
             <div className="text-center mt-8">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-full px-4 py-2 mb-4">
-                <span className="text-sm font-medium text-indigo-700">
-                  Step {step} of {usedSteps.length - 1}
-                </span>
-              </div>
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
                 {STEP_LABELS[currentStep] || currentStep} Information
               </h2>
