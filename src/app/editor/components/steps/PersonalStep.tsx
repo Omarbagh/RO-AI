@@ -15,7 +15,6 @@ type PersonalStepProps = {
   fieldUsage: Record<string, boolean>;
 };
 
-
 export function PersonalStep({
   formData,
   updatePersonal,
@@ -28,14 +27,15 @@ export function PersonalStep({
   return (
     <div className="space-y-6">
       {fieldUsage["data.personal.photoUrl"] && (
-        <div className="text-center">
-          <div className="inline-flex items-center justify-center mb-6">
+        <div className="text-left">
+          <div className="flex items-center gap-5 mb-6">
+            {/* Foto of camera */}
             {formData.personal.photoUrl ? (
               <div className="relative group">
                 <img
                   src={formData.personal.photoUrl}
                   alt="Profile"
-                  className="w-32 h-32 rounded-full object-cover border-4 border-indigo-200 shadow-xl"
+                  className="w-20 h-20 rounded-full object-cover border-4 border-indigo-200 shadow-xl"
                 />
                 <div className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button
@@ -47,117 +47,173 @@ export function PersonalStep({
                 </div>
               </div>
             ) : (
-              <div className="w-32 h-32 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50">
-                <Camera className="w-12 h-12 text-gray-400" />
+              <div className="w-20 h-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50">
+                <Camera className="w-8 h-8 text-gray-400" />
               </div>
             )}
+            {/* Button en uitleg */}
+            <div className="flex flex-col justify-center">
+              <div className="flex items-center gap-3">
+                <label className="inline-flex items-center gap-1 bg-[#4F46E5] text-white px-4 py-2 rounded-full cursor-pointer shadow text-xs">
+                  <Upload className="w-4 h-4" />
+                  {formData.personal.photoUrl ? "Change" : "Upload"}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files?.[0]) {
+                        handlePhotoUpload(e.target.files[0]);
+                      }
+                    }}
+                  />
+                </label>
+                <p className="text-xs text-gray-500">
+                  Optional • Max 5MB (JPG, PNG, or WebP)
+                </p>
+              </div>
+            </div>
           </div>
-          <label className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl cursor-pointer hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg">
-            <Upload className="w-5 h-5" />
-            {formData.personal.photoUrl
-              ? "Change Photo"
-              : "Upload Photo"}
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={(e) => {
-                if (e.target.files?.[0]) {
-                  handlePhotoUpload(e.target.files[0]);
-                }
-              }}
-            />
-          </label>
-          <p className="text-xs text-gray-500 mt-2">
-            Optional • Max 5MB • JPG, PNG, or WebP
-          </p>
         </div>
       )}
-      <div className="grid gap-4">
+      <div className="flex gap-6 flex-wrap">
         {fieldUsage["data.personal.name"] && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Full Name *
-            </label>
+          <div className="flex-1 min-w-[180px]">
+            <div className="flex items-center gap-1 mb-2">
+              <label className="block text-sm font-medium m-0">Full Name</label>
+              <p className="text-red-500 text-base leading-none">*</p>
+            </div>
             <Input
               value={formData.personal.name}
-              onChange={(e) =>
-                updatePersonal("name", e.target.value)
-              }
+              onChange={(e) => updatePersonal("name", e.target.value)}
               onBlur={() => markTouched("personal", undefined, "name")}
-              className={
-                errors.name && touched.personal?.name
-                  ? "border-red-500"
-                  : ""
-              }
+              placeholder="Full Name"
+              className={`
+                w-full
+                h-[40px]
+                p-0
+                border
+                rounded-full
+                pl-3
+                flex-none
+                order-1
+                self-stretch
+                grow-0
+                focus:outline-none
+                focus:!border-gray-200
+                focus:!ring-0
+                ${!formData.personal.name ? "bg-gray-100" : "bg-white"}
+                ${errors.name && touched.personal?.name ? "border-red-500" : ""}
+              `}
             />
             {errors.name && touched.personal?.name && (
-              <div className="text-red-500 text-xs mt-1">
-                {errors.name}
-              </div>
+              <div className="text-red-500 text-xs mt-1">{errors.name}</div>
             )}
           </div>
         )}
         {fieldUsage["data.personal.title"] && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Professional Title *
-            </label>
+          <div className="flex-1 min-w-[180px]">
+            <div className="flex items-center gap-1 mb-2">
+              <label className="block text-sm font-medium text-gray-700 m-0">
+                Professional Title
+              </label>
+              <p className="text-red-500 text-base leading-none">*</p>
+            </div>
             <Input
               value={formData.personal.title}
-              onChange={(e) =>
-                updatePersonal("title", e.target.value)
-              }
+              onChange={(e) => updatePersonal("title", e.target.value)}
               onBlur={() => markTouched("personal", undefined, "title")}
-              className={
-                errors.title && touched.personal?.title
-                  ? "border-red-500"
-                  : ""
-              }
+              placeholder="Professional Title"
+              className={`
+                w-full
+                h-[40px]
+                p-0
+                border
+                ${errors.title && touched.personal?.title ? "border-red-500" : ""}
+                flex-none
+                order-1
+                self-stretch
+                grow-0
+                rounded-full
+                pl-3
+                focus:outline-none
+                focus:!border-grey-200
+                focus:!ring-0
+                ${!formData.personal.title ? "bg-gray-100" : "bg-white"}
+              `}
             />
             {errors.title && touched.personal?.title && (
-              <div className="text-red-500 text-xs mt-1">
-                {errors.title}
-              </div>
+              <div className="text-red-500 text-xs mt-1">{errors.title}</div>
             )}
           </div>
         )}
+      </div>
+      <div className="flex gap-6 flex-wrap">
         {fieldUsage["data.personal.email"] && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Email Address *
-            </label>
+          <div className="flex-1 min-w-[180px]">
+            <div className="flex items-center gap-1 mb-2">
+              <label className="block text-sm font-medium text-gray-700 m-0">
+                Email Address
+              </label>
+              <p className="text-red-500 text-base leading-none">*</p>
+            </div>
             <Input
               type="email"
               value={formData.personal.email}
-              onChange={(e) =>
-                updatePersonal("email", e.target.value)
-              }
+              onChange={(e) => updatePersonal("email", e.target.value)}
               onBlur={() => markTouched("personal", undefined, "email")}
-              className={
-                errors.email && touched.personal?.email
-                  ? "border-red-500"
-                  : ""
-              }
+              placeholder="Email Address"
+              className={`
+            w-full
+            h-[40px]
+            p-0
+            border
+            ${errors.email && touched.personal?.email ? "border-red-500" : ""}
+            flex-none
+            order-1
+            self-stretch
+            grow-0
+            rounded-full
+            pl-3
+            focus:outline-none
+            focus:!border-grey-200
+            focus:!ring-0
+            ${!formData.personal.email ? "bg-gray-100" : "bg-white"}
+          `}
             />
             {errors.email && touched.personal?.email && (
-              <div className="text-red-500 text-xs mt-1">
-                {errors.email}
-              </div>
+              <div className="text-red-500 text-xs mt-1">{errors.email}</div>
             )}
           </div>
         )}
         {fieldUsage["data.personal.phone"] && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Phone Number
-            </label>
+          <div className="flex-1 min-w-[180px]">
+            <div className="flex items-center gap-1 mb-2">
+              <label className="block text-sm font-medium text-gray-700 m-0">
+                Phone Number
+              </label>
+            </div>
             <Input
               value={formData.personal.phone}
-              onChange={(e) =>
-                updatePersonal("phone", e.target.value)
-              }
+              onChange={(e) => updatePersonal("phone", e.target.value)}
               onBlur={() => markTouched("personal", undefined, "phone")}
+              placeholder="Phone Number"
+              className={`
+            w-full
+            h-[40px]
+            p-0
+            border
+            flex-none
+            order-1
+            self-stretch
+            grow-0
+            rounded-full
+            pl-3
+            focus:outline-none
+            focus:!border-grey-200
+            focus:!ring-0
+            ${!formData.personal.phone ? "bg-gray-100" : "bg-white"}
+          `}
             />
           </div>
         )}
