@@ -37,15 +37,6 @@ const FIELD_STEP_MAP = [
   { field: "data.skills", step: "Skills", label: "Skills" },
 ];
 
-const STEP_LABELS: Record<string, string> = {
-  Template: "Template",
-  Personal: "Personal Info",
-  Profile: "Profile",
-  Experience: "Experience",
-  Education: "Education",
-  Skills: "Skills",
-};
-
 function validateEmail(email: string) {
   return /^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/.test(email);
 }
@@ -443,10 +434,37 @@ export default function EditorPage() {
               steps={usedSteps.slice(1)}
               currentStep={step - 1}
             />
-            <div className="text-center mt-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                {STEP_LABELS[currentStep] || currentStep} Information
-              </h2>
+            <div className="text-left mt-8">
+                {currentStep == "Personal" && (
+                  <>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Personal Details</h2>
+                    <p className="text-[#64748B] text-sm">Provide your full name, professional title, contact details, and optionally upload a photo.</p>
+                  </>
+                )}
+                {currentStep == "Profile" && (
+                  <>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Profile Summary</h2>
+                    <p className="text-[#64748B] text-sm">Write a short professional summary that highlights your experience, strengths, and goals.</p>
+                  </>
+                )}
+                {currentStep == "Experience" && (
+                  <>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Experience Information</h2>
+                    <p className="text-[#64748B] text-sm">List your previous roles, including job titles, companies, dates, and a brief description of your responsibilities or achievements.</p>
+                  </>
+                )}
+                {currentStep == "Education" && (
+                  <>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Education Information</h2>
+                    <p className="text-[#64748B] text-sm">Include your educational background with degrees, schools, and graduation years.</p>
+                  </>
+                )}
+                {currentStep == "Skills" && (
+                  <>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Skills Information</h2>
+                    <p className="text-[#64748B] text-sm">Add relevant skills that showcase your expertise and match the jobs you are targeting.</p>
+                  </>
+                )}
             </div>
           </div>
           {/* Kleurenkiezer */}
