@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,9 +15,19 @@ import { TemplateCard } from "./components/TemplateCard";
 import { AnimatedStepIndicator } from "./components/AnimatedStepIndicator";
 import { ColorPicker } from "./components/ColorPicker";
 import { CVData } from "@/types/cv";
-import templateFields from "../../../scripts/template-fields.json"; 
+import templateFields from "../../../scripts/template-fields.json";
 import { usePathname } from "next/navigation";
 import { SummaryAIField } from "./components/SummaryAIField";
+import { useReactToPrint } from "react-to-print";
+
+// Kleine print CSS zodat printknoppen niet op PDF komen
+const printHideStyle = `
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+`;
 
 const defaultAccent = "#6366f1";
 
@@ -42,13 +52,16 @@ const STEP_LABELS: Record<string, string> = {
   Skills: "Skills",
 };
 
-// ------ VALIDATIE HELPERS ------
 function validateEmail(email: string) {
   return /^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/.test(email);
 }
 function isEmpty(val: string | undefined) {
   return !val || val.trim() === "";
 }
+
+type TouchedType = {
+  [key: string]: boolean | { [idx: number]: { [subKey: string]: boolean } };
+};
 
 export default function EditorPage() {
   const { isSignedIn } = useUser();
@@ -60,27 +73,39 @@ export default function EditorPage() {
     experience: [{ job: "", company: "", description: "", period: "" }],
     education: [{ school: "", degree: "", year: "" }],
     skills: [""],
+    settings: { accent: "#1E40AF" },
   });
   const [touched, setTouched] = useState<TouchedType>({});
   const [resumeId, setResumeId] = useState<string | null>(null);
   const [isPro, setIsPro] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
-  const [accent, setAccent] = useState(defaultAccent);
+  const [showPrintNotification, setShowPrintNotification] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
-
+  const contentRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
-  useEffect(() => {
-    setSaveSuccess(false);   
-  }, [pathname]);
+  useEffect(() => { setSaveSuccess(false); }, [pathname]);
+
+  const handlePrint = useReactToPrint({
+    contentRef,
+    documentTitle: formData.personal.name
+      ? `${formData.personal.name}-CV`
+      : "Resume",
+    onAfterPrint: () => {
+      setShowPrintNotification(true);
+      setTimeout(() => setShowPrintNotification(false), 5000);
+  }
+  });
 
 
   useEffect(() => {
-    document.documentElement.style.setProperty("--accent", accent);
-  }, [accent]);
+    document.documentElement.style.setProperty(
+      "--accent",
+      formData.settings?.accent || defaultAccent
+    );
+  }, [formData.settings?.accent]);
 
-  // ------- DYNAMISCHE FIELDS PER TEMPLATE --------
   const currentTemplateMeta = useMemo(
     () => templates.find((t) => t.id === selectedTemplate),
     [selectedTemplate]
@@ -91,7 +116,6 @@ export default function EditorPage() {
     return (templateFields as Record<string, Record<string, boolean>>)[currentTemplateMeta.fileName] || {};
   }, [currentTemplateMeta]);
 
-  // ------- DYNAMISCHE STEPS --------
   const usedSteps: string[] = useMemo(() => {
     const steps = ["Template"];
     FIELD_STEP_MAP.forEach((f) => {
@@ -102,7 +126,6 @@ export default function EditorPage() {
     return steps;
   }, [fieldUsage]);
 
-  // ------- VALIDATIE EN ERROR MESSAGES PER VELD --------
   function getPersonalErrors() {
     return {
       name:
@@ -122,8 +145,8 @@ export default function EditorPage() {
           : !validateEmail(formData.personal.email)
           ? "Invalid email address"
           : undefined),
-      phone: undefined, // optional
-      photoUrl: undefined, // optional
+      phone: undefined,
+      photoUrl: undefined,
     };
   }
   function getProfileError() {
@@ -176,11 +199,6 @@ export default function EditorPage() {
         return true;
     }
   }
-
-  // ------- FORM HELPERS --------
-  type TouchedType = {
-    [key: string]: boolean | { [idx: number]: { [subKey: string]: boolean } };
-  };
 
   const markTouched = (key: string, idx?: number, subKey?: string) => {
     setTouched((t: TouchedType) => {
@@ -266,14 +284,6 @@ export default function EditorPage() {
       education: [...d.education, { school: "", degree: "", year: "" }],
     }));
   };
-  // const removeEducation = (i: number) => {
-  //   if (formData.education.length > 1) {
-  //     setFormData((d) => ({
-  //       ...d,
-  //       education: d.education.filter((_, idx) => idx !== i),
-  //     }));
-  //   }
-  // };
   const updateSkill = (i: number, value: string) => {
     setFormData((d) => {
       const skills = [...d.skills];
@@ -316,26 +326,11 @@ export default function EditorPage() {
       setLoadingSave(false);
     }
   };
-  const downloadResume = (
-    id: string,
-    format: "pdf" | "docx",
-    watermark = false
-  ) => {
-    const params = new URLSearchParams({ resumeId: id, format });
-    if (watermark) params.set("watermark", "ResumeAI");
-    const url = `/api/download?${params.toString()}`;
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `resume.${format}`;
-    link.click();
-  };
 
-  // ------- STEP LOGICA --------
   const currentStep = usedSteps[step];
   const canGoNext = step < usedSteps.length - 1 && validateStep(currentStep);
   const canGoPrev = step > 0;
 
-  // --- Onboarding ---
   if (!isSignedIn) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50">
@@ -386,7 +381,6 @@ export default function EditorPage() {
     );
   }
 
-  // --------- STAP 0: TEMPLATE SELECTIE ----------
   if (step === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
@@ -434,7 +428,6 @@ export default function EditorPage() {
     );
   }
 
-  // --------- MAIN EDITOR / DYNAMISCHE STEPS ----------
   const TemplateComponent =
     selectedTemplate != null
       ? templates.find((t) => t.id === selectedTemplate)?.comp
@@ -448,6 +441,7 @@ export default function EditorPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50">
+      <style>{printHideStyle}</style>
       <div className="flex flex-col lg:flex-row">
         {/* Sidebar */}
         <div className="w-full lg:w-2/5 bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-2xl">
@@ -471,11 +465,19 @@ export default function EditorPage() {
             </div>
             <div className="mb-8 p-4 bg-gradient-to-r from-gray-50 to-indigo-50 rounded-xl">
               <ColorPicker
-                color={accent}
-                onChange={setAccent}
-                isOpen={showColorPicker}
-                onToggle={() => setShowColorPicker(!showColorPicker)}
-              />
+                  color={formData.settings?.accent || "#1E40AF"}
+                  onChange={kleur =>
+                    setFormData(f => ({
+                      ...f,
+                      settings: {
+                        ...f.settings,
+                        accent: kleur
+                      }
+                    }))
+                  }
+                  isOpen={showColorPicker}
+                  onToggle={() => setShowColorPicker(!showColorPicker)}
+                />
             </div>
             <div className="flex-1 space-y-6 overflow-y-auto">
               {/* --- FIELDS PER STEP --- */}
@@ -990,23 +992,11 @@ export default function EditorPage() {
                     </div>
                   </div>
                   <div className="space-y-3">
-                    <Button
-                      onClick={() => downloadResume(resumeId, "pdf", !isPro)}
-                      className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white h-12"
-                    >
-                      <Download className="w-5 h-5 mr-2" />
-                      Download PDF {!isPro && "(with watermark)"}
-                    </Button>
-                    <Button
-                      onClick={() => downloadResume(resumeId, "docx", false)}
-                      disabled={!isPro}
-                      variant={isPro ? "default" : "outline"}
-                      className="w-full h-12"
-                    >
-                      <FileText className="w-5 h-5 mr-2" />
-                      Download DOCX {!isPro && "(Pro Feature)"}
-                    </Button>
                     <div className="grid gap-3">
+                      <Button onClick={handlePrint}>
+                        <Download className="w-4 h-4" />
+                        Print / Download as PDF
+                      </Button>
                       <Button
                         onClick={() => alert("Share feature coming soon!")}
                         variant="outline"
@@ -1015,6 +1005,12 @@ export default function EditorPage() {
                         <Globe className="w-4 h-4 mr-2" />
                         Share Link
                       </Button>
+                      {showPrintNotification && (
+                        <div className="fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-xl shadow-lg z-50 animate-fade-in-up">
+                          Je CV is klaargemaakt voor printen of downloaden!  
+                          <span className="block text-xs opacity-80 mt-1">Check je printdialoog of download via je browser.</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -1032,25 +1028,17 @@ export default function EditorPage() {
                 </h3>
                 <p className="text-gray-600">See your changes in real-time</p>
               </div>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => window.print()}
-                  className="flex items-center gap-2"
-                >
-                  <Download className="w-4 h-4" />
-                  Quick Print
-                </Button>
+              <div className="flex items-center gap-2 no-print">
                 <div
                   className="w-4 h-4 rounded-full border-2 border-white shadow-lg"
-                  style={{ backgroundColor: accent }}
+                  style={{ backgroundColor: formData.settings?.accent }}
                 ></div>
               </div>
             </div>
             <div
               className="bg-white rounded-2xl shadow-2xl overflow-hidden relative"
-              style={{ borderTop: `6px solid ${accent}` }}
+              style={{ borderTop: `6px solid ${formData.settings?.accent}` }}
+              ref={contentRef}
             >
               {TemplateComponent ? (
                 <div className="p-8">

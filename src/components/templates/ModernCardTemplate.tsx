@@ -9,12 +9,12 @@ import {
 } from "lucide-react";
 
 export default function ModernCardTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
     <div
       className="max-w-6xl mx-auto p-8"
-      style={{
-        background: "var(--accent-bg, #e0e7ff)", // optioneel lichte achtergrond
-      }}
+      style={{ '--accent': accent } as React.CSSProperties}
     >
       {/* Profile Card */}
       <div className="bg-white rounded-3xl shadow-2xl overflow-hidden mb-8">

@@ -1,12 +1,12 @@
 import { CVTemplateProps } from "@/types/cv";
 
 export function InfluencerTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
     <div
       className="max-w-4xl mx-auto"
-      style={{
-        background: "var(--accent, #d8b4fe)", // Lichtpaarse basis
-      }}
+      style={{ '--accent': accent } as React.CSSProperties}
     >
       <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
         <div

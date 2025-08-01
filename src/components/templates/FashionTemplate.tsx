@@ -1,12 +1,12 @@
 import { CVTemplateProps } from "@/types/cv";
 
 export function FashionTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
     <div
       className="max-w-5xl mx-auto"
-      style={{
-        background: "var(--accent, #fda4af)", // achtergrond hoofdkleur
-      }}
+      style={{ '--accent': accent } as React.CSSProperties}
     >
       <div className="bg-white">
         <div className="relative overflow-hidden">

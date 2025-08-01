@@ -1,14 +1,12 @@
 import { CVTemplateProps } from "@/types/cv";
 
 export function GamingTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
     <div
       className="max-w-5xl mx-auto font-mono"
-      style={{
-        background: "#111827",
-        color: "var(--accent, #22d3ee)",
-        border: "4px solid var(--accent, #22d3ee)",
-      }}
+      style={{ '--accent': accent } as React.CSSProperties}
     >
       <div
         className="p-4 border-b-2"

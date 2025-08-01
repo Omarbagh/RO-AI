@@ -1,8 +1,10 @@
 import { CVTemplateProps } from '@/types/cv';
 
 export function MarketingTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
-    <div className="max-w-5xl mx-auto bg-white">
+    <div className="max-w-5xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
       <div className="relative overflow-hidden">
         <div
           className="absolute inset-0"

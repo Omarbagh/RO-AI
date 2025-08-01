@@ -2,8 +2,10 @@ import { CVTemplateProps } from "@/types/cv";
 import { Mail, Phone } from "lucide-react";
 
 export default function ElegantTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
-    <div className="max-w-4xl mx-auto bg-white">
+    <div className="max-w-4xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
       {/* Elegant Header */}
       <div
         className="border-b-4 pb-8 mb-8"

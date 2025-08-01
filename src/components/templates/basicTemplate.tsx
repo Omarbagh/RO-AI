@@ -2,8 +2,9 @@ import { CVTemplateProps } from '@/types/cv';
 import { Mail, Phone } from 'lucide-react';
 
 export default function BasicTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
   return (
-    <div className="max-w-[800px] mx-auto bg-white rounded-lg shadow-md overflow-hidden font-sans">
+    <div className="max-w-[800px] mx-auto bg-white rounded-lg shadow-md overflow-hidden font-sans" style={{ "--accent": accent } as React.CSSProperties}>
       {/* Header */}
       <div
         className="flex flex-col items-center p-6 md:flex-row md:justify-between md:items-end border-b"

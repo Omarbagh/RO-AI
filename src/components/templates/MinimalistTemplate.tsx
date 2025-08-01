@@ -1,8 +1,10 @@
 import { CVTemplateProps } from '@/types/cv';
 
 export function MinimalistTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
-    <div className="max-w-2xl mx-auto p-10 bg-white font-serif text-gray-900">
+    <div className="max-w-2xl mx-auto p-10 bg-white font-serif text-gray-900" style={{ '--accent': accent } as React.CSSProperties}>
       <div className="flex justify-between items-center mb-8">
         <h1
           className="text-4xl font-bold leading-tight"

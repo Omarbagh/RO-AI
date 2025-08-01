@@ -2,8 +2,10 @@ import { CVTemplateProps } from "@/types/cv";
 import { Mail, Phone, Zap, Target, Award } from "lucide-react";
 
 export default function BoldTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
-    <div className="max-w-5xl mx-auto bg-white">
+    <div className="max-w-5xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
       {/* Bold Header */}
       <div
         className="p-12 relative overflow-hidden"

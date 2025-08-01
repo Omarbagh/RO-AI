@@ -2,13 +2,12 @@ import { CVTemplateProps } from "@/types/cv";
 import { Code, Terminal, Cpu } from "lucide-react";
 
 export default function TechTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
     <div
       className="max-w-5xl mx-auto font-mono overflow-hidden"
-      style={{
-        background: "var(--accent-bg, #18181b)",
-        color: "var(--accent)",
-      }}
+      style={{ '--accent': accent } as React.CSSProperties}
     >
       {/* Terminal Header */}
       <div

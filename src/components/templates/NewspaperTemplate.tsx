@@ -2,12 +2,12 @@ import { CVTemplateProps } from "@/types/cv";
 
 // Template 13: Newspaper Style
 export function NewspaperTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
     <div
       className="max-w-5xl mx-auto bg-white"
-      style={{
-        border: "8px solid var(--accent)",
-      }}
+      style={{ '--accent': accent } as React.CSSProperties}
     >
       <div
         className="p-4 text-center"

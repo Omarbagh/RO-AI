@@ -34,7 +34,11 @@ export type CVData = {
   experience: Experience[];
   education: Education[];
   skills: string[];
+  settings?: {
+    accent: string;
+  };
 };
+
 
 // De props interface voor elk CV template component
 export interface CVTemplateProps {

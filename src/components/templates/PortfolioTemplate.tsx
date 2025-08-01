@@ -2,8 +2,10 @@ import { CVTemplateProps } from '@/types/cv';
 import { Mail, Phone } from 'lucide-react';
 
 export function PortfolioTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden font-sans">
+    <div className="max-w-4xl mx-auto bg-white shadow-md rounded-lg overflow-hidden font-sans" style={{ '--accent': accent } as React.CSSProperties}>
       <div className="grid grid-cols-4" style={{ backgroundColor: '#f8fafc' }}>
         <aside
           className="col-span-1 p-6 flex flex-col items-center"

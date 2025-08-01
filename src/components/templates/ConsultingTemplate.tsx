@@ -1,8 +1,10 @@
 import { CVTemplateProps } from "@/types/cv";
 
 export function ConsultingTemplate({ data }: CVTemplateProps) {
+  const accent = data.settings?.accent || "#1E40AF";
+
   return (
-    <div className="max-w-4xl mx-auto bg-white">
+    <div className="max-w-4xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
       <div
         className="pl-8 py-8 border-l-8"
         style={{ borderColor: "var(--accent)" }}
