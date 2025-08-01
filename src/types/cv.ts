@@ -39,6 +39,17 @@ export type CVData = {
   };
 };
 
+// Je andere types...
+
+export type TouchedType = {
+  personal?: Partial<Record<keyof CVData["personal"], boolean>>;
+  profile?: boolean;
+  experience?: Record<number, Partial<Record<"job" | "company" | "description" | "period", boolean>>>;
+  education?: Record<number, Partial<Record<"school" | "degree" | "year", boolean>>>;
+  skills?: Record<number, { skill?: boolean }>;
+};
+
+
 
 // De props interface voor elk CV template component
 export interface CVTemplateProps {
