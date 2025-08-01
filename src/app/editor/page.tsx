@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, FileText, ArrowRight, ArrowLeft, Loader2, Wand2, Sparkles, Edit3, CheckCircle, Globe } from "lucide-react";
+import { Download, FileText, ArrowRight, ArrowLeft, Loader2, Wand2, Sparkles, Edit3, CheckCircle, Globe, Eye } from "lucide-react";
 import { templates } from "./utils/templateMap";
 import { TemplateCard } from "./components/TemplateCard";
 import { AnimatedStepIndicator } from "./components/AnimatedStepIndicator";
@@ -422,11 +422,11 @@ export default function EditorPage() {
 
   // --- SIDEBAR/FORM AREA met steps ---
   return (
-  <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50">
+  <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 font-sans">
     <style>{printHideStyle}</style>
     <div className="flex flex-col lg:flex-row">
       {/* Sidebar */}
-      <div className="w-full lg:w-2/5 bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-2xl flex flex-col">
+      <div className="w-full lg:w-2/5 bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-2xl flex flex-col min-h-screen">
         <div className="p-8 h-full flex flex-col">
           {/* Steps indicator en titel */}
           <div className="mb-5">
@@ -539,147 +539,155 @@ export default function EditorPage() {
                 />
               )}
             </div>
-          {/* Navigation buttons */}
-          <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
-            <Button
-              variant="outline"
-              onClick={() => setStep((s) => s - 1)}
-              disabled={!canGoPrev}
-              className="flex items-center gap-2 px-6 py-3"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Previous
-            </Button>
-            {step < usedSteps.length - 1 ? (
+          {/* Sticky Navigation buttons */}
+          <div className="sticky bottom-0 bg-white/95 pt-6 pb-6 border-t border-gray-200 z-10">
+            <div className="flex justify-between">
               <Button
-                onClick={() => {
-                  // Markeer alle relevante velden als touched bij proberen volgende stap
-                  if (currentStep === "Personal") {
-                    Object.keys(personalErrors).forEach((k) =>
-                      markTouched("personal", undefined, k)
-                    );
-                  }
-                  if (currentStep === "Profile") {
-                    markTouched("profile");
-                  }
-                  if (currentStep === "Experience") {
-                    experienceErrors.forEach((_, i) => {
-                      markTouched("experience", i, "job");
-                      markTouched("experience", i, "company");
-                      markTouched("experience", i, "description");
-                    });
-                  }
-                  if (currentStep === "Education") {
-                    educationErrors.forEach((_, i) => {
-                      markTouched("education", i, "school");
-                      markTouched("education", i, "degree");
-                    });
-                  }
-                  if (currentStep === "Skills") {
-                    skillsErrors.forEach((_, i) => {
-                      markTouched("skills", i, "skill");
-                    });
-                  }
-                  if (canGoNext) setStep((s) => s + 1);
-                }}
-                disabled={!canGoNext}
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white flex items-center gap-2 px-6 py-3"
+                variant="outline"
+                onClick={() => setStep((s) => s - 1)}
+                disabled={!canGoPrev}
+                className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 hover:bg-gray-100 bg-white"
               >
-                Next Step
-                <ArrowRight className="w-4 h-4" />
+                <ArrowLeft className="w-4 h-4" />
+                Previous
               </Button>
-            ) : (
-              <Button
-                onClick={handleFinish}
-                disabled={loadingSave || !validateStep(currentStep)}
-                className="bg-gradient-to-r from-green-600 to-emerald-600 text-white flex items-center gap-2 px-8 py-3"
-              >
-                {loadingSave ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    Creating Resume...
-                  </>
-                ) : (
-                  <>
-                    <Wand2 className="w-5 h-5" />
-                    Complete Resume
-                  </>
-                )}
-              </Button>
+
+              {step < usedSteps.length - 1 ? (
+                <Button
+                  onClick={() => {
+                    if (currentStep === "Personal") {
+                      Object.keys(personalErrors).forEach((k) =>
+                        markTouched("personal", undefined, k)
+                      );
+                    }
+                    if (currentStep === "Profile") {
+                      markTouched("profile");
+                    }
+                    if (currentStep === "Experience") {
+                      experienceErrors.forEach((_, i) => {
+                        markTouched("experience", i, "job");
+                        markTouched("experience", i, "company");
+                        markTouched("experience", i, "description");
+                      });
+                    }
+                    if (currentStep === "Education") {
+                      educationErrors.forEach((_, i) => {
+                        markTouched("education", i, "school");
+                        markTouched("education", i, "degree");
+                      });
+                    }
+                    if (currentStep === "Skills") {
+                      skillsErrors.forEach((_, i) => {
+                        markTouched("skills", i, "skill");
+                      });
+                    }
+                    if (canGoNext) setStep((s) => s + 1);
+                  }}
+                  disabled={!canGoNext}
+                  className="bg-[#4F46E5] text-white flex items-center gap-2 px-6 py-3"
+                >
+                  Continue
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleFinish}
+                  disabled={loadingSave || !validateStep(currentStep)}
+                  className="bg-gradient-to-r from-green-600 to-emerald-600 text-white flex items-center gap-2 px-8 py-3"
+                >
+                  {loadingSave ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Creating Resume...
+                    </>
+                  ) : (
+                    <>
+                      <Wand2 className="w-5 h-5" />
+                      Complete Resume
+                    </>
+                  )}
+                </Button>
+              )}
+            </div>
+            {/* Success notification */}
+            {saveSuccess && resumeId && (
+              <Card className="mt-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 shadow-xl">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                      <CheckCircle className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-green-900 text-lg">
+                        Resume Created Successfully!
+                      </h3>
+                      <p className="text-green-700 text-sm">
+                        Your professional resume is ready to download
+                      </p>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="grid gap-3">
+                      <Button onClick={handlePrint}>
+                        <Download className="w-4 h-4" />
+                        Print / Download as PDF
+                      </Button>
+                      <Button
+                        onClick={() => alert("Share feature coming soon!")}
+                        variant="outline"
+                        className="border-purple-300 text-purple-600 hover:bg-purple-50 w"
+                      >
+                        <Globe className="w-4 h-4 mr-2" />
+                        Share Link
+                      </Button>
+                      {showPrintNotification && (
+                        <div className="fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-xl shadow-lg z-50 animate-fade-in-up">
+                          Je CV is klaargemaakt voor printen of downloaden!
+                          <span className="block text-xs opacity-80 mt-1">Check je printdialoog of download via je browser.</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             )}
           </div>
-          {/* Success notification */}
-          {saveSuccess && resumeId && (
-            <Card className="mt-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 shadow-xl">
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                    <CheckCircle className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-green-900 text-lg">
-                      Resume Created Successfully!
-                    </h3>
-                    <p className="text-green-700 text-sm">
-                      Your professional resume is ready to download
-                    </p>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="grid gap-3">
-                    <Button onClick={handlePrint}>
-                      <Download className="w-4 h-4" />
-                      Print / Download as PDF
-                    </Button>
-                    <Button
-                      onClick={() => alert("Share feature coming soon!")}
-                      variant="outline"
-                      className="border-purple-300 text-purple-600 hover:bg-purple-50 w"
-                    >
-                      <Globe className="w-4 h-4 mr-2" />
-                      Share Link
-                    </Button>
-                    {showPrintNotification && (
-                      <div className="fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-xl shadow-lg z-50 animate-fade-in-up">
-                        Je CV is klaargemaakt voor printen of downloaden!
-                        <span className="block text-xs opacity-80 mt-1">Check je printdialoog of download via je browser.</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
         </div>
       </div>
+
       {/* Preview */}
-      <div className="w-full lg:w-3/5 bg-gradient-to-br from-gray-50 to-indigo-50 p-8 overflow-auto">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
+      <div className="w-full lg:w-3/5 bg-[#faf8ff] min-h-screen flex flex-col items-center justify-start p-8">
+        <div className="w-full max-w-2xl">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6 px-2">
             <div>
-              <h3 className="text-xl font-semibold text-gray-900">
-                Live Preview
-              </h3>
-              <p className="text-gray-600">See your changes in real-time</p>
+              <h3 className="text-2xl font-semibold text-gray-900">Live Preview</h3>
+              <p className="text-[#7883a1] text-base">See the changes in real-time</p>
             </div>
-            <div className="flex items-center gap-2 no-print">
-              <div
-                className="w-4 h-4 rounded-full border-2 border-white shadow-lg"
-                style={{ backgroundColor: formData.settings?.accent }}
-              ></div>
-            </div>
+            <button
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#5142ea] hover:bg-gray-800 text-white font-medium shadow transition-all text-sm"
+              onClick={handlePrint}
+            >
+              <Eye />
+              Download Preview
+            </button>
           </div>
+          {/* Preview canvas */}
           <div
-            className="bg-white rounded-2xl shadow-2xl overflow-hidden relative"
-            style={{ borderTop: `6px solid ${formData.settings?.accent}` }}
+            className="bg-white rounded-2xl shadow-lg mx-auto transition-all"
+            style={{ minHeight: 650 }}
             ref={contentRef}
           >
             {TemplateComponent ? (
-              <div className="p-8">
-                <TemplateComponent data={formData} />
+              <div className="p-0 sm:p-4">
+                <div className="flex justify-center items-start">
+                  <div className="w-full max-w-[600px]">
+                    <TemplateComponent data={formData} />
+                  </div>
+                </div>
               </div>
             ) : (
-              <div className="flex items-center justify-center h-96 text-gray-500">
+              <div className="flex items-center justify-center h-[400px] text-gray-400">
                 <div className="text-center">
                   <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <FileText className="w-12 h-12 text-gray-300" />

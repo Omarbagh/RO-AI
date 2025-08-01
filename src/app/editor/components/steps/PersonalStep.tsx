@@ -54,7 +54,7 @@ export function PersonalStep({
             {/* Button en uitleg */}
             <div className="flex flex-col justify-center">
               <div className="flex items-center gap-3">
-                <label className="inline-flex items-center gap-1 bg-[#4F46E5] text-white px-4 py-2 rounded-full cursor-pointer shadow text-xs">
+                <label className="inline-flex items-center gap-1 bg-[#4F46E5] text-white px-4 py-2 rounded-full cursor-pointer shadow text-xs hover:bg-gray-800">
                   <Upload className="w-4 h-4" />
                   {formData.personal.photoUrl ? "Change" : "Upload"}
                   <input
