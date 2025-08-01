@@ -429,7 +429,7 @@ export default function EditorPage() {
       <div className="w-full lg:w-2/5 bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-2xl flex flex-col">
         <div className="p-8 h-full flex flex-col">
           {/* Steps indicator en titel */}
-          <div className="mb-8">
+          <div className="mb-5">
             <AnimatedStepIndicator
               steps={usedSteps.slice(1)}
               currentStep={step - 1}
@@ -468,7 +468,7 @@ export default function EditorPage() {
             </div>
           </div>
           {/* Kleurenkiezer */}
-          <div className="mb-8 p-4 bg-gradient-to-r from-gray-50 to-indigo-50 rounded-xl">
+          <div className="mb-4">
             <ColorPicker
               color={formData.settings?.accent || "#1E40AF"}
               onChange={kleur =>
