@@ -307,11 +307,6 @@ export default function EditorPage() {
   const canGoNext = step < usedSteps.length - 1 && validateStep(currentStep);
   const canGoPrev = step > 0;
 
-  // Duplicate declaration removed
-
-  // --- SIGN IN SCREEN en TEMPLATE SELECTIE blijven gelijk als origineel ---
-
-  // ... plak hier de hele originele sign-in/card section en template-selectie (stap 0) code ...
   if (!isSignedIn) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50">
@@ -428,6 +423,28 @@ export default function EditorPage() {
       {/* Sidebar */}
       <div className="w-full lg:w-2/5 bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-2xl flex flex-col min-h-screen">
         <div className="p-8 h-full flex flex-col">
+          {/* Top Bar met back button en logo */}
+          <div className="relative flex items-center justify-center mb-8 min-h-[38px]">
+            {step > 0 && (
+              <button
+                onClick={() => setStep((s) => s - 1)}
+                className="absolute left-0 top-1/2 -translate-y-1/2 rounded-full border border-gray-300 text-gray-500 hover:text-indigo-600 hover:border-indigo-300 transition-colors w-9 h-9 flex items-center justify-center"
+                aria-label="Back"
+                type="button"
+                style={{ zIndex: 2 }}
+              >
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
+                  <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            )}
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="h-8 w-auto mx-auto"
+              style={{ maxWidth: 140 }}
+            />
+          </div>
           {/* Steps indicator en titel */}
           <div className="mb-5">
             <AnimatedStepIndicator
@@ -435,36 +452,36 @@ export default function EditorPage() {
               currentStep={step - 1}
             />
             <div className="text-left mt-8">
-                {currentStep == "Personal" && (
-                  <>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Personal Details</h2>
-                    <p className="text-[#64748B] text-sm">Provide your full name, professional title, contact details, and optionally upload a photo.</p>
-                  </>
-                )}
-                {currentStep == "Profile" && (
-                  <>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Profile Summary</h2>
-                    <p className="text-[#64748B] text-sm">Write a short professional summary that highlights your experience, strengths, and goals.</p>
-                  </>
-                )}
-                {currentStep == "Experience" && (
-                  <>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Experience Information</h2>
-                    <p className="text-[#64748B] text-sm">List your previous roles, including job titles, companies, dates, and a brief description of your responsibilities or achievements.</p>
-                  </>
-                )}
-                {currentStep == "Education" && (
-                  <>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Education Information</h2>
-                    <p className="text-[#64748B] text-sm">Include your educational background with degrees, schools, and graduation years.</p>
-                  </>
-                )}
-                {currentStep == "Skills" && (
-                  <>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Skills Information</h2>
-                    <p className="text-[#64748B] text-sm">Add relevant skills that showcase your expertise and match the jobs you are targeting.</p>
-                  </>
-                )}
+              {currentStep === "Personal" && (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Personal Details</h2>
+                  <p className="text-[#64748B] text-sm">Provide your full name, professional title, contact details, and optionally upload a photo.</p>
+                </>
+              )}
+              {currentStep === "Profile" && (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Profile Summary</h2>
+                  <p className="text-[#64748B] text-sm">Write a short professional summary that highlights your experience, strengths, and goals.</p>
+                </>
+              )}
+              {currentStep === "Experience" && (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Experience Information</h2>
+                  <p className="text-[#64748B] text-sm">List your previous roles, including job titles, companies, dates, and a brief description of your responsibilities or achievements.</p>
+                </>
+              )}
+              {currentStep === "Education" && (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Education Information</h2>
+                  <p className="text-[#64748B] text-sm">Include your educational background with degrees, schools, and graduation years.</p>
+                </>
+              )}
+              {currentStep === "Skills" && (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Skills Information</h2>
+                  <p className="text-[#64748B] text-sm">Add relevant skills that showcase your expertise and match the jobs you are targeting.</p>
+                </>
+              )}
             </div>
           </div>
           {/* Kleurenkiezer */}
@@ -486,59 +503,59 @@ export default function EditorPage() {
           </div>
           {/* Steps form */}
           <div className="flex-1 space-y-6 overflow-y-auto">
-              {currentStep === "Personal" && (
-                <PersonalStep
-                  formData={formData}
-                  updatePersonal={updatePersonal}
-                  handlePhotoUpload={handlePhotoUpload}
-                  markTouched={markTouched}
-                  errors={personalErrors}
-                  touched={touched}
-                  fieldUsage={fieldUsage}
-                />
-              )}
-              {currentStep === "Profile" && fieldUsage["data.profile"] && (
-                <ProfileStep
-                  formData={formData}
-                  updateProfile={updateProfile}
-                  markTouched={markTouched}
-                  error={profileError}
-                  touched={touched}
-                />
-              )}
-              {currentStep === "Experience" && fieldUsage["data.experience"] && (
-                <ExperienceStep
-                  experience={formData.experience}
-                  updateExperienceItem={updateExperienceItem}
-                  addExperience={addExperience}
-                  removeExperience={removeExperience}
-                  markTouched={markTouched}
-                  errors={experienceErrors}
-                  touched={touched}
-                />
-              )}
-              {currentStep === "Education" && fieldUsage["data.education"] && (
-                <EducationStep
-                  education={formData.education}
-                  updateEducationItem={updateEducationItem}
-                  addEducation={addEducation}
-                  markTouched={markTouched}
-                  errors={educationErrors}
-                  touched={touched}
-                />
-              )}
-              {currentStep === "Skills" && fieldUsage["data.skills"] && (
-                <SkillsStep
-                  skills={formData.skills}
-                  updateSkill={updateSkill}
-                  addSkill={addSkill}
-                  removeSkill={removeSkill}
-                  markTouched={markTouched}
-                  errors={skillsErrors}
-                  touched={touched}
-                />
-              )}
-            </div>
+            {currentStep === "Personal" && (
+              <PersonalStep
+                formData={formData}
+                updatePersonal={updatePersonal}
+                handlePhotoUpload={handlePhotoUpload}
+                markTouched={markTouched}
+                errors={personalErrors}
+                touched={touched}
+                fieldUsage={fieldUsage}
+              />
+            )}
+            {currentStep === "Profile" && fieldUsage["data.profile"] && (
+              <ProfileStep
+                formData={formData}
+                updateProfile={updateProfile}
+                markTouched={markTouched}
+                error={profileError}
+                touched={touched}
+              />
+            )}
+            {currentStep === "Experience" && fieldUsage["data.experience"] && (
+              <ExperienceStep
+                experience={formData.experience}
+                updateExperienceItem={updateExperienceItem}
+                addExperience={addExperience}
+                removeExperience={removeExperience}
+                markTouched={markTouched}
+                errors={experienceErrors}
+                touched={touched}
+              />
+            )}
+            {currentStep === "Education" && fieldUsage["data.education"] && (
+              <EducationStep
+                education={formData.education}
+                updateEducationItem={updateEducationItem}
+                addEducation={addEducation}
+                markTouched={markTouched}
+                errors={educationErrors}
+                touched={touched}
+              />
+            )}
+            {currentStep === "Skills" && fieldUsage["data.skills"] && (
+              <SkillsStep
+                skills={formData.skills}
+                updateSkill={updateSkill}
+                addSkill={addSkill}
+                removeSkill={removeSkill}
+                markTouched={markTouched}
+                errors={skillsErrors}
+                touched={touched}
+              />
+            )}
+          </div>
           {/* Sticky Navigation buttons */}
           <div className="sticky bottom-0 bg-white/95 pt-6 pb-6 border-t border-gray-200 z-10">
             <div className="flex justify-between">
@@ -551,7 +568,6 @@ export default function EditorPage() {
                 <ArrowLeft className="w-4 h-4" />
                 Previous
               </Button>
-
               {step < usedSteps.length - 1 ? (
                 <Button
                   onClick={() => {
