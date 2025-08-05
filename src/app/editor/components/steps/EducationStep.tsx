@@ -118,7 +118,7 @@ export function EducationStep({
       ))}
       <button
         type="button"
-        className="w-full border-2 border-dashed border-purple-300 text-purple-600 hover:bg-purple-50 h-12 flex items-center justify-center gap-2 rounded-md mt-3"
+        className="w-full border-2 border-dashed border-indigo-300 text-indigo-600 hover:bg-indigo-50 h-12 flex items-center justify-center gap-2 rounded-md mt-3"
         onClick={addEducation}
       >
         <Plus className="w-5 h-5" />

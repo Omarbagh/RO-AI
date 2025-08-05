@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, FileText, ArrowRight, Loader2, Wand2, Sparkles, Edit3, CheckCircle, Globe, Eye } from "lucide-react";
+import { FileText, ArrowRight, Loader2, Wand2, Sparkles, Edit3, CheckCircle, Eye } from "lucide-react";
 import { templates } from "./utils/templateMap";
 import { TemplateCard } from "./components/TemplateCard";
 import { AnimatedStepIndicator } from "./components/AnimatedStepIndicator";
@@ -17,6 +17,7 @@ import { ProfileStep } from "./components/steps/ProfileStep";
 import { ExperienceStep } from "./components/steps/ExperienceStep";
 import { EducationStep } from "./components/steps/EducationStep";
 import { SkillsStep } from "./components/steps/SkillsStep";
+import FinalPageStep from "./components/steps/FinalPageStep";
 
 const printHideStyle = `
 @media print {
@@ -83,6 +84,8 @@ export default function EditorPage() {
     }
   });
 
+  
+
   useEffect(() => {
     document.documentElement.style.setProperty(
       "--accent",
@@ -107,6 +110,7 @@ export default function EditorPage() {
         if (!steps.includes(f.step)) steps.push(f.step);
       }
     });
+    steps.push("Final");
     return steps;
   }, [fieldUsage]);
 
@@ -304,7 +308,6 @@ export default function EditorPage() {
   };
 
   const currentStep = usedSteps[step];
-  const canGoNext = step < usedSteps.length - 1 && validateStep(currentStep);
 
   if (!isSignedIn) {
     return (
@@ -481,6 +484,12 @@ export default function EditorPage() {
                   <p className="text-[#64748B] text-sm">Add relevant skills that showcase your expertise and match the jobs you are targeting.</p>
                 </>
               )}
+              {currentStep === "Final" && (
+                <FinalPageStep
+                  handlePrint={handlePrint}
+                  showPrintNotification={showPrintNotification}
+                />
+              )}
             </div>
           </div>
           {/* Kleurenkiezer */}
@@ -558,105 +567,49 @@ export default function EditorPage() {
           {/* Sticky Navigation buttons */}
           <div className="sticky bottom-0 bg-white/95 pt-6 pb-6 border-t border-gray-200 z-10">
             <div className="flex justify-end">
-              {step < usedSteps.length - 1 ? (
+              {/* Hide navigation entirely on the Final step */}
+              {step === usedSteps.length - 1 ? null : (
                 <Button
-                  onClick={() => {
-                    if (currentStep === "Personal") {
-                      Object.keys(personalErrors).forEach((k) =>
-                        markTouched("personal", undefined, k)
-                      );
+                  onClick={async () => {
+                    // If we're on the step before Final (Skills), save before moving on
+                    if (step === usedSteps.length - 2) {
+                      await handleFinish();
                     }
-                    if (currentStep === "Profile") {
-                      markTouched("profile");
-                    }
-                    if (currentStep === "Experience") {
-                      experienceErrors.forEach((_, i) => {
-                        markTouched("experience", i, "job");
-                        markTouched("experience", i, "company");
-                        markTouched("experience", i, "description");
-                      });
-                    }
-                    if (currentStep === "Education") {
-                      educationErrors.forEach((_, i) => {
-                        markTouched("education", i, "school");
-                        markTouched("education", i, "degree");
-                      });
-                    }
-                    if (currentStep === "Skills") {
-                      skillsErrors.forEach((_, i) => {
-                        markTouched("skills", i, "skill");
-                      });
-                    }
-                    if (canGoNext) setStep((s) => s + 1);
+                    setStep((s) => s + 1);
                   }}
-                  disabled={!canGoNext}
-                  className="bg-[#4F46E5] text-white flex items-center gap-2 px-6 py-3"
+                  disabled={
+                    // Disable while saving on the Finish action, or if validation fails on other steps
+                    (step === usedSteps.length - 2 && loadingSave) ||
+                    !validateStep(currentStep)
+                  }
+                  className={
+                    // Green “Finish Resume” on Skills step, blue “Continue” on all others
+                    step === usedSteps.length - 2
+                      ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white flex items-center gap-2 px-8 py-3"
+                      : "bg-[#4F46E5] text-white flex items-center gap-2 px-6 py-3"
+                  }
                 >
-                  Continue
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              ) : (
-                <Button
-                  onClick={handleFinish}
-                  disabled={loadingSave || !validateStep(currentStep)}
-                  className="bg-gradient-to-r from-green-600 to-emerald-600 text-white flex items-center gap-2 px-8 py-3"
-                >
-                  {loadingSave ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      Creating Resume...
-                    </>
+                  {step === usedSteps.length - 2 ? (
+                    loadingSave ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Making Resume...
+                      </>
+                    ) : (
+                      <>
+                        <Wand2 className="w-5 h-5" />
+                        Finish Resume
+                      </>
+                    )
                   ) : (
                     <>
-                      <Wand2 className="w-5 h-5" />
-                      Complete Resume
+                      Continue
+                      <ArrowRight className="w-4 h-4" />
                     </>
                   )}
                 </Button>
               )}
             </div>
-            {/* Success notification */}
-            {saveSuccess && resumeId && (
-              <Card className="mt-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 shadow-xl">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                      <CheckCircle className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-green-900 text-lg">
-                        Resume Created Successfully!
-                      </h3>
-                      <p className="text-green-700 text-sm">
-                        Your professional resume is ready to download
-                      </p>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="grid gap-3">
-                      <Button onClick={handlePrint}>
-                        <Download className="w-4 h-4" />
-                        Print / Download as PDF
-                      </Button>
-                      <Button
-                        onClick={() => alert("Share feature coming soon!")}
-                        variant="outline"
-                        className="border-purple-300 text-purple-600 hover:bg-purple-50 w"
-                      >
-                        <Globe className="w-4 h-4 mr-2" />
-                        Share Link
-                      </Button>
-                      {showPrintNotification && (
-                        <div className="fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-xl shadow-lg z-50 animate-fade-in-up">
-                          Je CV is klaargemaakt voor printen of downloaden!
-                          <span className="block text-xs opacity-80 mt-1">Check je printdialoog of download via je browser.</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
           </div>
         </div>
       </div>
