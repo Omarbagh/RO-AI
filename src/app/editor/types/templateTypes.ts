@@ -1,12 +1,4 @@
 import { CVData } from "@/types/cv";
-import {
-  FileText,
-  User,
-  Target,
-  Briefcase,
-  GraduationCap,
-  Award,
-} from "lucide-react";
 
 export interface TemplateType {
   id: string;
@@ -31,4 +23,3 @@ export interface AllTemplate {
   fileName: string;
 }
 
-export const stepIcons = [FileText, User, Target, Briefcase, GraduationCap, Award];

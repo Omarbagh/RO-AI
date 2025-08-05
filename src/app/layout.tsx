@@ -31,7 +31,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <ClerkProvider>
       <html lang="en" className={poppins.variable}>
-        <body className="font-sans antialiased bg-white text-gray-900">
+        <body className="font-[var(--font-poppins)] antialiased bg-white text-gray-900">
           {/* Header */}
           {pathname === "/" ? (
             <>

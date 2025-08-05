@@ -1,15 +1,9 @@
 "use client";
-
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Download, FileText, ArrowRight, ArrowLeft, Loader2, Wand2, Sparkles,
-  Edit3, CheckCircle, Globe, Trash2, Camera, Upload, Plus,
-} from "lucide-react";
+import { FileText, ArrowRight, Loader2, Wand2, Sparkles, Edit3, CheckCircle, Eye } from "lucide-react";
 import { templates } from "./utils/templateMap";
 import { TemplateCard } from "./components/TemplateCard";
 import { AnimatedStepIndicator } from "./components/AnimatedStepIndicator";
@@ -17,20 +11,21 @@ import { ColorPicker } from "./components/ColorPicker";
 import { CVData } from "@/types/cv";
 import templateFields from "../../../scripts/template-fields.json";
 import { usePathname } from "next/navigation";
-import { SummaryAIField } from "./components/SummaryAIField";
 import { useReactToPrint } from "react-to-print";
+import { PersonalStep } from "./components/steps/PersonalStep";
+import { ProfileStep } from "./components/steps/ProfileStep";
+import { ExperienceStep } from "./components/steps/ExperienceStep";
+import { EducationStep } from "./components/steps/EducationStep";
+import { SkillsStep } from "./components/steps/SkillsStep";
+import FinalPageStep from "./components/steps/FinalPageStep";
 
-// Kleine print CSS zodat printknoppen niet op PDF komen
 const printHideStyle = `
 @media print {
-  .no-print {
-    display: none !important;
-  }
+  .no-print { display: none !important; }
 }
 `;
 
 const defaultAccent = "#6366f1";
-
 const FIELD_STEP_MAP = [
   { field: "data.personal.photoUrl", step: "Personal", label: "Photo" },
   { field: "data.personal.name", step: "Personal", label: "Full Name" },
@@ -42,15 +37,6 @@ const FIELD_STEP_MAP = [
   { field: "data.education", step: "Education", label: "Education" },
   { field: "data.skills", step: "Skills", label: "Skills" },
 ];
-
-const STEP_LABELS: Record<string, string> = {
-  Template: "Template",
-  Personal: "Personal Info",
-  Profile: "Profile",
-  Experience: "Experience",
-  Education: "Education",
-  Skills: "Skills",
-};
 
 function validateEmail(email: string) {
   return /^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/.test(email);
@@ -95,9 +81,10 @@ export default function EditorPage() {
     onAfterPrint: () => {
       setShowPrintNotification(true);
       setTimeout(() => setShowPrintNotification(false), 5000);
-  }
+    }
   });
 
+  
 
   useEffect(() => {
     document.documentElement.style.setProperty(
@@ -123,32 +110,23 @@ export default function EditorPage() {
         if (!steps.includes(f.step)) steps.push(f.step);
       }
     });
+    steps.push("Final");
     return steps;
   }, [fieldUsage]);
 
   function getPersonalErrors() {
-    return {
-      name:
-        fieldUsage["data.personal.name"] &&
-        (isEmpty(formData.personal.name)
-          ? "Name is required"
-          : undefined),
-      title:
-        fieldUsage["data.personal.title"] &&
-        (isEmpty(formData.personal.title)
-          ? "Title is required"
-          : undefined),
-      email:
-        fieldUsage["data.personal.email"] &&
-        (isEmpty(formData.personal.email)
-          ? "Email is required"
-          : !validateEmail(formData.personal.email)
-          ? "Invalid email address"
-          : undefined),
-      phone: undefined,
-      photoUrl: undefined,
-    };
-  }
+  return {
+    name: isEmpty(formData.personal.name) ? "Name is required" : undefined,
+    title: isEmpty(formData.personal.title) ? "Title is required" : undefined,
+    email: isEmpty(formData.personal.email)
+      ? "Email is required"
+      : !validateEmail(formData.personal.email)
+      ? "Invalid email address"
+      : undefined,
+    phone: undefined, // geen fout, dus altijd undefined
+    photoUrl: undefined,
+  };
+}
   function getProfileError() {
     return fieldUsage["data.profile"] && isEmpty(formData.profile)
       ? "Profile is required"
@@ -218,6 +196,7 @@ export default function EditorPage() {
     });
   };
 
+  // Update/handlers voor alle stappen:
   const updatePersonal = (field: keyof CVData["personal"], value: string) => {
     setFormData((d) => ({ ...d, personal: { ...d.personal, [field]: value } }));
     markTouched("personal." + field);
@@ -303,6 +282,7 @@ export default function EditorPage() {
       }));
     }
   };
+
   const handleFinish = async () => {
     if (!selectedTemplate) return;
     setLoadingSave(true);
@@ -328,8 +308,6 @@ export default function EditorPage() {
   };
 
   const currentStep = usedSteps[step];
-  const canGoNext = step < usedSteps.length - 1 && validateStep(currentStep);
-  const canGoPrev = step > 0;
 
   if (!isSignedIn) {
     return (
@@ -439,630 +417,258 @@ export default function EditorPage() {
   const skillsErrors = getSkillsErrors();
   const profileError = getProfileError();
 
+  // --- SIDEBAR/FORM AREA met steps ---
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50">
-      <style>{printHideStyle}</style>
-      <div className="flex flex-col lg:flex-row">
-        {/* Sidebar */}
-        <div className="w-full lg:w-2/5 bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-2xl">
-          <div className="p-8 h-full flex flex-col">
-            {/* Steps */}
-            <div className="mb-8">
-              <AnimatedStepIndicator
-                steps={usedSteps.slice(1)}
-                currentStep={step - 1}
-              />
-              <div className="text-center mt-8">
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-full px-4 py-2 mb-4">
-                  <span className="text-sm font-medium text-indigo-700">
-                    Step {step} of {usedSteps.length - 1}
-                  </span>
-                </div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                  {STEP_LABELS[currentStep] || currentStep} Information
-                </h2>
-              </div>
-            </div>
-            <div className="mb-8 p-4 bg-gradient-to-r from-gray-50 to-indigo-50 rounded-xl">
-              <ColorPicker
-                  color={formData.settings?.accent || "#1E40AF"}
-                  onChange={kleur =>
-                    setFormData(f => ({
-                      ...f,
-                      settings: {
-                        ...f.settings,
-                        accent: kleur
-                      }
-                    }))
-                  }
-                  isOpen={showColorPicker}
-                  onToggle={() => setShowColorPicker(!showColorPicker)}
-                />
-            </div>
-            <div className="flex-1 space-y-6 overflow-y-auto">
-              {/* --- FIELDS PER STEP --- */}
-              {currentStep === "Personal" && (
-                <div className="space-y-6">
-                  {fieldUsage["data.personal.photoUrl"] && (
-                    <div className="text-center">
-                      <div className="inline-flex items-center justify-center mb-6">
-                        {formData.personal.photoUrl ? (
-                          <div className="relative group">
-                            <img
-                              src={formData.personal.photoUrl}
-                              alt="Profile"
-                              className="w-32 h-32 rounded-full object-cover border-4 border-indigo-200 shadow-xl"
-                            />
-                            <div className="absolute inset-0 rounded-full bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                              <button
-                                onClick={() => updatePersonal("photoUrl", "")}
-                                className="bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition-colors"
-                              >
-                                <Trash2 className="w-5 h-5" />
-                              </button>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="w-32 h-32 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50">
-                            <Camera className="w-12 h-12 text-gray-400" />
-                          </div>
-                        )}
-                      </div>
-                      <label className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl cursor-pointer hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg">
-                        <Upload className="w-5 h-5" />
-                        {formData.personal.photoUrl
-                          ? "Change Photo"
-                          : "Upload Photo"}
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={(e) => {
-                            if (e.target.files?.[0]) {
-                              handlePhotoUpload(e.target.files[0]);
-                            }
-                          }}
-                        />
-                      </label>
-                      <p className="text-xs text-gray-500 mt-2">
-                        Optional • Max 5MB • JPG, PNG, or WebP
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="grid gap-4">
-                    {fieldUsage["data.personal.name"] && (
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Full Name *
-                        </label>
-                        <Input
-                          value={formData.personal.name}
-                          onChange={(e) =>
-                            updatePersonal("name", e.target.value)
-                          }
-                          onBlur={() => markTouched("personal", undefined, "name")}
-                          className={
-                            personalErrors.name && touched["personal.name"]
-                              ? "border-red-500"
-                              : ""
-                          }
-                        />
-                        {personalErrors.name && touched["personal.name"] && (
-                          <div className="text-red-500 text-xs mt-1">
-                            {personalErrors.name}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    {fieldUsage["data.personal.title"] && (
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Professional Title *
-                        </label>
-                        <Input
-                          value={formData.personal.title}
-                          onChange={(e) =>
-                            updatePersonal("title", e.target.value)
-                          }
-                          onBlur={() => markTouched("personal", undefined, "title")}
-                          className={
-                            personalErrors.title && touched["personal.title"]
-                              ? "border-red-500"
-                              : ""
-                          }
-                        />
-                        {personalErrors.title && touched["personal.title"] && (
-                          <div className="text-red-500 text-xs mt-1">
-                            {personalErrors.title}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    {fieldUsage["data.personal.email"] && (
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Email Address *
-                        </label>
-                        <Input
-                          type="email"
-                          value={formData.personal.email}
-                          onChange={(e) =>
-                            updatePersonal("email", e.target.value)
-                          }
-                          onBlur={() => markTouched("personal", undefined, "email")}
-                          className={
-                            personalErrors.email && touched["personal.email"]
-                              ? "border-red-500"
-                              : ""
-                          }
-                        />
-                        {personalErrors.email && touched["personal.email"] && (
-                          <div className="text-red-500 text-xs mt-1">
-                            {personalErrors.email}
-                          </div>
-                        )}
-                      </div>
-                    )}
-                    {fieldUsage["data.personal.phone"] && (
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Phone Number
-                        </label>
-                        <Input
-                          value={formData.personal.phone}
-                          onChange={(e) =>
-                            updatePersonal("phone", e.target.value)
-                          }
-                          onBlur={() => markTouched("personal", undefined, "phone")}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {currentStep === "Profile" && fieldUsage["data.profile"] && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3">
-                    Professional Summary *
-                  </label>
-                  <Textarea
-                    value={formData.profile}
-                    onChange={(e) => updateProfile(e.target.value)}
-                    onBlur={() => markTouched("profile")}
-                    className={
-                      profileError && touched.profile ? "border-red-500" : ""
-                    }
-                  />
-                  {profileError && touched.profile && (
-                    <div className="text-red-500 text-xs mt-1">
-                      {profileError}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {currentStep === "Experience" && fieldUsage["data.experience"] && (
-                <div>
-                  {formData.experience.map((exp, i) => (
-                    <Card
-                      key={i}
-                      className="relative border-2 border-gray-100 hover:border-indigo-200 transition-colors"
-                    >
-                      <CardContent className="p-6">
-                        {formData.experience.length > 1 && (
-                          <button
-                            className="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors p-1"
-                            onClick={() => removeExperience(i)}
-                          >
-                            <Trash2 className="w-5 h-5" />
-                          </button>
-                        )}
-                        <div className="space-y-4">
-                          <div className="grid md:grid-cols-2 gap-4">
-                            <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Job Title *
-                              </label>
-                              <Input
-                                value={exp.job}
-                                onChange={(e) =>
-                                  updateExperienceItem(i, "job", e.target.value)
-                                }
-                                onBlur={() =>
-                                  markTouched("experience", i, "job")
-                                }
-                                className={
-                                  experienceErrors[i]?.job &&
-                                  typeof touched.experience === "object" &&
-                                  (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.job
-                                    ? "border-red-500"
-                                    : ""
-                                }
-                              />
-                              {experienceErrors[i]?.job &&
-                                typeof touched.experience === "object" &&
-                                (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.job && (
-                                  <div className="text-red-500 text-xs mt-1">
-                                    {experienceErrors[i].job}
-                                  </div>
-                                )}
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Company *
-                              </label>
-                              <Input
-                                value={exp.company}
-                                onChange={(e) =>
-                                  updateExperienceItem(i, "company", e.target.value)
-                                }
-                                onBlur={() =>
-                                  markTouched("experience", i, "company")
-                                }
-                                className={
-                                  experienceErrors[i]?.company &&
-                                  typeof touched.experience === "object" &&
-                                  (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.company
-                                    ? "border-red-500"
-                                    : ""
-                                }
-                              />
-                              {experienceErrors[i]?.company &&
-                                typeof touched.experience === "object" &&
-                                touched.experience?.[i]?.company && (
-                                  <div className="text-red-500 text-xs mt-1">
-                                    {experienceErrors[i].company}
-                                  </div>
-                                )}
-                            </div>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              Period
-                            </label>
-                            <Input
-                              value={exp.period ?? ""}
-                              onChange={(e) =>
-                                updateExperienceItem(i, "period", e.target.value)
-                              }
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              Description & Achievements *
-                            </label>
-                            <SummaryAIField onFill={(generatedText) => updateExperienceItem(i, "description", generatedText)} />
-                            <Textarea
-                              value={exp.description}
-                              onChange={e => updateExperienceItem(i, "description", e.target.value)}
-                              onBlur={() => markTouched("experience", i, "description")}
-                              className={
-                              experienceErrors[i]?.description &&
-                              typeof touched.experience === "object" &&
-                              (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.description
-                                ? "border-red-500"
-                                : ""
-                              }
-                            />
-                            {experienceErrors[i]?.description &&
-                              typeof touched.experience === "object" &&
-                              (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.description && (
-                                <div className="text-red-500 text-xs mt-1">
-                                  {experienceErrors[i].description}
-                                </div>
-                              )}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                  <Button
-                    variant="outline"
-                    className="w-full border-2 border-dashed border-indigo-300 text-indigo-600 hover:bg-indigo-50 h-12"
-                    onClick={addExperience}
-                  >
-                    <Plus className="w-5 h-5 mr-2" />
-                    Add Another Experience
-                  </Button>
-                </div>
-              )}
-
-              {currentStep === "Education" && fieldUsage["data.education"] && (
-                <div>
-                  {formData.education.map((edu, i) => (
-                    <Card
-                      key={i}
-                      className="relative border-2 border-gray-100 hover:border-purple-200 transition-colors"
-                    >
-                      <CardContent className="p-6">
-                        <div className="space-y-4">
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              School/University *
-                            </label>
-                            <Input
-                              value={edu.school}
-                              onChange={(e) =>
-                                updateEducationItem(i, "school", e.target.value)
-                              }
-                              onBlur={() =>
-                                markTouched("education", i, "school")
-                              }
-                              className={
-                                educationErrors[i]?.school &&
-                                typeof touched.education === "object" &&
-                                (touched.education as { [idx: number]: { [subKey: string]: boolean } })[i]?.school
-                                  ? "border-red-500"
-                                  : ""
-                              }
-                            />
-                            {educationErrors[i]?.school &&
-                              typeof touched.education === "object" &&
-                              (touched.education as { [idx: number]: { [subKey: string]: boolean } })[i]?.school && (
-                                <div className="text-red-500 text-xs mt-1">
-                                  {educationErrors[i].school}
-                                </div>
-                              )}
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              Degree/Qualification *
-                            </label>
-                            <Input
-                              value={edu.degree}
-                              onChange={(e) =>
-                                updateEducationItem(i, "degree", e.target.value)
-                              }
-                              onBlur={() =>
-                                markTouched("education", i, "degree")
-                              }
-                              className={
-                                educationErrors[i]?.degree &&
-                                typeof touched.education === "object" &&
-                                (touched.education as { [idx: number]: { [subKey: string]: boolean } })[i]?.degree
-                                  ? "border-red-500"
-                                  : ""
-                              }
-                            />
-                            {educationErrors[i]?.degree &&
-                              typeof touched.education === "object" &&
-                              (touched.education as { [idx: number]: { [subKey: string]: boolean } })[i]?.degree && (
-                                <div className="text-red-500 text-xs mt-1">
-                                  {educationErrors[i].degree}
-                                </div>
-                              )}
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              Year of Graduation
-                            </label>
-                            <Input
-                              value={edu.year}
-                              onChange={(e) =>
-                                updateEducationItem(i, "year", e.target.value)
-                              }
-                            />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                  <Button
-                    variant="outline"
-                    className="w-full border-2 border-dashed border-purple-300 text-purple-600 hover:bg-purple-50 h-12"
-                    onClick={addEducation}
-                  >
-                    <Plus className="w-5 h-5 mr-2" />
-                    Add Another Education
-                  </Button>
-                </div>
-              )}
-
-              {currentStep === "Skills" && fieldUsage["data.skills"] && (
-                <div>
-                  {formData.skills.map((skill, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <div className="flex-1">
-                        <Input
-                          value={skill}
-                          onChange={(e) => updateSkill(i, e.target.value)}
-                          onBlur={() => markTouched("skills", i, "skill")}
-                          className={
-                            skillsErrors[i] &&
-                            typeof touched.skills === "object" &&
-                            (touched.skills as { [idx: number]: { [subKey: string]: boolean } })[i]?.skill
-                              ? "border-red-500"
-                              : ""
-                          }
-                        />
-                        {skillsErrors[i] &&
-                          typeof touched.skills === "object" &&
-                          (touched.skills as { [idx: number]: { [subKey: string]: boolean } })[i]?.skill && (
-                          <div className="text-red-500 text-xs mt-1">
-                            {skillsErrors[i]}
-                          </div>
-                        )}
-                      </div>
-                      {formData.skills.length > 1 && (
-                        <button
-                          className="text-gray-400 hover:text-red-500 transition-colors p-2"
-                          onClick={() => removeSkill(i)}
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                  <Button
-                    variant="outline"
-                    className="w-full border-2 border-dashed border-orange-300 text-orange-600 hover:bg-orange-50 h-12"
-                    onClick={addSkill}
-                  >
-                    <Plus className="w-5 h-5 mr-2" />
-                    Add Another Skill
-                  </Button>
-                </div>
-              )}
-            </div>
-            {/* Navigation */}
-            <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
-              <Button
-                variant="outline"
+  <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 font-sans">
+    <style>{printHideStyle}</style>
+    <div className="flex flex-col lg:flex-row">
+      {/* Sidebar */}
+      <div className="w-full lg:w-2/5 bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-2xl flex flex-col min-h-screen">
+        <div className="p-8 h-full flex flex-col">
+          {/* Top Bar met back button en logo */}
+          <div className="relative flex items-center justify-center mb-8 min-h-[38px]">
+            {step > 0 && (
+              <>
+                <button
                 onClick={() => setStep((s) => s - 1)}
-                disabled={!canGoPrev}
-                className="flex items-center gap-2 px-6 py-3"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Previous
-              </Button>
-              {step < usedSteps.length - 1 ? (
-                <Button
-                  onClick={() => {
-                    // Markeer alle relevante velden als touched bij proberen volgende stap
-                    if (currentStep === "Personal") {
-                      Object.keys(personalErrors).forEach((k) =>
-                        markTouched("personal", undefined, k)
-                      );
-                    }
-                    if (currentStep === "Profile") {
-                      markTouched("profile");
-                    }
-                    if (currentStep === "Experience") {
-                      experienceErrors.forEach((_, i) => {
-                        markTouched("experience", i, "job");
-                        markTouched("experience", i, "company");
-                        markTouched("experience", i, "description");
-                      });
-                    }
-                    if (currentStep === "Education") {
-                      educationErrors.forEach((_, i) => {
-                        markTouched("education", i, "school");
-                        markTouched("education", i, "degree");
-                      });
-                    }
-                    if (currentStep === "Skills") {
-                      skillsErrors.forEach((_, i) => {
-                        markTouched("skills", i, "skill");
-                      });
-                    }
-                    if (canGoNext) setStep((s) => s + 1);
-                  }}
-                  disabled={!canGoNext}
-                  className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white flex items-center gap-2 px-6 py-3"
+                className="absolute left-0 top-1/2 -translate-y-1/2 rounded-full border border-gray-300 text-gray-500 hover:text-indigo-600 hover:border-indigo-300 transition-colors w-9 h-9 flex items-center justify-center"
+                aria-label="Back"
+                type="button"
+                style={{ zIndex: 2 }}
                 >
-                  Next Step
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              ) : (
-                <Button
-                  onClick={handleFinish}
-                  disabled={loadingSave || !validateStep(currentStep)}
-                  className="bg-gradient-to-r from-green-600 to-emerald-600 text-white flex items-center gap-2 px-8 py-3"
-                >
-                  {loadingSave ? (
-                    <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      Creating Resume...
-                    </>
-                  ) : (
-                    <>
-                      <Wand2 className="w-5 h-5" />
-                      Complete Resume
-                    </>
-                  )}
-                </Button>
+                <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
+                  <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                </button>
+                <span className="absolute left-12 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-base select-none">
+                Back
+                </span>
+                </>
+            )}
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="h-8 w-auto mx-auto"
+              style={{ maxWidth: 140 }}
+            />
+          </div>
+          {/* Steps indicator en titel */}
+          <div className="mb-5">
+            <AnimatedStepIndicator
+              steps={usedSteps.slice(1)}
+              currentStep={step - 1}
+            />
+            <div className="text-left mt-8">
+              {currentStep === "Personal" && (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Personal Details</h2>
+                  <p className="text-[#64748B] text-sm">Provide your full name, professional title, contact details, and optionally upload a photo.</p>
+                </>
+              )}
+              {currentStep === "Profile" && (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Profile Summary</h2>
+                  <p className="text-[#64748B] text-sm">Write a short professional summary that highlights your experience, strengths, and goals.</p>
+                </>
+              )}
+              {currentStep === "Experience" && (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Experience Information</h2>
+                  <p className="text-[#64748B] text-sm">List your previous roles, including job titles, companies, dates, and a brief description of your responsibilities or achievements.</p>
+                </>
+              )}
+              {currentStep === "Education" && (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Education Information</h2>
+                  <p className="text-[#64748B] text-sm">Include your educational background with degrees, schools, and graduation years.</p>
+                </>
+              )}
+              {currentStep === "Skills" && (
+                <>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Skills Information</h2>
+                  <p className="text-[#64748B] text-sm">Add relevant skills that showcase your expertise and match the jobs you are targeting.</p>
+                </>
+              )}
+              {currentStep === "Final" && (
+                <FinalPageStep
+                  handlePrint={handlePrint}
+                  showPrintNotification={showPrintNotification}
+                />
               )}
             </div>
-            {saveSuccess && resumeId && (
-              <Card className="mt-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 shadow-xl">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                      <CheckCircle className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-green-900 text-lg">
-                        Resume Created Successfully!
-                      </h3>
-                      <p className="text-green-700 text-sm">
-                        Your professional resume is ready to download
-                      </p>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="grid gap-3">
-                      <Button onClick={handlePrint}>
-                        <Download className="w-4 h-4" />
-                        Print / Download as PDF
-                      </Button>
-                      <Button
-                        onClick={() => alert("Share feature coming soon!")}
-                        variant="outline"
-                        className="border-purple-300 text-purple-600 hover:bg-purple-50 w"
-                      >
-                        <Globe className="w-4 h-4 mr-2" />
-                        Share Link
-                      </Button>
-                      {showPrintNotification && (
-                        <div className="fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-xl shadow-lg z-50 animate-fade-in-up">
-                          Je CV is klaargemaakt voor printen of downloaden!  
-                          <span className="block text-xs opacity-80 mt-1">Check je printdialoog of download via je browser.</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+          </div>
+          {/* Kleurenkiezer */}
+          <div className="mb-4">
+            <ColorPicker
+              color={formData.settings?.accent || "#1E40AF"}
+              onChange={kleur =>
+                setFormData(f => ({
+                  ...f,
+                  settings: {
+                    ...f.settings,
+                    accent: kleur
+                  }
+                }))
+              }
+              isOpen={showColorPicker}
+              onToggle={() => setShowColorPicker(!showColorPicker)}
+            />
+          </div>
+          {/* Steps form */}
+          <div className="flex-1 space-y-6 overflow-y-auto">
+            {currentStep === "Personal" && (
+              <PersonalStep
+                formData={formData}
+                updatePersonal={updatePersonal}
+                handlePhotoUpload={handlePhotoUpload}
+                markTouched={markTouched}
+                errors={personalErrors}
+                touched={touched}
+                fieldUsage={fieldUsage}
+              />
+            )}
+            {currentStep === "Profile" && fieldUsage["data.profile"] && (
+              <ProfileStep
+                formData={formData}
+                updateProfile={updateProfile}
+                markTouched={markTouched}
+                error={profileError}
+                touched={touched}
+              />
+            )}
+            {currentStep === "Experience" && fieldUsage["data.experience"] && (
+              <ExperienceStep
+                experience={formData.experience}
+                updateExperienceItem={updateExperienceItem}
+                addExperience={addExperience}
+                removeExperience={removeExperience}
+                markTouched={markTouched}
+                errors={experienceErrors}
+                touched={touched}
+              />
+            )}
+            {currentStep === "Education" && fieldUsage["data.education"] && (
+              <EducationStep
+                education={formData.education}
+                updateEducationItem={updateEducationItem}
+                addEducation={addEducation}
+                markTouched={markTouched}
+                errors={educationErrors}
+                touched={touched}
+              />
+            )}
+            {currentStep === "Skills" && fieldUsage["data.skills"] && (
+              <SkillsStep
+                skills={formData.skills}
+                updateSkill={updateSkill}
+                addSkill={addSkill}
+                removeSkill={removeSkill}
+                markTouched={markTouched}
+                errors={skillsErrors}
+                touched={touched}
+              />
             )}
           </div>
-        </div>
-        {/* Preview */}
-        <div className="w-full lg:w-3/5 bg-gradient-to-br from-gray-50 to-indigo-50 p-8 overflow-auto">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900">
-                  Live Preview
-                </h3>
-                <p className="text-gray-600">See your changes in real-time</p>
-              </div>
-              <div className="flex items-center gap-2 no-print">
-                <div
-                  className="w-4 h-4 rounded-full border-2 border-white shadow-lg"
-                  style={{ backgroundColor: formData.settings?.accent }}
-                ></div>
-              </div>
-            </div>
-            <div
-              className="bg-white rounded-2xl shadow-2xl overflow-hidden relative"
-              style={{ borderTop: `6px solid ${formData.settings?.accent}` }}
-              ref={contentRef}
-            >
-              {TemplateComponent ? (
-                <div className="p-8">
-                  <TemplateComponent data={formData} />
-                </div>
-              ) : (
-                <div className="flex items-center justify-center h-96 text-gray-500">
-                  <div className="text-center">
-                    <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <FileText className="w-12 h-12 text-gray-300" />
-                    </div>
-                    <h4 className="text-2xl font-semibold text-gray-700 mb-2">
-                      Preview Loading...
-                    </h4>
-                    <p className="text-gray-500">
-                      Your resume will appear here as you fill in the details
-                    </p>
-                  </div>
-                </div>
+          {/* Sticky Navigation buttons */}
+          <div className="sticky bottom-0 bg-white/95 pt-6 pb-6 border-t border-gray-200 z-10">
+            <div className="flex justify-end">
+              {/* Hide navigation entirely on the Final step */}
+              {step === usedSteps.length - 1 ? null : (
+                <Button
+                  onClick={async () => {
+                    // If we're on the step before Final (Skills), save before moving on
+                    if (step === usedSteps.length - 2) {
+                      await handleFinish();
+                    }
+                    setStep((s) => s + 1);
+                  }}
+                  disabled={
+                    // Disable while saving on the Finish action, or if validation fails on other steps
+                    (step === usedSteps.length - 2 && loadingSave) ||
+                    !validateStep(currentStep)
+                  }
+                  className={
+                    // Green “Finish Resume” on Skills step, blue “Continue” on all others
+                    step === usedSteps.length - 2
+                      ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white flex items-center gap-2 px-8 py-3"
+                      : "bg-[#4F46E5] text-white flex items-center gap-2 px-6 py-3"
+                  }
+                >
+                  {step === usedSteps.length - 2 ? (
+                    loadingSave ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Making Resume...
+                      </>
+                    ) : (
+                      <>
+                        <Wand2 className="w-5 h-5" />
+                        Finish Resume
+                      </>
+                    )
+                  ) : (
+                    <>
+                      Continue
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </Button>
               )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Preview */}
+      <div className="w-full lg:w-3/5 bg-[#faf8ff] min-h-screen flex flex-col items-center justify-start p-8">
+        <div className="w-full max-w-2xl">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6 px-2">
+            <div>
+              <h3 className="text-2xl font-semibold text-gray-900">Live Preview</h3>
+              <p className="text-[#7883a1] text-base">See the changes in real-time</p>
+            </div>
+            <button
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#5142ea] hover:bg-gray-800 text-white font-medium shadow transition-all text-sm"
+              onClick={handlePrint}
+            >
+              <Eye />
+              Download Preview
+            </button>
+          </div>
+          {/* Preview canvas */}
+          <div
+            className="bg-white rounded-2xl shadow-lg mx-auto transition-all"
+            style={{ minHeight: 650 }}
+            ref={contentRef}
+          >
+            {TemplateComponent ? (
+              <div className="p-0 sm:p-4">
+                <div className="flex justify-center items-start">
+                  <div className="w-full max-w-[600px]">
+                    <TemplateComponent data={formData} />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-[400px] text-gray-400">
+                <div className="text-center">
+                  <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <FileText className="w-12 h-12 text-gray-300" />
+                  </div>
+                  <h4 className="text-2xl font-semibold text-gray-700 mb-2">
+                    Preview Loading...
+                  </h4>
+                  <p className="text-gray-500">
+                    Your resume will appear here as you fill in the details
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
-  );
+  </div>
+);
 }
