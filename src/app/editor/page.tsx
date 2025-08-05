@@ -428,17 +428,22 @@ export default function EditorPage() {
           {/* Top Bar met back button en logo */}
           <div className="relative flex items-center justify-center mb-8 min-h-[38px]">
             {step > 0 && (
-              <button
+              <>
+                <button
                 onClick={() => setStep((s) => s - 1)}
                 className="absolute left-0 top-1/2 -translate-y-1/2 rounded-full border border-gray-300 text-gray-500 hover:text-indigo-600 hover:border-indigo-300 transition-colors w-9 h-9 flex items-center justify-center"
                 aria-label="Back"
                 type="button"
                 style={{ zIndex: 2 }}
-              >
+                >
                 <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
                   <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-              </button>
+                </button>
+                <span className="absolute left-12 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-base select-none">
+                Back
+                </span>
+                </>
             )}
             <img
               src="/logo.png"
