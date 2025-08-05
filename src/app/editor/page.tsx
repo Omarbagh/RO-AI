@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, FileText, ArrowRight, ArrowLeft, Loader2, Wand2, Sparkles, Edit3, CheckCircle, Globe, Eye } from "lucide-react";
+import { Download, FileText, ArrowRight, Loader2, Wand2, Sparkles, Edit3, CheckCircle, Globe, Eye } from "lucide-react";
 import { templates } from "./utils/templateMap";
 import { TemplateCard } from "./components/TemplateCard";
 import { AnimatedStepIndicator } from "./components/AnimatedStepIndicator";
@@ -305,7 +305,6 @@ export default function EditorPage() {
 
   const currentStep = usedSteps[step];
   const canGoNext = step < usedSteps.length - 1 && validateStep(currentStep);
-  const canGoPrev = step > 0;
 
   if (!isSignedIn) {
     return (
@@ -558,16 +557,7 @@ export default function EditorPage() {
           </div>
           {/* Sticky Navigation buttons */}
           <div className="sticky bottom-0 bg-white/95 pt-6 pb-6 border-t border-gray-200 z-10">
-            <div className="flex justify-between">
-              <Button
-                variant="outline"
-                onClick={() => setStep((s) => s - 1)}
-                disabled={!canGoPrev}
-                className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 hover:bg-gray-100 bg-white"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Previous
-              </Button>
+            <div className="flex justify-end">
               {step < usedSteps.length - 1 ? (
                 <Button
                   onClick={() => {

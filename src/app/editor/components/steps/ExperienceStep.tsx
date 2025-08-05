@@ -40,7 +40,7 @@ export function ExperienceStep({
       {experience.map((exp, i) => (
         <Card
           key={i}
-          className="relative border-2 border-gray-100 hover:border-indigo-200 transition-colors"
+          className="relative border-1 border-gray-100 hover:border-indigo-200 transition-colors"
         >
           <CardContent className="p-6">
             {experience.length > 1 && (
@@ -54,23 +54,27 @@ export function ExperienceStep({
             <div className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Job Title *
-                  </label>
-                  <Input
+                  <div className="flex items-center gap-1 mb-2">
+                    <label className="block text-sm font-medium m-0">Job Title</label>
+                    <p className="text-red-500 text-base leading-none">*</p>
+                  </div>
+                    <Input
                     value={exp.job}
                     onChange={(e) =>
                       updateExperienceItem(i, "job", e.target.value)
                     }
                     onBlur={() => markTouched("experience", i, "job")}
                     className={
+                      "rounded-full " +
+                      (
                       errors[i]?.job &&
                       typeof touched.experience === "object" &&
                       (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.job
                         ? "border-red-500"
                         : ""
+                      )
                     }
-                  />
+                    />
                   {errors[i]?.job &&
                     typeof touched.experience === "object" &&
                     (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.job && (
@@ -80,9 +84,10 @@ export function ExperienceStep({
                     )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Company *
-                  </label>
+                  <div className="flex items-center gap-1 mb-2">
+                    <label className="block text-sm font-medium m-0">Company</label>
+                    <p className="text-red-500 text-base leading-none">*</p>
+                  </div>
                   <Input
                     value={exp.company}
                     onChange={(e) =>
@@ -90,11 +95,12 @@ export function ExperienceStep({
                     }
                     onBlur={() => markTouched("experience", i, "company")}
                     className={
-                      errors[i]?.company &&
+                      "rounded-full " +
+                      (errors[i]?.company &&
                       typeof touched.experience === "object" &&
                       (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.company
                         ? "border-red-500"
-                        : ""
+                        : "")
                     }
                   />
                   {errors[i]?.company &&
@@ -107,31 +113,35 @@ export function ExperienceStep({
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Period
-                </label>
+                <div className="flex items-center gap-1 mb-2">
+                    <label className="block text-sm font-medium m-0">Period</label>
+                    <p className="text-red-500 text-base leading-none">*</p>
+                  </div>
                 <Input
                   value={exp.period ?? ""}
                   onChange={(e) =>
                     updateExperienceItem(i, "period", e.target.value)
                   }
+                  className="rounded-full"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Description & Achievements *
-                </label>
+                  <div className="flex items-center gap-1 mb-2">
+                    <label className="block text-sm font-medium m-0">Description & Achievements</label>
+                    <p className="text-red-500 text-base leading-none">*</p>
+                  </div>
                 <SummaryAIField onFill={(generatedText) => updateExperienceItem(i, "description", generatedText)} />
                 <Textarea
                   value={exp.description}
                   onChange={e => updateExperienceItem(i, "description", e.target.value)}
                   onBlur={() => markTouched("experience", i, "description")}
                   className={
-                    errors[i]?.description &&
+                    "rounded-2xl h-32" +
+                    (errors[i]?.description &&
                     typeof touched.experience === "object" &&
                     (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.description
                       ? "border-red-500"
-                      : ""
+                      : "")
                   }
                 />
                 {errors[i]?.description &&
