@@ -6,7 +6,6 @@ import { useState, useEffect } from "react"
 
 interface FinalPageStepProps {
   handlePrint: () => void;
-  showPrintNotification: boolean;
 }
 
 export default function FinalPageStep({ handlePrint }: FinalPageStepProps) {
