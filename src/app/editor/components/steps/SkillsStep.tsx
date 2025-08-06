@@ -1,7 +1,7 @@
 // components/steps/SkillsStep.tsx
 import { Input } from "@/components/ui/input";
-import { Trash2, Plus } from "lucide-react";
-import React from "react";
+import { Trash2 } from "lucide-react";
+import React, { useState, KeyboardEvent } from "react";
 
 type SkillsTouched = Record<number, { skill?: boolean }>;
 
@@ -14,6 +14,7 @@ type SkillsStepProps = {
   errors: (string | undefined)[];
   touched: { skills?: SkillsTouched };
 };
+
 export function SkillsStep({
   skills,
   updateSkill,
@@ -23,49 +24,79 @@ export function SkillsStep({
   errors,
   touched,
 }: SkillsStepProps) {
+  const [newSkill, setNewSkill] = useState("");
+
+  // Handle Enter key to add non-empty skill
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (!newSkill.trim()) {
+        markTouched("skills", 0, "skill");
+        return;
+      }
+      const index = skills.length;
+      addSkill();
+      updateSkill(index, newSkill.trim());
+      markTouched("skills", index, "skill");
+      setNewSkill("");
+    }
+  };
+
+  // Handle removing skill and mark touched for last removal
+  const handleRemove = (i: number) => {
+    const isLast = skills.length === 1;
+    removeSkill(i);
+    if (isLast) {
+      markTouched("skills", 0, "skill");
+    }
+  };
+
+  // Determine global error when no skills
+  const showGlobalError = skills.length === 0 && touched.skills?.[0]?.skill;
+
   return (
-    <div>
-      {skills.map((skill, i) => (
-        <div key={i} className="flex items-center gap-3">
-          <div className="flex-1">
-            <Input
-              value={skill}
-              onChange={(e) => updateSkill(i, e.target.value)}
-              onBlur={() => markTouched("skills", i, "skill")}
-              className={
-                errors[i] &&
-                typeof touched.skills === "object" &&
-                (touched.skills as { [idx: number]: { [subKey: string]: boolean } })[i]?.skill
-                  ? "border-red-500"
-                  : ""
-              }
-            />
-            {errors[i] &&
-              typeof touched.skills === "object" &&
-              (touched.skills as { [idx: number]: { [subKey: string]: boolean } })[i]?.skill && (
-              <div className="text-red-500 text-xs mt-1">
-                {errors[i]}
-              </div>
-            )}
-          </div>
-          {skills.length > 1 && (
-            <button
-              className="text-gray-400 hover:text-red-500 transition-colors p-2"
-              onClick={() => removeSkill(i)}
-            >
-              <Trash2 className="w-5 h-5" />
-            </button>
-          )}
+    <div className="space-y-4">
+      {/* Input to add new skill */}
+      <Input
+        placeholder="Type a skill and press Enter"
+        value={newSkill}
+        onChange={(e) => setNewSkill(e.target.value)}
+        onKeyDown={handleKeyDown}
+        onBlur={() => newSkill.trim() === "" && markTouched("skills", 0, "skill")}
+      />
+      {showGlobalError && (
+        <div className="text-red-500 text-xs">
+          Please add at least one skill.
         </div>
-      ))}
-      <button
-        type="button"
-        className="w-full border-2 border-dashed border-indigo-300 text-indigo-600 hover:bg-indigo-50 h-12 flex items-center justify-center gap-2 rounded-md mt-3"
-        onClick={addSkill}
-      >
-        <Plus className="w-5 h-5" />
-        Add Another Skill
-      </button>
+      )}
+
+      {/* Display added skills as tags with delete button and validation */}
+      {skills.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {skills.map((skill, i) => {
+            const showError = errors[i] && touched.skills?.[i]?.skill;
+            return (
+              <div key={i} className="flex flex-col">
+                <div
+                  className={`flex items-center px-3 py-1 rounded-full bg-indigo-100 text-indigo-800 gap-2 ${
+                    showError ? "ring-1 ring-red-500" : ""
+                  }`}
+                >
+                  <span className="text-sm">{skill}</span>
+                  <button onClick={() => handleRemove(i)} className="hover:text-red-500 p-1">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                {showError && (
+                  <div className="text-red-500 text-xs mt-1">
+                    {errors[i]}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

@@ -275,7 +275,7 @@ export default function EditorPage() {
     setFormData((d) => ({ ...d, skills: [...d.skills, ""] }));
   };
   const removeSkill = (i: number) => {
-    if (formData.skills.length > 1) {
+    if (formData.skills.length > 0) {
       setFormData((d) => ({
         ...d,
         skills: d.skills.filter((_, idx) => idx !== i),
@@ -584,8 +584,8 @@ export default function EditorPage() {
                   }}
                   disabled={
                     // Disable while saving on the Finish action, or if validation fails on other steps
-                    (step === usedSteps.length - 2 && loadingSave) ||
-                    !validateStep(currentStep)
+                    (step === usedSteps.length - 2 && (loadingSave || formData.skills.length < 1)) ||
+    !validateStep(currentStep)
                   }
                   className={
                     // Green “Finish Resume” on Skills step, blue “Continue” on all others

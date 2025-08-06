@@ -181,7 +181,7 @@ export function PersonalStep({
             ${!formData.personal.email ? "bg-gray-100" : "bg-white"}
           `}
             />
-            {errors.email && touched.personal?.email && (
+            {errors.email && touched.personal && touched.personal.email && (
               <div className="text-red-500 text-xs mt-1">{errors.email}</div>
             )}
           </div>
