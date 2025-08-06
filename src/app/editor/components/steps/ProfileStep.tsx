@@ -3,6 +3,7 @@ import { Textarea } from "@/components/ui/textarea";
 import React from "react";
 import { CVData } from "@/types/cv";
 import { TouchedType } from "@/types/cv";
+import { SummaryAIField } from "../SummaryAIFieldProfile";
 
 type ProfileStepProps = {
   formData: CVData;
@@ -25,6 +26,7 @@ export function ProfileStep({
           <label className="block text-sm font-medium m-0">Professional Summary</label>
           <p className="text-red-500 text-base leading-none">*</p>
         </div>
+      <SummaryAIField onFill={(generatedText) => updateProfile(generatedText)} />
       <Textarea
         value={formData.profile}
         onChange={(e) => updateProfile(e.target.value)}

@@ -33,7 +33,7 @@ export function ExperienceStep({
   removeExperience,
   markTouched,
   errors,
-  touched,
+  touched
 }: ExperienceStepProps) {
   return (
     <div>
@@ -59,21 +59,24 @@ export function ExperienceStep({
                     <p className="text-red-500 text-base leading-none">*</p>
                   </div>
                     <Input
-                    value={exp.job}
-                    onChange={(e) =>
-                      updateExperienceItem(i, "job", e.target.value)
-                    }
-                    onBlur={() => markTouched("experience", i, "job")}
-                    className={
-                      "rounded-full " +
-                      (
-                      errors[i]?.job &&
-                      typeof touched.experience === "object" &&
-                      (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.job
-                        ? "border-red-500"
-                        : ""
-                      )
-                    }
+                      value={exp.job}
+                      onChange={(e) =>
+                        updateExperienceItem(i, "job", e.target.value)
+                      }
+                      onBlur={() => markTouched("experience", i, "job")}
+                      placeholder="Job Title"
+                      className={
+                        `rounded-full focus:outline-none focus:!border-grey-200 focus:!ring-0 ${
+                          !exp.job ? "bg-gray-100" : "bg-white"
+                        } ` +
+                        (
+                          errors[i]?.job &&
+                          typeof touched.experience === "object" &&
+                          (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.job
+                            ? "border-red-500"
+                            : ""
+                        )
+                      }
                     />
                   {errors[i]?.job &&
                     typeof touched.experience === "object" &&
@@ -94,8 +97,11 @@ export function ExperienceStep({
                       updateExperienceItem(i, "company", e.target.value)
                     }
                     onBlur={() => markTouched("experience", i, "company")}
+                    placeholder="Company"
                     className={
-                      "rounded-full " +
+                      `rounded-full focus:outline-none focus:!border-grey-200 focus:!ring-0 ${
+                          !exp.company ? "bg-gray-100" : "bg-white"
+                        } `  +
                       (errors[i]?.company &&
                       typeof touched.experience === "object" &&
                       (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.company
@@ -122,7 +128,8 @@ export function ExperienceStep({
                   onChange={(e) =>
                     updateExperienceItem(i, "period", e.target.value)
                   }
-                  className="rounded-full"
+                  className={`rounded-full focus:outline-none focus:!border-grey-200 focus:!ring-0 ${!exp.period? "bg-gray-100" : "bg-white"}`}
+                  placeholder="Period"
                 />
               </div>
               <div>
@@ -135,8 +142,11 @@ export function ExperienceStep({
                   value={exp.description}
                   onChange={e => updateExperienceItem(i, "description", e.target.value)}
                   onBlur={() => markTouched("experience", i, "description")}
+                  placeholder="Description & Achievements"
                   className={
-                    "rounded-2xl h-32" +
+                    `rounded-2xl h-32  focus:outline-none focus:!border-grey-200 focus:!ring-0 ${
+                          !exp.description ? "bg-gray-100" : "bg-white"
+                        } ` +
                     (errors[i]?.description &&
                     typeof touched.experience === "object" &&
                     (touched.experience as { [idx: number]: { [subKey: string]: boolean } })[i]?.description

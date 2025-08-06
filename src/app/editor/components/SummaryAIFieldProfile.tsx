@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 interface SummaryAIFieldProps {
-  onFill: (text: string) => void; 
+  onFill: (text: string) => void;
 }
 
 export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
@@ -9,26 +9,26 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
 
   const handleAIClick = async () => {
     const language = prompt(
-      "Which language should the description be in? (e.g. Dutch, English, Deutsch, French)"
+      "Which language should the profile summary be in? (e.g. Dutch, English, Deutsch, French)"
     );
     if (!language) return;
 
     const userInput = prompt(
-      "What should the description be about?"
+      "Enter key information for your resume profile (skills, experience highlights, career goals):"
     );
     if (!userInput) return;
 
     setLoading(true);
 
     const promptText =
-      `Write a professional one-paragraph CV description based on this information: "${userInput}". Please respond in ${language}. Do not use bullet points or line breaks.`;
+      `Write a concise, engaging professional profile summary for a resume based on the following details: "${userInput}". Please respond in ${language}. Do not use bullet points or line breaks.`;
 
     const res = await fetch("/api/ai-generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         prompt: promptText,
-        context: "You are a professional international CV writer."
+        context: "You are a professional international resume writer."
       }),
     });
 
@@ -48,7 +48,7 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
       <span className="inline-block bg-black bg-opacity-20 rounded-full px-2 py-0.5 text-[0.7em] font-bold">
         AI
       </span>
-      {loading ? "Thinking..." : "Generate"}
+      {loading ? "Thinking..." : "Generate Profile"}
     </button>
   );
 }
