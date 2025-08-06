@@ -1,6 +1,7 @@
-import { Card, CardContent } from "@/components/ui/card"
+import { CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { CheckCircle, Download, Globe } from "lucide-react"
+import { Download, Share2 } from "lucide-react"
+import { useState, useEffect } from "react"
 
 
 interface FinalPageStepProps {
@@ -8,46 +9,49 @@ interface FinalPageStepProps {
   showPrintNotification: boolean;
 }
 
-export default function FinalPageStep({ handlePrint, showPrintNotification }: FinalPageStepProps) {
+export default function FinalPageStep({ handlePrint }: FinalPageStepProps) {
+  const [isPro, setIsPro] = useState(false);
+
+  useEffect(() => {
+    async function checkProStatus() {
+       const proRes = await fetch("/api/check-pro");
+        const { isPro } = await proRes.json();
+        setIsPro(isPro);
+      } 
+    checkProStatus();
+  }, []);
+
   return (
-    <Card className="mt-6 bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 shadow-xl">
     <CardContent className="p-6">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-          <CheckCircle className="w-6 h-6 text-white" />
-        </div>
-        <div>
-          <h3 className="font-bold text-green-900 text-lg">
-            Resume Created Successfully!
-          </h3>
-          <p className="text-green-700 text-sm">
+      <div className="w-28 h-28 bg-[#F4F4F4] rounded-full flex items-center justify-center mx-auto mb-6">
+        <span style={{ fontSize: "4rem" }}>👏</span>
+      </div>
+      <div className="flex flex-col items-center justify-center gap-3 mb-6">
+        <div className="text-center">
+            <h3 className="font-bold text-black text-lg">
+            Hurray! You Have Successfully <br /> Created Your Resume
+            </h3>
+          <p className="text-[#64748B] text-sm mt-2">
             Your professional resume is ready to download
           </p>
         </div>
       </div>
       <div className="space-y-3">
-        <div className="grid gap-3">
-          <Button onClick={handlePrint}>
+        <div className="grid gap-3 items-center justify-center">
+          <Button onClick={handlePrint} className="bg-[#4F46E5] rounded-full h-10 w-80 hover:bg-gray-800 hover:text-white">
             <Download className="w-4 h-4" />
-            Print / Download as PDF
+            Print / Download as PDF{isPro ? " (With Watermark)" : ""}
           </Button>
           <Button
             onClick={() => alert("Share feature coming soon!")}
             variant="outline"
-            className="border-purple-300 text-purple-600 hover:bg-purple-50 w"
+            className="border-black-300 hover:bg-gray-800 hover:text-white rounded-full h-10 w-80"
           >
-            <Globe className="w-4 h-4 mr-2" />
+            <Share2 className="w-4 h-4 mr-2" />
             Share Link
           </Button>
-          {showPrintNotification && (
-            <div className="fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-xl shadow-lg z-50 animate-fade-in-up">
-              Je CV is klaargemaakt voor printen of downloaden!
-              <span className="block text-xs opacity-80 mt-1">Check je printdialoog of download via je browser.</span>
-            </div>
-          )}
         </div>
       </div>
     </CardContent>
-  </Card>
   )
 }

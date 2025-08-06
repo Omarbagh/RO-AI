@@ -63,6 +63,7 @@ export function SkillsStep({
         onChange={(e) => setNewSkill(e.target.value)}
         onKeyDown={handleKeyDown}
         onBlur={() => newSkill.trim() === "" && markTouched("skills", 0, "skill")}
+        className={`rounded-full focus:outline-none focus:!border-gray-200 focus:!ring-0 ${skills.length === 0 ? "bg-gray-100" : "bg-white"}`}
       />
       {showGlobalError && (
         <div className="text-red-500 text-xs">

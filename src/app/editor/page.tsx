@@ -498,22 +498,24 @@ export default function EditorPage() {
             </div>
           </div>
           {/* Kleurenkiezer */}
-          <div className="mb-4">
-            <ColorPicker
+            {currentStep !== "Final" && (
+            <div className="mb-4">
+              <ColorPicker
               color={formData.settings?.accent || "#1E40AF"}
               onChange={kleur =>
                 setFormData(f => ({
-                  ...f,
-                  settings: {
-                    ...f.settings,
-                    accent: kleur
-                  }
+                ...f,
+                settings: {
+                  ...f.settings,
+                  accent: kleur
+                }
                 }))
               }
               isOpen={showColorPicker}
               onToggle={() => setShowColorPicker(!showColorPicker)}
-            />
-          </div>
+              />
+            </div>
+            )}
           {/* Steps form */}
           <div className="flex-1 space-y-6 overflow-y-auto">
             {currentStep === "Personal" && (
