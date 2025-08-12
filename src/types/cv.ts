@@ -36,6 +36,7 @@ export type CVData = {
   skills: string[];
   settings?: {
     accent: string;
+    language?: string;
   };
 };
 

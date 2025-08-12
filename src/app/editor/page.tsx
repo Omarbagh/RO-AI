@@ -18,11 +18,11 @@ import { ExperienceStep } from "./components/steps/ExperienceStep";
 import { EducationStep } from "./components/steps/EducationStep";
 import { SkillsStep } from "./components/steps/SkillsStep";
 import FinalPageStep from "./components/steps/FinalPageStep";
+import { LanguageSwitcher } from "./components/LanguageSwitcher";
 
 const printHideStyle = `
 @media print {
   .no-print { display: none !important; }
-}
 `;
 
 const defaultAccent = "#6366f1";
@@ -59,7 +59,7 @@ export default function EditorPage() {
     experience: [{ job: "", company: "", description: "", period: "" }],
     education: [{ school: "", degree: "", year: "" }],
     skills: [""],
-    settings: { accent: "#1E40AF" },
+    settings: { accent: "#1E40AF", language: "English"},
   });
   const [touched, setTouched] = useState<TouchedType>({});
   const [resumeId, setResumeId] = useState<string | null>(null);
@@ -630,6 +630,23 @@ export default function EditorPage() {
               <h3 className="text-2xl font-semibold text-gray-900">Live Preview</h3>
               <p className="text-[#7883a1] text-base">See the changes in real-time</p>
             </div>
+
+            <div className="flex items-center gap-3">
+            {/* Language Switcher */}
+            <LanguageSwitcher
+              value={formData.settings?.language}
+              onChange={(lang) =>
+                setFormData((f) => ({
+                  ...f,
+                  settings: {
+                    ...(f.settings ?? {}),
+                    accent: (f.settings?.accent ?? "#1E40AF"),
+                    language: lang
+                  },
+                }))
+              }
+            />
+
             <button
               className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#5142ea] hover:bg-gray-800 text-white font-medium shadow transition-all text-sm"
               onClick={handlePrint}
@@ -637,6 +654,7 @@ export default function EditorPage() {
               <Eye />
               Download Preview
             </button>
+          </div>
           </div>
           {/* Preview canvas */}
           <div
