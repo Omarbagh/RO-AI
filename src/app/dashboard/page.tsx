@@ -7,9 +7,13 @@ import { House, Files, Mail, CircleDollarSign, ScanText, Plus } from "lucide-rea
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
+import ResumesTable from "./components/ResumesTable";
 
 export default function Dashboard() {
   const [count, setCount] = useState<number>(0);
+  const { user } = useUser();
+  const userId = user?.id ?? "";
 
   useEffect(() => {
     let active = true;
@@ -160,6 +164,7 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+        <ResumesTable userId={userId} />
       </main>
     </>
   );
