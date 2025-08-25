@@ -3,9 +3,10 @@
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { House, Files, Mail, CircleDollarSign, ScanText } from "lucide-react";
+import { House, Files, Mail, CircleDollarSign, ScanText, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Dashboard() {
   const [count, setCount] = useState<number>(0);
@@ -41,19 +42,19 @@ export default function Dashboard() {
           </div>
 
           <nav className="flex flex-col gap-1 items-center">
-            <Button className="w-[184px] justify-start gap-2 rounded-full text-black bg-transparent hover:bg-[#7C3BEE1A] hover:text-[#4F46E5] shadow-none">
+            <Button className="w-[184px] justify-start gap-2 rounded-full text-black bg-transparent hover:bg-[#7C3BEE1A] hover:text-[#4F46E5] shadow-none cursor-pointer">
               <House className="h-5 w-5" />
               Dashboard
             </Button>
-            <Button className="w-[184px] justify-start gap-2 rounded-full text-black bg-transparent hover:bg-[#7C3BEE1A] hover:text-[#4F46E5] shadow-none">
+            <Button className="w-[184px] justify-start gap-2 rounded-full text-black bg-transparent hover:bg-[#7C3BEE1A] hover:text-[#4F46E5] shadow-none cursor-pointer">
               <Files className="h-5 w-5" />
               Resumes
             </Button>
-            <Button className="w-[184px] justify-start gap-2 rounded-full text-black bg-transparent hover:bg-[#7C3BEE1A] hover:text-[#4F46E5] shadow-none">
+            <Button className="w-[184px] justify-start gap-2 rounded-full text-black bg-transparent hover:bg-[#7C3BEE1A] hover:text-[#4F46E5] shadow-none cursor-pointer">
               <Mail className="h-5 w-5" />
               Cover Letter
             </Button>
-            <Button className="w-[184px] justify-start gap-2 rounded-full text-black bg-transparent hover:bg-[#7C3BEE1A] hover:text-[#4F46E5] shadow-none">
+            <Button className="w-[184px] justify-start gap-2 rounded-full text-black bg-transparent hover:bg-[#7C3BEE1A] hover:text-[#4F46E5] shadow-none cursor-pointer">
               <CircleDollarSign className="h-5 w-5" />
               Billing
             </Button>
@@ -131,6 +132,33 @@ export default function Dashboard() {
               </div>
             </CardHeader>
           </Card>
+        </div>
+
+        {/* Middle Section Dashboard */}
+        <div className="mt-[16px]"> 
+          <div className="flex justify-end">
+            <div
+              className="w-[460px] h-[400px] rounded-2xl flex flex-col items-center"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(79,70,229,0.1) 0%, rgba(109,40,217,0.1) 100%)",
+              }}
+            >
+              <div className="mt-4">
+                <img src="/cardIllustration.png" />
+              </div>
+              <div className="w-full flex flex-col items-center mt-4">
+                <span className="font-semibold text-3xl text-center">
+                  Create a new resume
+                </span>
+                <Link href="/editor">
+                  <Button className="mt-2.5 rounded-full w-[140px] bg-[#4F46E5] cursor-pointer">
+                    <Plus /> Add resume
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </>
