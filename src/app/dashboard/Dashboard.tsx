@@ -14,11 +14,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-);
+import { useAuth } from "@clerk/nextjs";
 
 type Resume = {
   id: string;
@@ -33,6 +29,8 @@ export default function Dashboard() {
   const { user, isLoaded } = useUser();
   const [resumes, setResumes] = useState<Resume[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { getToken } = useAuth();
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -44,26 +42,45 @@ export default function Dashboard() {
       }
 
       try {
-        const { data, error } = await supabase
+        const token = await getToken({ template: "supabase" });
+        console.log("JWT token retrieved:", token ? "Yes" : "No");
+
+        if (!token) {
+          setError("Failed to get authentication token");
+          setLoading(false);
+          return;
+        }
+
+        const supabaseWithAuth = createClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+          {
+            global: { headers: { Authorization: `Bearer ${token}` } },
+          },
+        );
+
+        const { data, error: supabaseError } = await supabaseWithAuth
           .from("resumes")
           .select("*")
-          .eq("user_id", user.id)
           .order("created_at", { ascending: false });
 
-        if (error) {
-          console.error("Error fetching resumes:", error);
-        } else if (data) {
-          setResumes(data);
+        if (supabaseError) {
+          console.error("Supabase error:", supabaseError);
+          setError(`Error fetching resumes: ${supabaseError.message}`);
+        } else {
+          console.log("Resumes fetched:", data);
+          setResumes(data || []);
         }
-      } catch (error) {
-        console.error("Error:", error);
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        setError("An unexpected error occurred");
       } finally {
         setLoading(false);
       }
     };
 
     fetchResumes();
-  }, [user, isLoaded]);
+  }, [user, isLoaded, getToken]);
 
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: House },
@@ -126,6 +143,17 @@ export default function Dashboard() {
           </div>
           <UserButton />
         </div>
+
+        {/* Error message */}
+        {error && (
+          <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+            {error}
+            <div className="mt-2 text-sm">
+              Controleer of RLS (Row Level Security) correct is ingesteld in
+              Supabase.
+            </div>
+          </div>
+        )}
 
         {/* Resume carousel */}
         <div className="mb-8">
