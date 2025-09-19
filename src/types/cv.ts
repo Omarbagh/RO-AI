@@ -39,8 +39,6 @@ export type CVData = {
   };
 };
 
-// Je andere types...
-
 export type TouchedType = {
   personal?: Partial<Record<keyof CVData["personal"], boolean>>;
   profile?: boolean;
