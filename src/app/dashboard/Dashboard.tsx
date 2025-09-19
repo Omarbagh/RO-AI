@@ -8,6 +8,8 @@ import {
   Settings,
   FileUser,
   Plus,
+  Eye,
+  Download,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,14 +17,24 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useAuth } from "@clerk/nextjs";
+import { templates } from "../editor/utils/templateMap";
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
 
 type Resume = {
   id: string;
-  data: string;
+  data: any; // Verander van string naar any omdat data al een object kan zijn
   template_id: string;
   user_id: string;
   created_at: string;
 };
+
+// Print verberg stijl
+const printHideStyle = `
+@media print {
+  .no-print { display: none !important; }
+}
+`;
 
 export default function Dashboard() {
   const pathname = usePathname();
@@ -31,6 +43,15 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { getToken } = useAuth();
+  const [previewResume, setPreviewResume] = useState<Resume | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handlePrint = useReactToPrint({
+    contentRef,
+    documentTitle: previewResume?.data 
+      ? `${previewResume.data.personal?.name || 'Resume'}-CV` 
+      : "Resume",
+  });
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -43,8 +64,7 @@ export default function Dashboard() {
 
       try {
         const token = await getToken({ template: "supabase" });
-        console.log("JWT token retrieved:", token ? "Yes" : "No");
-
+        
         if (!token) {
           setError("Failed to get authentication token");
           setLoading(false);
@@ -56,12 +76,13 @@ export default function Dashboard() {
           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
           {
             global: { headers: { Authorization: `Bearer ${token}` } },
-          },
+          }
         );
 
         const { data, error: supabaseError } = await supabaseWithAuth
           .from("resumes")
           .select("*")
+          .eq('user_id', user.id)
           .order("created_at", { ascending: false });
 
         if (supabaseError) {
@@ -69,7 +90,29 @@ export default function Dashboard() {
           setError(`Error fetching resumes: ${supabaseError.message}`);
         } else {
           console.log("Resumes fetched:", data);
-          setResumes(data || []);
+          
+          // Zorg ervoor dat data altijd een object is, niet een string
+          const processedData = data ? data.map(resume => {
+            // Als data een string is, parseer het naar een object
+            if (typeof resume.data === 'string') {
+              try {
+                return {
+                  ...resume,
+                  data: JSON.parse(resume.data)
+                };
+              } catch (e) {
+                console.error("Error parsing resume data:", e);
+                return {
+                  ...resume,
+                  data: {}
+                };
+              }
+            }
+            // Als data al een object is, retourneer het zoals het is
+            return resume;
+          }) : [];
+          
+          setResumes(processedData);
         }
       } catch (err) {
         console.error("Unexpected error:", err);
@@ -89,8 +132,19 @@ export default function Dashboard() {
     { href: "/settings", label: "Settings", icon: Settings },
   ];
 
+  // Functie om resume preview te openen
+  const openPreview = (resume: Resume) => {
+    setPreviewResume(resume);
+  };
+
+  // Functie om resume preview te sluiten
+  const closePreview = () => {
+    setPreviewResume(null);
+  };
+
   return (
     <>
+      <style>{printHideStyle}</style>
       {/* Sidebar */}
       <div className="fixed left-0 top-0 w-[201px] h-screen flex flex-col justify-between bg-[linear-gradient(180deg,_#7C3BEE1A_0%,_#7C3BEE1A_100%)]">
         <div>
@@ -148,10 +202,6 @@ export default function Dashboard() {
         {error && (
           <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
             {error}
-            <div className="mt-2 text-sm">
-              Controleer of RLS (Row Level Security) correct is ingesteld in
-              Supabase.
-            </div>
           </div>
         )}
 
@@ -205,19 +255,29 @@ export default function Dashboard() {
 
                 {/* Existing resumes */}
                 {resumes.map((resume) => {
-                  let data;
-                  try {
-                    data = JSON.parse(resume.data);
-                  } catch (e) {
-                    console.error("Error parsing resume data:", e);
-                    data = {};
-                  }
+                  const data = resume.data || {};
+                  const TemplateComponent = templates.find(
+                    (t) => t.id === resume.template_id
+                  )?.comp;
 
                   return (
                     <div
                       key={resume.id}
                       className="flex-shrink-0 w-64 h-64 rounded-2xl border bg-white p-4 shadow flex flex-col"
                     >
+                      {/* Resume preview thumbnail */}
+                      <div className="flex-grow mb-2 overflow-hidden relative bg-gray-50 rounded-lg h-32">
+                        {TemplateComponent ? (
+                          <div className="scale-50 origin-top-left absolute top-0 left-0 w-[200%] h-[200%] pointer-events-none">
+                            <TemplateComponent data={data} />
+                          </div>
+                        ) : (
+                          <div className="flex items-center justify-center h-full text-gray-400">
+                            <FileUser className="h-12 w-12" />
+                          </div>
+                        )}
+                      </div>
+                      
                       <div className="flex-grow">
                         <div className="font-bold text-lg truncate">
                           {data.personal?.name || "Untitled Resume"}
@@ -225,17 +285,21 @@ export default function Dashboard() {
                         <div className="text-sm text-gray-600 truncate">
                           {data.personal?.title || "No title"}
                         </div>
-                        <div className="mt-2 text-xs text-gray-500">
+                        <div className="mt-1 text-xs text-gray-500">
                           Created:{" "}
                           {new Date(resume.created_at).toLocaleDateString()}
                         </div>
-                        <div className="mt-2 text-xs text-gray-500">
-                          Template: {resume.template_id || "Default"}
-                        </div>
                       </div>
-                      <div className="mt-4">
-                        <Button asChild className="w-full">
-                          <Link href={`/editor/${resume.id}`}>Open</Link>
+                      <div className="mt-4 flex gap-2">
+                        <Button asChild className="flex-1">
+                          <Link href={`/editor/${resume.id}`}>Edit</Link>
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          className="flex-1"
+                          onClick={() => openPreview(resume)}
+                        >
+                          <Eye className="h-4 w-4" />
                         </Button>
                       </div>
                     </div>
@@ -246,6 +310,47 @@ export default function Dashboard() {
           )}
         </div>
       </main>
+
+      {/* Preview Modal */}
+      {previewResume && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="flex justify-between items-center p-4 border-b">
+              <h3 className="text-lg font-semibold">
+                {previewResume.data?.personal?.name || "Resume Preview"}
+              </h3>
+              <div className="flex gap-2">
+                <Button onClick={handlePrint} variant="outline">
+                  <Download className="h-4 w-4 mr-2" />
+                  Download
+                </Button>
+                <Button onClick={closePreview} variant="ghost">
+                  Close
+                </Button>
+              </div>
+            </div>
+            <div className="overflow-auto p-4">
+              <div ref={contentRef} className="mx-auto">
+                {(() => {
+                  const data = previewResume.data || {};
+                  const TemplateComponent = templates.find(
+                    (t) => t.id === previewResume.template_id
+                  )?.comp;
+
+                  return TemplateComponent ? (
+                    <TemplateComponent data={data} />
+                  ) : (
+                    <div className="text-center p-8">
+                      <FileUser className="mx-auto h-12 w-12 text-gray-400" />
+                      <p className="mt-2 text-gray-500">Template not found</p>
+                    </div>
+                  );
+                })()}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
