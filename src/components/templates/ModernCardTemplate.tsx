@@ -14,7 +14,7 @@ export default function ModernCardTemplate({ data }: CVTemplateProps) {
   return (
     <div
       className="max-w-6xl mx-auto p-8"
-      style={{ '--accent': accent } as React.CSSProperties}
+      style={{ "--accent": accent } as React.CSSProperties}
     >
       {/* Profile Card */}
       <div className="bg-white rounded-3xl shadow-2xl overflow-hidden mb-8">
@@ -94,9 +94,14 @@ export default function ModernCardTemplate({ data }: CVTemplateProps) {
                 </div>
                 <div
                   className="p-2 rounded-full"
-                  style={{ background: "rgba(var(--accent-rgb,59,130,246),0.15)" }}
+                  style={{
+                    background: "rgba(var(--accent-rgb,59,130,246),0.15)",
+                  }}
                 >
-                  <Star className="w-5 h-5" style={{ color: "var(--accent)" }} />
+                  <Star
+                    className="w-5 h-5"
+                    style={{ color: "var(--accent)" }}
+                  />
                 </div>
               </div>
               <p className="text-gray-700">{exp.description}</p>
@@ -136,7 +141,10 @@ export default function ModernCardTemplate({ data }: CVTemplateProps) {
         {/* Education */}
         <div className="bg-white rounded-2xl p-8 shadow-lg">
           <div className="flex items-center gap-3 mb-6">
-            <GraduationCap className="w-6 h-6" style={{ color: "var(--accent)" }} />
+            <GraduationCap
+              className="w-6 h-6"
+              style={{ color: "var(--accent)" }}
+            />
             <h2 className="text-2xl font-bold text-gray-800">Opleiding</h2>
           </div>
           <div className="space-y-4">
@@ -150,10 +158,7 @@ export default function ModernCardTemplate({ data }: CVTemplateProps) {
                 }}
               >
                 <h3 className="font-bold text-gray-800">{edu.degree}</h3>
-                <p
-                  className="font-semibold"
-                  style={{ color: "var(--accent)" }}
-                >
+                <p className="font-semibold" style={{ color: "var(--accent)" }}>
                   {edu.school}
                 </p>
                 <p className="text-gray-600">{edu.year}</p>

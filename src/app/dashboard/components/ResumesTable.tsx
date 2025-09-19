@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const ResumesTable = () => {
-  return (
-    <div>ResumesTable</div>
-  )
-}
+  return <div>ResumesTable</div>;
+};
 
-export default ResumesTable
+export default ResumesTable;

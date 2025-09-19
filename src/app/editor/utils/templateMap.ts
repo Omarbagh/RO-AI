@@ -26,5 +26,5 @@ export const templates: TemplateType[] = allTemplates.map(
       color: template.color,
       fileName: template.fileName,
     };
-  }
+  },
 );

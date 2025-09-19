@@ -18,10 +18,13 @@ type EducationError = {
   year?: string;
 };
 
-
 type Props = {
   education: EducationItem[];
-  updateEducationItem: (i: number, field: keyof Education, value: string) => void
+  updateEducationItem: (
+    i: number,
+    field: keyof Education,
+    value: string,
+  ) => void;
   addEducation: () => void;
   markTouched: (key: string, idx?: number, subKey?: string) => void;
   errors: EducationError[];
@@ -54,20 +57,26 @@ export function EducationStep({
                   onChange={(e) =>
                     updateEducationItem(i, "school", e.target.value)
                   }
-                  onBlur={() =>
-                    markTouched("education", i, "school")
-                  }
+                  onBlur={() => markTouched("education", i, "school")}
                   className={
                     errors[i]?.school &&
                     typeof touched.education === "object" &&
-                    (touched.education as { [idx: number]: { [subKey: string]: boolean } })[i]?.school
+                    (
+                      touched.education as {
+                        [idx: number]: { [subKey: string]: boolean };
+                      }
+                    )[i]?.school
                       ? "border-red-500"
                       : ""
                   }
                 />
                 {errors[i]?.school &&
                   typeof touched.education === "object" &&
-                  (touched.education as { [idx: number]: { [subKey: string]: boolean } })[i]?.school && (
+                  (
+                    touched.education as {
+                      [idx: number]: { [subKey: string]: boolean };
+                    }
+                  )[i]?.school && (
                     <div className="text-red-500 text-xs mt-1">
                       {errors[i].school}
                     </div>
@@ -82,20 +91,26 @@ export function EducationStep({
                   onChange={(e) =>
                     updateEducationItem(i, "degree", e.target.value)
                   }
-                  onBlur={() =>
-                    markTouched("education", i, "degree")
-                  }
+                  onBlur={() => markTouched("education", i, "degree")}
                   className={
                     errors[i]?.degree &&
                     typeof touched.education === "object" &&
-                    (touched.education as { [idx: number]: { [subKey: string]: boolean } })[i]?.degree
+                    (
+                      touched.education as {
+                        [idx: number]: { [subKey: string]: boolean };
+                      }
+                    )[i]?.degree
                       ? "border-red-500"
                       : ""
                   }
                 />
                 {errors[i]?.degree &&
                   typeof touched.education === "object" &&
-                  (touched.education as { [idx: number]: { [subKey: string]: boolean } })[i]?.degree && (
+                  (
+                    touched.education as {
+                      [idx: number]: { [subKey: string]: boolean };
+                    }
+                  )[i]?.degree && (
                     <div className="text-red-500 text-xs mt-1">
                       {errors[i].degree}
                     </div>

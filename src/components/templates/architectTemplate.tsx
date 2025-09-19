@@ -1,16 +1,18 @@
-import { CVTemplateProps } from '@/types/cv';
+import { CVTemplateProps } from "@/types/cv";
 
 export function ArchitectTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
 
-
   return (
-    <div className="max-w-5xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-5xl mx-auto bg-white"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       <div className="grid grid-cols-4 min-h-screen">
         {/* Sidebar met accentkleur */}
         <div
           className="p-8"
-          style={{ backgroundColor: 'var(--accent)', color: '#fff' }}
+          style={{ backgroundColor: "var(--accent)", color: "#fff" }}
         >
           {data.personal.photoUrl && (
             <div className="w-full h-32 mb-6 overflow-hidden">
@@ -23,12 +25,17 @@ export function ArchitectTemplate({ data }: CVTemplateProps) {
           )}
           <h1 className="text-2xl font-bold mb-2">{data.personal.name}</h1>
           {/* Titel iets lichter voor contrast */}
-          <p className="text-white text-sm mb-6 opacity-80">{data.personal.title}</p>
+          <p className="text-white text-sm mb-6 opacity-80">
+            {data.personal.title}
+          </p>
 
           <div className="space-y-4 text-xs">
             <div>
               <h3 className="font-bold mb-2">CONTACT</h3>
-              <div className="space-y-1" style={{ color: 'rgba(255,255,255,0.85)' }}>
+              <div
+                className="space-y-1"
+                style={{ color: "rgba(255,255,255,0.85)" }}
+              >
                 <div>{data.personal.email}</div>
                 <div>{data.personal.phone}</div>
               </div>
@@ -36,7 +43,10 @@ export function ArchitectTemplate({ data }: CVTemplateProps) {
 
             <div>
               <h3 className="font-bold mb-2">SKILLS</h3>
-              <div className="space-y-1" style={{ color: 'rgba(255,255,255,0.85)' }}>
+              <div
+                className="space-y-1"
+                style={{ color: "rgba(255,255,255,0.85)" }}
+              >
                 {data.skills.map((skill, i) => (
                   <div key={i}>• {skill}</div>
                 ))}
@@ -46,7 +56,11 @@ export function ArchitectTemplate({ data }: CVTemplateProps) {
             <div>
               <h3 className="font-bold mb-2">EDUCATION</h3>
               {data.education.map((edu, i) => (
-                <div key={i} className="mb-3" style={{ color: 'rgba(255,255,255,0.85)' }}>
+                <div
+                  key={i}
+                  className="mb-3"
+                  style={{ color: "rgba(255,255,255,0.85)" }}
+                >
                   <div className="font-semibold text-white text-xs">
                     {edu.degree}
                   </div>
@@ -63,7 +77,7 @@ export function ArchitectTemplate({ data }: CVTemplateProps) {
           <section className="mb-12">
             <h2
               className="text-4xl font-light mb-8"
-              style={{ color: 'var(--accent)' }}
+              style={{ color: "var(--accent)" }}
             >
               PROJECT STATEMENT
             </h2>
@@ -75,7 +89,7 @@ export function ArchitectTemplate({ data }: CVTemplateProps) {
           <section>
             <h2
               className="text-4xl font-light mb-8"
-              style={{ color: 'var(--accent)' }}
+              style={{ color: "var(--accent)" }}
             >
               PORTFOLIO
             </h2>
@@ -84,7 +98,7 @@ export function ArchitectTemplate({ data }: CVTemplateProps) {
                 <div
                   key={i}
                   className="border-b pb-8"
-                  style={{ borderColor: 'var(--accent)' }}
+                  style={{ borderColor: "var(--accent)" }}
                 >
                   <div className="grid grid-cols-3 gap-8">
                     <div>
@@ -93,7 +107,7 @@ export function ArchitectTemplate({ data }: CVTemplateProps) {
                       </h3>
                       <p
                         className="text-sm uppercase tracking-wide"
-                        style={{ color: 'var(--accent)' }}
+                        style={{ color: "var(--accent)" }}
                       >
                         {exp.company}
                       </p>

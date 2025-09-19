@@ -4,7 +4,10 @@ export function ConsultingTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
 
   return (
-    <div className="max-w-4xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-4xl mx-auto bg-white"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       <div
         className="pl-8 py-8 border-l-8"
         style={{ borderColor: "var(--accent)" }}
@@ -12,10 +15,7 @@ export function ConsultingTemplate({ data }: CVTemplateProps) {
         <h1 className="text-4xl font-bold text-gray-900 mb-2">
           {data.personal.name}
         </h1>
-        <p
-          className="text-xl mb-6"
-          style={{ color: "var(--accent)" }}
-        >
+        <p className="text-xl mb-6" style={{ color: "var(--accent)" }}>
           {data.personal.title}
         </p>
         <div className="flex gap-8 text-gray-600">
@@ -44,7 +44,10 @@ export function ConsultingTemplate({ data }: CVTemplateProps) {
             <div
               key={i}
               className="mb-6 border-l-4 pl-6"
-              style={{ borderColor: "var(--accent)", background: "rgba(var(--accent-rgb), 0.04)" }} // optioneel voor lichte lijn
+              style={{
+                borderColor: "var(--accent)",
+                background: "rgba(var(--accent-rgb), 0.04)",
+              }} // optioneel voor lichte lijn
             >
               <h3 className="text-lg font-semibold text-gray-900">{exp.job}</h3>
               <p style={{ color: "var(--accent)" }}>{exp.company}</p>

@@ -5,10 +5,12 @@ export function MagazineTemplate({ data }: CVTemplateProps) {
   const firstName = data.personal.name.split(" ")[0] || "";
   const lastName = data.personal.name.split(" ")[1] || "";
   const accent = data.settings?.accent || "#1E40AF";
-  
 
   return (
-    <div className="max-w-5xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-5xl mx-auto bg-white"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       <div className="grid grid-cols-3 gap-0">
         <div className="col-span-2 p-10">
           <h1 className="text-7xl font-black text-gray-900 leading-none mb-2">
@@ -28,10 +30,7 @@ export function MagazineTemplate({ data }: CVTemplateProps) {
           {data.experience.map((exp, i) => (
             <div key={i} className="mb-6">
               <h3 className="text-xl font-bold text-gray-900">{exp.job}</h3>
-              <p
-                className="font-semibold"
-                style={{ color: "var(--accent)" }}
-              >
+              <p className="font-semibold" style={{ color: "var(--accent)" }}>
                 {exp.company}
               </p>
               <p className="text-gray-700 text-sm">{exp.description}</p>
@@ -39,10 +38,7 @@ export function MagazineTemplate({ data }: CVTemplateProps) {
           ))}
         </div>
 
-        <div
-          className="text-white p-8"
-          style={{ background: "var(--accent)" }}
-        >
+        <div className="text-white p-8" style={{ background: "var(--accent)" }}>
           {data.personal.photoUrl && (
             <div className="w-full h-32 mb-6">
               <img

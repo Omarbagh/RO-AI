@@ -1,8 +1,5 @@
 module.exports = {
-  content: [
-    './components/templates/**/*.tsx',
-    './lib/renderResumeHtml.ts',
-  ],
+  content: ["./components/templates/**/*.tsx", "./lib/renderResumeHtml.ts"],
   theme: {
     extend: {},
   },

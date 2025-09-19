@@ -1,36 +1,36 @@
-'use client';
+"use client";
 
 import CreativeTemplate from "@/components/templates/CreativeTemplate";
 
 const testData = {
   personal: {
-    name: 'Omar Bagh',
-    title: 'Frontend Developer',
-    email: 'omar@example.com',
-    phone: '+31 6 12345678',
+    name: "Omar Bagh",
+    title: "Frontend Developer",
+    email: "omar@example.com",
+    phone: "+31 6 12345678",
   },
   profile:
-    'Creatieve en gemotiveerde developer met een passie voor moderne webtechnologieën.',
+    "Creatieve en gemotiveerde developer met een passie voor moderne webtechnologieën.",
   experience: [
     {
-      job: 'Frontend Developer',
-      company: 'Techbedrijf BV',
-      description: 'Werkte aan React-apps met Tailwind en Next.js.',
+      job: "Frontend Developer",
+      company: "Techbedrijf BV",
+      description: "Werkte aan React-apps met Tailwind en Next.js.",
     },
     {
-      job: 'Webdesigner',
-      company: 'Design Studio',
-      description: 'Maakte UI/UX ontwerpen en bouwde landing pages.',
+      job: "Webdesigner",
+      company: "Design Studio",
+      description: "Maakte UI/UX ontwerpen en bouwde landing pages.",
     },
   ],
   education: [
     {
-      school: 'Hogeschool van Amsterdam',
-      degree: 'BSc Informatica',
-      year: '2022',
+      school: "Hogeschool van Amsterdam",
+      degree: "BSc Informatica",
+      year: "2022",
     },
   ],
-  skills: ['JavaScript', 'React', 'Next.js', 'Tailwind', 'Figma'],
+  skills: ["JavaScript", "React", "Next.js", "Tailwind", "Figma"],
 };
 
 export default function TestTemplatePage() {

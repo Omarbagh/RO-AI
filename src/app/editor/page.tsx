@@ -3,7 +3,16 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, ArrowRight, Loader2, Wand2, Sparkles, Edit3, CheckCircle, Eye } from "lucide-react";
+import {
+  FileText,
+  ArrowRight,
+  Loader2,
+  Wand2,
+  Sparkles,
+  Edit3,
+  CheckCircle,
+  Eye,
+} from "lucide-react";
 import { templates } from "./utils/templateMap";
 import { TemplateCard } from "./components/TemplateCard";
 import { AnimatedStepIndicator } from "./components/AnimatedStepIndicator";
@@ -71,7 +80,9 @@ export default function EditorPage() {
   const contentRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
-  useEffect(() => { setSaveSuccess(false); }, [pathname]);
+  useEffect(() => {
+    setSaveSuccess(false);
+  }, [pathname]);
 
   const handlePrint = useReactToPrint({
     contentRef,
@@ -81,26 +92,28 @@ export default function EditorPage() {
     onAfterPrint: () => {
       setShowPrintNotification(true);
       setTimeout(() => setShowPrintNotification(false), 5000);
-    }
+    },
   });
-
-  
 
   useEffect(() => {
     document.documentElement.style.setProperty(
       "--accent",
-      formData.settings?.accent || defaultAccent
+      formData.settings?.accent || defaultAccent,
     );
   }, [formData.settings?.accent]);
 
   const currentTemplateMeta = useMemo(
     () => templates.find((t) => t.id === selectedTemplate),
-    [selectedTemplate]
+    [selectedTemplate],
   );
 
   const fieldUsage = useMemo(() => {
     if (!currentTemplateMeta) return {};
-    return (templateFields as Record<string, Record<string, boolean>>)[currentTemplateMeta.fileName] || {};
+    return (
+      (templateFields as Record<string, Record<string, boolean>>)[
+        currentTemplateMeta.fileName
+      ] || {}
+    );
   }, [currentTemplateMeta]);
 
   const usedSteps: string[] = useMemo(() => {
@@ -115,18 +128,18 @@ export default function EditorPage() {
   }, [fieldUsage]);
 
   function getPersonalErrors() {
-  return {
-    name: isEmpty(formData.personal.name) ? "Name is required" : undefined,
-    title: isEmpty(formData.personal.title) ? "Title is required" : undefined,
-    email: isEmpty(formData.personal.email)
-      ? "Email is required"
-      : !validateEmail(formData.personal.email)
-      ? "Invalid email address"
-      : undefined,
-    phone: undefined, // geen fout, dus altijd undefined
-    photoUrl: undefined,
-  };
-}
+    return {
+      name: isEmpty(formData.personal.name) ? "Name is required" : undefined,
+      title: isEmpty(formData.personal.title) ? "Title is required" : undefined,
+      email: isEmpty(formData.personal.email)
+        ? "Email is required"
+        : !validateEmail(formData.personal.email)
+          ? "Invalid email address"
+          : undefined,
+      phone: undefined, // geen fout, dus altijd undefined
+      photoUrl: undefined,
+    };
+  }
   function getProfileError() {
     return fieldUsage["data.profile"] && isEmpty(formData.profile)
       ? "Profile is required"
@@ -153,7 +166,7 @@ export default function EditorPage() {
   function getSkillsErrors() {
     if (!fieldUsage["data.skills"]) return [];
     return formData.skills.map((s) =>
-      isEmpty(s) ? "Skill cannot be empty" : undefined
+      isEmpty(s) ? "Skill cannot be empty" : undefined,
     );
   }
 
@@ -165,12 +178,10 @@ export default function EditorPage() {
         return !getProfileError();
       case "Experience":
         return getExperienceErrors().every(
-          (e) => !e.job && !e.company && !e.description
+          (e) => !e.job && !e.company && !e.description,
         );
       case "Education":
-        return getEducationErrors().every(
-          (e) => !e.school && !e.degree
-        );
+        return getEducationErrors().every((e) => !e.school && !e.degree);
       case "Skills":
         return getSkillsErrors().every((e) => !e);
       default:
@@ -184,9 +195,12 @@ export default function EditorPage() {
         return {
           ...t,
           [key]: {
-            ...(t[key] as { [idx: number]: { [subKey: string]: boolean } } || {}),
+            ...((t[key] as { [idx: number]: { [subKey: string]: boolean } }) ||
+              {}),
             [idx]: {
-              ...((t[key] as { [idx: number]: { [subKey: string]: boolean } })?.[idx] || {}),
+              ...((
+                t[key] as { [idx: number]: { [subKey: string]: boolean } }
+              )?.[idx] || {}),
               [subKey]: true,
             },
           },
@@ -219,7 +233,7 @@ export default function EditorPage() {
   const updateExperienceItem = (
     i: number,
     field: keyof CVData["experience"][0],
-    value: string
+    value: string,
   ) => {
     setFormData((d) => {
       const exp = [...d.experience];
@@ -248,7 +262,7 @@ export default function EditorPage() {
   const updateEducationItem = (
     i: number,
     field: keyof CVData["education"][0],
-    value: string
+    value: string,
   ) => {
     setFormData((d) => {
       const edu = [...d.education];
@@ -419,258 +433,296 @@ export default function EditorPage() {
 
   // --- SIDEBAR/FORM AREA met steps ---
   return (
-  <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 font-sans">
-    <style>{printHideStyle}</style>
-    <div className="flex flex-col lg:flex-row">
-      {/* Sidebar */}
-      <div className="w-full lg:w-2/5 bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-2xl flex flex-col min-h-screen">
-        <div className="p-8 h-full flex flex-col">
-          {/* Top Bar met back button en logo */}
-          <div className="relative flex items-center justify-center mb-8 min-h-[38px]">
-            {step > 0 && (
-              <>
-                <button
-                onClick={() => setStep((s) => s - 1)}
-                className="absolute left-0 top-1/2 -translate-y-1/2 rounded-full border border-gray-300 text-gray-500 hover:text-indigo-600 hover:border-indigo-300 transition-colors w-9 h-9 flex items-center justify-center"
-                aria-label="Back"
-                type="button"
-                style={{ zIndex: 2 }}
-                >
-                <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
-                  <path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                </button>
-                <span className="absolute left-12 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-base select-none">
-                Back
-                </span>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 font-sans">
+      <style>{printHideStyle}</style>
+      <div className="flex flex-col lg:flex-row">
+        {/* Sidebar */}
+        <div className="w-full lg:w-2/5 bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-2xl flex flex-col min-h-screen">
+          <div className="p-8 h-full flex flex-col">
+            {/* Top Bar met back button en logo */}
+            <div className="relative flex items-center justify-center mb-8 min-h-[38px]">
+              {step > 0 && (
+                <>
+                  <button
+                    onClick={() => setStep((s) => s - 1)}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 rounded-full border border-gray-300 text-gray-500 hover:text-indigo-600 hover:border-indigo-300 transition-colors w-9 h-9 flex items-center justify-center"
+                    aria-label="Back"
+                    type="button"
+                    style={{ zIndex: 2 }}
+                  >
+                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
+                      <path
+                        d="M15 6l-6 6 6 6"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                  <span className="absolute left-12 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-base select-none">
+                    Back
+                  </span>
                 </>
+              )}
+              <img
+                src="/logo.png"
+                alt="Logo"
+                className="h-8 w-auto mx-auto"
+                style={{ maxWidth: 140 }}
+              />
+            </div>
+            {/* Steps indicator en titel */}
+            <div className="mb-5">
+              <AnimatedStepIndicator
+                steps={usedSteps.slice(1)}
+                currentStep={step - 1}
+              />
+              <div className="text-left mt-8">
+                {currentStep === "Personal" && (
+                  <>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                      Personal Details
+                    </h2>
+                    <p className="text-[#64748B] text-sm">
+                      Provide your full name, professional title, contact
+                      details, and optionally upload a photo.
+                    </p>
+                  </>
+                )}
+                {currentStep === "Profile" && (
+                  <>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                      Profile Summary
+                    </h2>
+                    <p className="text-[#64748B] text-sm">
+                      Write a short professional summary that highlights your
+                      experience, strengths, and goals.
+                    </p>
+                  </>
+                )}
+                {currentStep === "Experience" && (
+                  <>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                      Experience Information
+                    </h2>
+                    <p className="text-[#64748B] text-sm">
+                      List your previous roles, including job titles, companies,
+                      dates, and a brief description of your responsibilities or
+                      achievements.
+                    </p>
+                  </>
+                )}
+                {currentStep === "Education" && (
+                  <>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                      Education Information
+                    </h2>
+                    <p className="text-[#64748B] text-sm">
+                      Include your educational background with degrees, schools,
+                      and graduation years.
+                    </p>
+                  </>
+                )}
+                {currentStep === "Skills" && (
+                  <>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                      Skills Information
+                    </h2>
+                    <p className="text-[#64748B] text-sm">
+                      Add relevant skills that showcase your expertise and match
+                      the jobs you are targeting.
+                    </p>
+                  </>
+                )}
+                {currentStep === "Final" && (
+                  <FinalPageStep
+                    handlePrint={handlePrint}
+                    showPrintNotification={showPrintNotification}
+                  />
+                )}
+              </div>
+            </div>
+            {/* Kleurenkiezer */}
+            {currentStep !== "Final" && (
+              <div className="mb-4">
+                <ColorPicker
+                  color={formData.settings?.accent || "#1E40AF"}
+                  onChange={(kleur) =>
+                    setFormData((f) => ({
+                      ...f,
+                      settings: {
+                        ...f.settings,
+                        accent: kleur,
+                      },
+                    }))
+                  }
+                  isOpen={showColorPicker}
+                  onToggle={() => setShowColorPicker(!showColorPicker)}
+                />
+              </div>
             )}
-            <img
-              src="/logo.png"
-              alt="Logo"
-              className="h-8 w-auto mx-auto"
-              style={{ maxWidth: 140 }}
-            />
-          </div>
-          {/* Steps indicator en titel */}
-          <div className="mb-5">
-            <AnimatedStepIndicator
-              steps={usedSteps.slice(1)}
-              currentStep={step - 1}
-            />
-            <div className="text-left mt-8">
+            {/* Steps form */}
+            <div className="flex-1 space-y-6 overflow-y-auto">
               {currentStep === "Personal" && (
-                <>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Personal Details</h2>
-                  <p className="text-[#64748B] text-sm">Provide your full name, professional title, contact details, and optionally upload a photo.</p>
-                </>
+                <PersonalStep
+                  formData={formData}
+                  updatePersonal={updatePersonal}
+                  handlePhotoUpload={handlePhotoUpload}
+                  markTouched={markTouched}
+                  errors={personalErrors}
+                  touched={touched}
+                  fieldUsage={fieldUsage}
+                />
               )}
-              {currentStep === "Profile" && (
-                <>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Profile Summary</h2>
-                  <p className="text-[#64748B] text-sm">Write a short professional summary that highlights your experience, strengths, and goals.</p>
-                </>
+              {currentStep === "Profile" && fieldUsage["data.profile"] && (
+                <ProfileStep
+                  formData={formData}
+                  updateProfile={updateProfile}
+                  markTouched={markTouched}
+                  error={profileError}
+                  touched={touched}
+                />
               )}
-              {currentStep === "Experience" && (
-                <>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Experience Information</h2>
-                  <p className="text-[#64748B] text-sm">List your previous roles, including job titles, companies, dates, and a brief description of your responsibilities or achievements.</p>
-                </>
+              {currentStep === "Experience" &&
+                fieldUsage["data.experience"] && (
+                  <ExperienceStep
+                    experience={formData.experience}
+                    updateExperienceItem={updateExperienceItem}
+                    addExperience={addExperience}
+                    removeExperience={removeExperience}
+                    markTouched={markTouched}
+                    errors={experienceErrors}
+                    touched={touched}
+                  />
+                )}
+              {currentStep === "Education" && fieldUsage["data.education"] && (
+                <EducationStep
+                  education={formData.education}
+                  updateEducationItem={updateEducationItem}
+                  addEducation={addEducation}
+                  markTouched={markTouched}
+                  errors={educationErrors}
+                  touched={touched}
+                />
               )}
-              {currentStep === "Education" && (
-                <>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Education Information</h2>
-                  <p className="text-[#64748B] text-sm">Include your educational background with degrees, schools, and graduation years.</p>
-                </>
-              )}
-              {currentStep === "Skills" && (
-                <>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Skills Information</h2>
-                  <p className="text-[#64748B] text-sm">Add relevant skills that showcase your expertise and match the jobs you are targeting.</p>
-                </>
-              )}
-              {currentStep === "Final" && (
-                <FinalPageStep
-                  handlePrint={handlePrint}
-                  showPrintNotification={showPrintNotification}
+              {currentStep === "Skills" && fieldUsage["data.skills"] && (
+                <SkillsStep
+                  skills={formData.skills}
+                  updateSkill={updateSkill}
+                  addSkill={addSkill}
+                  removeSkill={removeSkill}
+                  markTouched={markTouched}
+                  errors={skillsErrors}
+                  touched={touched}
                 />
               )}
             </div>
-          </div>
-          {/* Kleurenkiezer */}
-            {currentStep !== "Final" && (
-            <div className="mb-4">
-              <ColorPicker
-              color={formData.settings?.accent || "#1E40AF"}
-              onChange={kleur =>
-                setFormData(f => ({
-                ...f,
-                settings: {
-                  ...f.settings,
-                  accent: kleur
-                }
-                }))
-              }
-              isOpen={showColorPicker}
-              onToggle={() => setShowColorPicker(!showColorPicker)}
-              />
-            </div>
-            )}
-          {/* Steps form */}
-          <div className="flex-1 space-y-6 overflow-y-auto">
-            {currentStep === "Personal" && (
-              <PersonalStep
-                formData={formData}
-                updatePersonal={updatePersonal}
-                handlePhotoUpload={handlePhotoUpload}
-                markTouched={markTouched}
-                errors={personalErrors}
-                touched={touched}
-                fieldUsage={fieldUsage}
-              />
-            )}
-            {currentStep === "Profile" && fieldUsage["data.profile"] && (
-              <ProfileStep
-                formData={formData}
-                updateProfile={updateProfile}
-                markTouched={markTouched}
-                error={profileError}
-                touched={touched}
-              />
-            )}
-            {currentStep === "Experience" && fieldUsage["data.experience"] && (
-              <ExperienceStep
-                experience={formData.experience}
-                updateExperienceItem={updateExperienceItem}
-                addExperience={addExperience}
-                removeExperience={removeExperience}
-                markTouched={markTouched}
-                errors={experienceErrors}
-                touched={touched}
-              />
-            )}
-            {currentStep === "Education" && fieldUsage["data.education"] && (
-              <EducationStep
-                education={formData.education}
-                updateEducationItem={updateEducationItem}
-                addEducation={addEducation}
-                markTouched={markTouched}
-                errors={educationErrors}
-                touched={touched}
-              />
-            )}
-            {currentStep === "Skills" && fieldUsage["data.skills"] && (
-              <SkillsStep
-                skills={formData.skills}
-                updateSkill={updateSkill}
-                addSkill={addSkill}
-                removeSkill={removeSkill}
-                markTouched={markTouched}
-                errors={skillsErrors}
-                touched={touched}
-              />
-            )}
-          </div>
-          {/* Sticky Navigation buttons */}
-          <div className="sticky bottom-0 bg-white/95 pt-6 pb-6 border-t border-gray-200 z-10">
-            <div className="flex justify-end">
-              {/* Hide navigation entirely on the Final step */}
-              {step === usedSteps.length - 1 ? null : (
-                <Button
-                  onClick={async () => {
-                    // If we're on the step before Final (Skills), save before moving on
-                    if (step === usedSteps.length - 2) {
-                      await handleFinish();
+            {/* Sticky Navigation buttons */}
+            <div className="sticky bottom-0 bg-white/95 pt-6 pb-6 border-t border-gray-200 z-10">
+              <div className="flex justify-end">
+                {/* Hide navigation entirely on the Final step */}
+                {step === usedSteps.length - 1 ? null : (
+                  <Button
+                    onClick={async () => {
+                      // If we're on the step before Final (Skills), save before moving on
+                      if (step === usedSteps.length - 2) {
+                        await handleFinish();
+                      }
+                      setStep((s) => s + 1);
+                    }}
+                    disabled={
+                      // Disable while saving on the Finish action, or if validation fails on other steps
+                      (step === usedSteps.length - 2 &&
+                        (loadingSave || formData.skills.length < 1)) ||
+                      !validateStep(currentStep)
                     }
-                    setStep((s) => s + 1);
-                  }}
-                  disabled={
-                    // Disable while saving on the Finish action, or if validation fails on other steps
-                    (step === usedSteps.length - 2 && (loadingSave || formData.skills.length < 1)) ||
-    !validateStep(currentStep)
-                  }
-                  className={
-                    // Green “Finish Resume” on Skills step, blue “Continue” on all others
-                    step === usedSteps.length - 2
-                      ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white flex items-center gap-2 px-8 py-3"
-                      : "bg-[#4F46E5] text-white flex items-center gap-2 px-6 py-3"
-                  }
-                >
-                  {step === usedSteps.length - 2 ? (
-                    loadingSave ? (
-                      <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        Making Resume...
-                      </>
+                    className={
+                      // Green “Finish Resume” on Skills step, blue “Continue” on all others
+                      step === usedSteps.length - 2
+                        ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white flex items-center gap-2 px-8 py-3"
+                        : "bg-[#4F46E5] text-white flex items-center gap-2 px-6 py-3"
+                    }
+                  >
+                    {step === usedSteps.length - 2 ? (
+                      loadingSave ? (
+                        <>
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                          Making Resume...
+                        </>
+                      ) : (
+                        <>
+                          <Wand2 className="w-5 h-5" />
+                          Finish Resume
+                        </>
+                      )
                     ) : (
                       <>
-                        <Wand2 className="w-5 h-5" />
-                        Finish Resume
+                        Continue
+                        <ArrowRight className="w-4 h-4" />
                       </>
-                    )
-                  ) : (
-                    <>
-                      Continue
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
-                </Button>
-              )}
+                    )}
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Preview */}
-      <div className="w-full lg:w-3/5 bg-[#faf8ff] min-h-screen flex flex-col items-center justify-start p-8">
-        <div className="w-full max-w-2xl">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6 px-2">
-            <div>
-              <h3 className="text-2xl font-semibold text-gray-900">Live Preview</h3>
-              <p className="text-[#7883a1] text-base">See the changes in real-time</p>
+        {/* Preview */}
+        <div className="w-full lg:w-3/5 bg-[#faf8ff] min-h-screen flex flex-col items-center justify-start p-8">
+          <div className="w-full max-w-2xl">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6 px-2">
+              <div>
+                <h3 className="text-2xl font-semibold text-gray-900">
+                  Live Preview
+                </h3>
+                <p className="text-[#7883a1] text-base">
+                  See the changes in real-time
+                </p>
+              </div>
+              <button
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#5142ea] hover:bg-gray-800 text-white font-medium shadow transition-all text-sm"
+                onClick={handlePrint}
+              >
+                <Eye />
+                Download Preview
+              </button>
             </div>
-            <button
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#5142ea] hover:bg-gray-800 text-white font-medium shadow transition-all text-sm"
-              onClick={handlePrint}
+            {/* Preview canvas */}
+            <div
+              className="bg-white rounded-2xl shadow-lg mx-auto transition-all"
+              style={{ minHeight: 650 }}
+              ref={contentRef}
             >
-              <Eye />
-              Download Preview
-            </button>
-          </div>
-          {/* Preview canvas */}
-          <div
-            className="bg-white rounded-2xl shadow-lg mx-auto transition-all"
-            style={{ minHeight: 650 }}
-            ref={contentRef}
-          >
-            {TemplateComponent ? (
-              <div className="p-0 sm:p-4">
-                <div className="flex justify-center items-start">
-                  <div className="w-full max-w-[600px]">
-                    <TemplateComponent data={formData} />
+              {TemplateComponent ? (
+                <div className="p-0 sm:p-4">
+                  <div className="flex justify-center items-start">
+                    <div className="w-full max-w-[600px]">
+                      <TemplateComponent data={formData} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <div className="flex items-center justify-center h-[400px] text-gray-400">
-                <div className="text-center">
-                  <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <FileText className="w-12 h-12 text-gray-300" />
+              ) : (
+                <div className="flex items-center justify-center h-[400px] text-gray-400">
+                  <div className="text-center">
+                    <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <FileText className="w-12 h-12 text-gray-300" />
+                    </div>
+                    <h4 className="text-2xl font-semibold text-gray-700 mb-2">
+                      Preview Loading...
+                    </h4>
+                    <p className="text-gray-500">
+                      Your resume will appear here as you fill in the details
+                    </p>
                   </div>
-                  <h4 className="text-2xl font-semibold text-gray-700 mb-2">
-                    Preview Loading...
-                  </h4>
-                  <p className="text-gray-500">
-                    Your resume will appear here as you fill in the details
-                  </p>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 }

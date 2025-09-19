@@ -8,7 +8,7 @@ export async function GET() {
 
   const supabase = createClient(
     process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
   );
 
   const { count, error } = await supabase
@@ -16,6 +16,7 @@ export async function GET() {
     .select("*", { count: "exact", head: true })
     .eq("user_id", userId);
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error)
+    return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ count: count ?? 0 });
 }

@@ -70,7 +70,9 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
     setError(null);
     if (!currentLanguage) return setError("Please select or enter a language.");
     if (!about.trim())
-      return setError("Please describe briefly what the profile should include.");
+      return setError(
+        "Please describe briefly what the profile should include.",
+      );
 
     try {
       setLoading(true);
@@ -80,7 +82,7 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
         `Use a ${tone.toLowerCase()} tone.`,
         `Aim for ${wordRange()}.`,
         `Do not use bullet points or line breaks.`,
-        `Base it on the following details: ${about.trim()}`
+        `Base it on the following details: ${about.trim()}`,
       ].join(" ");
 
       const res = await fetch("/api/ai-generate", {
@@ -124,32 +126,37 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
   return (
     <div className="inline-flex">
       <button
-          type="button"
-          onClick={() => setOpen(true)}
-          disabled={loading}
-          style={{ letterSpacing: "0.03em" }}
-          className="relative inline-flex items-center gap-2 rounded-full px-5 py-2 mb-4 text-sm font-semibold
+        type="button"
+        onClick={() => setOpen(true)}
+        disabled={loading}
+        style={{ letterSpacing: "0.03em" }}
+        className="relative inline-flex items-center gap-2 rounded-full px-5 py-2 mb-4 text-sm font-semibold
                     bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white shadow-lg
                     hover:via-indigo-400 hover:to-indigo-500
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500
                     disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200"
-        >
-          {/* AI icon */}
-          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M12 2v2m6.364 1.636l-1.414 1.414M20 12h-2M17.364 18.364l-1.414-1.414M12 20v-2M6.636 18.364l1.414-1.414M4 12h2M6.636 5.636l1.414 1.414" />
-              <circle cx="12" cy="12" r="3" />
-            </svg>
-          </span>
+      >
+        {/* AI icon */}
+        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 text-white"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M12 2v2m6.364 1.636l-1.414 1.414M20 12h-2M17.364 18.364l-1.414-1.414M12 20v-2M6.636 18.364l1.414-1.414M4 12h2M6.636 5.636l1.414 1.414" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        </span>
 
-          {/* Button text */}
-          {loading ? "AI is thinking..." : "AI Assist – Generate Profile Summary"}
+        {/* Button text */}
+        {loading ? "AI is thinking..." : "AI Assist – Generate Profile Summary"}
 
-          {/* Subtle gloss effect */}
-          <span className="absolute inset-0 rounded-full bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-        </button>
-
-
+        {/* Subtle gloss effect */}
+        <span className="absolute inset-0 rounded-full bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+      </button>
 
       {open && (
         <div
@@ -166,15 +173,27 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
           />
 
           {/* Modal */}
-          <div ref={dialogRef} className="absolute inset-0 flex items-start justify-center p-4 mt-20">
+          <div
+            ref={dialogRef}
+            className="absolute inset-0 flex items-start justify-center p-4 mt-20"
+          >
             <div className="w-full max-w-2xl rounded-3xl bg-white shadow-[0_20px_60px_rgba(0,0,0,0.15)] ring-1 ring-black/5 overflow-hidden">
               {/* Header */}
               <div className="relative p-6 border-b border-gray-100 bg-gradient-to-b from-gray-50 to-white">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h2 id="cvhero-ai-title" className="text-xl font-semibold tracking-tight text-gray-900">Generate Resume Profile</h2>
-                    <p id="cvhero-ai-desc" className="text-sm text-gray-600 mt-1">
-                      Provide language, tone and key details. We&apos;ll craft a single professional paragraph (no bullet points).
+                    <h2
+                      id="cvhero-ai-title"
+                      className="text-xl font-semibold tracking-tight text-gray-900"
+                    >
+                      Generate Resume Profile
+                    </h2>
+                    <p
+                      id="cvhero-ai-desc"
+                      className="text-sm text-gray-600 mt-1"
+                    >
+                      Provide language, tone and key details. We&apos;ll craft a
+                      single professional paragraph (no bullet points).
                     </p>
                   </div>
                   <button
@@ -183,8 +202,17 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                     className="p-2 rounded-xl text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                     aria-label="Close"
                   >
-                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M18 6L6 18"/><path d="M6 6l12 12"/>
+                    <svg
+                      className="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M18 6L6 18" />
+                      <path d="M6 6l12 12" />
                     </svg>
                   </button>
                 </div>
@@ -196,7 +224,9 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                 <div className="grid gap-4 sm:grid-cols-3">
                   {/* Language */}
                   <div className="sm:col-span-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Language</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Language
+                    </label>
                     <select
                       className="w-full rounded-2xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                       value={language}
@@ -224,7 +254,9 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
 
                   {/* Tone */}
                   <div className="sm:col-span-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Tone</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Tone
+                    </label>
                     <select
                       className="w-full rounded-2xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                       value={tone}
@@ -241,7 +273,9 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
 
                   {/* Length */}
                   <div className="sm:col-span-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Length</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Length
+                    </label>
                     <select
                       className="w-full rounded-2xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                       value={length}
@@ -257,8 +291,12 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                 {/* Details */}
                 <div>
                   <div className="flex items-center justify-between">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">What should the profile include?</label>
-                    <span className={`text-xs ${charsLeft < 0 ? "text-red-600" : "text-gray-500"}`}>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      What should the profile include?
+                    </label>
+                    <span
+                      className={`text-xs ${charsLeft < 0 ? "text-red-600" : "text-gray-500"}`}
+                    >
                       {Math.max(charsLeft, 0)} chars left
                     </span>
                   </div>
@@ -270,10 +308,13 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                     } text-sm px-3 py-2`}
                     placeholder="Add relevant details: experience, sector, achievements (with metrics), skills, tech stack, certifications, languages, career goals, and target role."
                     value={about}
-                    onChange={(e) => setAbout(e.target.value.slice(0, MAX_CHARS))}
+                    onChange={(e) =>
+                      setAbout(e.target.value.slice(0, MAX_CHARS))
+                    }
                   />
                   <p className="mt-1 text-[11px] text-gray-500">
-                    Tip: concrete facts (years, tools, KPIs) make the profile stronger.
+                    Tip: concrete facts (years, tools, KPIs) make the profile
+                    stronger.
                   </p>
 
                   {/* Preset chips */}
@@ -312,15 +353,38 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                 <div className="flex items-center gap-2 text-xs text-gray-500">
                   {loading ? (
                     <>
-                      <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" opacity="0.25" />
-                        <path d="M22 12a10 10 0 0 1-10 10" fill="none" stroke="currentColor" strokeWidth="4" />
+                      <svg
+                        className="h-4 w-4 animate-spin"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <circle
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                          opacity="0.25"
+                        />
+                        <path
+                          d="M22 12a10 10 0 0 1-10 10"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
                       </svg>
                       <span>Generating your profile…</span>
                     </>
                   ) : (
                     <span className="flex items-center gap-1">
-                      <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <svg
+                        className="h-4 w-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
                         <path d="M20 6L9 17l-5-5" />
                       </svg>
                       One paragraph, no bullet points
@@ -343,9 +407,26 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-indigo-600 text-white font-semibold shadow-sm hover:bg-indigo-700 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                   >
                     {loading && (
-                      <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" aria-hidden="true">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" opacity="0.25" />
-                        <path d="M22 12a10 10 0 0 1-10 10" fill="none" stroke="currentColor" strokeWidth="4" />
+                      <svg
+                        className="h-4 w-4 animate-spin"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <circle
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                          opacity="0.25"
+                        />
+                        <path
+                          d="M22 12a10 10 0 0 1-10 10"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
                       </svg>
                     )}
                     Generate

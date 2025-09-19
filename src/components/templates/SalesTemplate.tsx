@@ -8,7 +8,7 @@ export function SalesTemplate({ data }: CVTemplateProps) {
     <div className="max-w-5xl mx-auto bg-white">
       <div
         className="text-white p-10"
-        style={{ '--accent': accent } as React.CSSProperties}
+        style={{ "--accent": accent } as React.CSSProperties}
       >
         <div className="flex justify-between items-center">
           <div>
@@ -33,7 +33,10 @@ export function SalesTemplate({ data }: CVTemplateProps) {
           <div className="text-center">
             <div
               className="bg-white rounded-lg p-4 mb-4"
-              style={{ color: "var(--accent)", border: "2px solid var(--accent)" }}
+              style={{
+                color: "var(--accent)",
+                border: "2px solid var(--accent)",
+              }}
             >
               <div className="text-3xl font-bold">TOP</div>
               <div className="text-sm">PERFORMER</div>
@@ -74,10 +77,7 @@ export function SalesTemplate({ data }: CVTemplateProps) {
                 style={{ borderColor: "var(--accent)" }}
               >
                 <h3 className="text-xl font-bold text-gray-800">{exp.job}</h3>
-                <p
-                  className="font-semibold"
-                  style={{ color: "var(--accent)" }}
-                >
+                <p className="font-semibold" style={{ color: "var(--accent)" }}>
                   {exp.company}
                 </p>
                 <p className="text-gray-700 mt-2">{exp.description}</p>

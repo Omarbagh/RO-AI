@@ -27,12 +27,18 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  const currentLanguage = language === "Custom" && customLanguage.trim() ? customLanguage.trim() : language;
+  const currentLanguage =
+    language === "Custom" && customLanguage.trim()
+      ? customLanguage.trim()
+      : language;
 
   const handleGenerate = async () => {
     setError(null);
     if (!currentLanguage) return setError("Please select or enter a language.");
-    if (!about.trim()) return setError("Please describe briefly what the summary should be about.");
+    if (!about.trim())
+      return setError(
+        "Please describe briefly what the summary should be about.",
+      );
 
     try {
       setLoading(true);
@@ -53,7 +59,10 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
       }
 
       let text = await res.text();
-      if ((text.startsWith("\"") && text.endsWith("\"")) || (text.startsWith("'") && text.endsWith("'"))) {
+      if (
+        (text.startsWith('"') && text.endsWith('"')) ||
+        (text.startsWith("'") && text.endsWith("'"))
+      ) {
         text = text.slice(1, -1);
       }
 
@@ -79,7 +88,6 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
     setAbout((prev) => (prev ? prev + "\n\n" : "") + preset);
   };
 
-
   return (
     <div className="inline-flex">
       <button
@@ -95,7 +103,14 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
       >
         {/* AI icon */}
         <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-4 w-4 text-white"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             <path d="M12 2v2m6.364 1.636l-1.414 1.414M20 12h-2M17.364 18.364l-1.414-1.414M12 20v-2M6.636 18.364l1.414-1.414M4 12h2M6.636 5.636l1.414 1.414" />
             <circle cx="12" cy="12" r="3" />
           </svg>
@@ -108,21 +123,43 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
         <span className="absolute inset-0 rounded-full bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
       </button>
 
-
       {open && (
-        <div className="fixed inset-0 z-[100]" aria-modal="true" role="dialog" aria-labelledby="cvhero-ai-title" aria-describedby="cvhero-ai-desc">
+        <div
+          className="fixed inset-0 z-[100]"
+          aria-modal="true"
+          role="dialog"
+          aria-labelledby="cvhero-ai-title"
+          aria-describedby="cvhero-ai-desc"
+        >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setOpen(false)} />
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setOpen(false)}
+          />
 
           {/* Modal container */}
-          <div ref={dialogRef} className="absolute inset-0 flex items-start justify-center p-4 mt-20">
+          <div
+            ref={dialogRef}
+            className="absolute inset-0 flex items-start justify-center p-4 mt-20"
+          >
             <div className="w-full max-w-2xl rounded-3xl bg-white shadow-[0_20px_60px_rgba(0,0,0,0.15)] ring-1 ring-black/5 overflow-hidden">
               {/* Header */}
               <div className="relative p-6 border-b border-gray-100 bg-gradient-to-b from-gray-50 to-white">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h2 id="cvhero-ai-title" className="text-xl font-semibold tracking-tight text-gray-900">Generate CV Summary</h2>
-                    <p id="cvhero-ai-desc" className="text-sm text-gray-600 mt-1">Provide language, tone and key details. We&apos;ll craft a single professional paragraph (no bullet points).</p>
+                    <h2
+                      id="cvhero-ai-title"
+                      className="text-xl font-semibold tracking-tight text-gray-900"
+                    >
+                      Generate CV Summary
+                    </h2>
+                    <p
+                      id="cvhero-ai-desc"
+                      className="text-sm text-gray-600 mt-1"
+                    >
+                      Provide language, tone and key details. We&apos;ll craft a
+                      single professional paragraph (no bullet points).
+                    </p>
                   </div>
                   <button
                     type="button"
@@ -130,7 +167,18 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                     className="p-2 rounded-xl text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                     aria-label="Close"
                   >
-                    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+                    <svg
+                      className="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M18 6L6 18" />
+                      <path d="M6 6l12 12" />
+                    </svg>
                   </button>
                 </div>
               </div>
@@ -140,7 +188,9 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                 {/* Grid: language + tone + length */}
                 <div className="grid gap-4 sm:grid-cols-3">
                   <div className="sm:col-span-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Language</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Language
+                    </label>
                     <div className="flex gap-2">
                       <select
                         className="w-full rounded-2xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm"
@@ -168,7 +218,9 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                   </div>
 
                   <div className="sm:col-span-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Tone</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Tone
+                    </label>
                     <select
                       className="w-full rounded-2xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                       value={tone}
@@ -183,7 +235,9 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                   </div>
 
                   <div className="sm:col-span-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Length</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Length
+                    </label>
                     <select
                       className="w-full rounded-2xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                       value={length}
@@ -199,16 +253,27 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                 {/* Details */}
                 <div>
                   <div className="flex items-center justify-between">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">What should the description include?</label>
-                    <span className={`text-xs ${charsLeft < 0 ? "text-red-600" : "text-gray-500"}`}>{Math.max(charsLeft, 0)} chars left</span>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      What should the description include?
+                    </label>
+                    <span
+                      className={`text-xs ${charsLeft < 0 ? "text-red-600" : "text-gray-500"}`}
+                    >
+                      {Math.max(charsLeft, 0)} chars left
+                    </span>
                   </div>
                   <textarea
                     className={`w-full min-h-[140px] rounded-2xl border ${charsLeft < 0 ? "border-red-300 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"} text-sm px-3 py-2`}
                     placeholder="Add relevant details: experience, sector, achievements (with metrics), skills, tech stack, certifications, languages, career goals, and target role."
                     value={about}
-                    onChange={(e) => setAbout(e.target.value.slice(0, MAX_CHARS))}
+                    onChange={(e) =>
+                      setAbout(e.target.value.slice(0, MAX_CHARS))
+                    }
                   />
-                  <p className="mt-1 text-[11px] text-gray-500">Tip: concrete facts (years, tools, KPIs) make the summary stronger.</p>
+                  <p className="mt-1 text-[11px] text-gray-500">
+                    Tip: concrete facts (years, tools, KPIs) make the summary
+                    stronger.
+                  </p>
 
                   {/* Preset chips */}
                   <div className="mt-3 flex flex-wrap gap-2">
@@ -231,7 +296,13 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                 </div>
 
                 {error && (
-                  <div className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-2xl p-3" role="alert" aria-live="polite">{error}</div>
+                  <div
+                    className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-2xl p-3"
+                    role="alert"
+                    aria-live="polite"
+                  >
+                    {error}
+                  </div>
                 )}
               </div>
 
@@ -240,11 +311,42 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                 <div className="flex items-center gap-2 text-xs text-gray-500">
                   {loading ? (
                     <>
-                      <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" opacity="0.25" /><path d="M22 12a10 10 0 0 1-10 10" fill="none" stroke="currentColor" strokeWidth="4" /></svg>
+                      <svg
+                        className="h-4 w-4 animate-spin"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <circle
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                          opacity="0.25"
+                        />
+                        <path
+                          d="M22 12a10 10 0 0 1-10 10"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                      </svg>
                       <span>Generating your summary…</span>
                     </>
                   ) : (
-                    <span className="flex items-center gap-1"><svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 6L9 17l-5-5"/></svg>One paragraph, no bullet points</span>
+                    <span className="flex items-center gap-1">
+                      <svg
+                        className="h-4 w-4"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M20 6L9 17l-5-5" />
+                      </svg>
+                      One paragraph, no bullet points
+                    </span>
                   )}
                 </div>
 
@@ -263,7 +365,27 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-indigo-600 text-white font-semibold shadow-sm hover:bg-indigo-700 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                   >
                     {loading && (
-                      <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" opacity="0.25" /><path d="M22 12a10 10 0 0 1-10 10" fill="none" stroke="currentColor" strokeWidth="4" /></svg>
+                      <svg
+                        className="h-4 w-4 animate-spin"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <circle
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                          opacity="0.25"
+                        />
+                        <path
+                          d="M22 12a10 10 0 0 1-10 10"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                      </svg>
                     )}
                     Generate
                   </button>

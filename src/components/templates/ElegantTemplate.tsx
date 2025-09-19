@@ -5,7 +5,10 @@ export default function ElegantTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
 
   return (
-    <div className="max-w-4xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-4xl mx-auto bg-white"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       {/* Elegant Header */}
       <div
         className="border-b-4 pb-8 mb-8"
@@ -73,10 +76,7 @@ export default function ElegantTemplate({ data }: CVTemplateProps) {
               style={{ borderColor: "var(--accent)" }}
             >
               <h3 className="text-xl font-serif text-gray-800">{exp.job}</h3>
-              <p
-                className="italic mb-2"
-                style={{ color: "var(--accent)" }}
-              >
+              <p className="italic mb-2" style={{ color: "var(--accent)" }}>
                 {exp.company}
               </p>
               <p className="text-gray-700 font-light">{exp.description}</p>
@@ -110,10 +110,7 @@ export default function ElegantTemplate({ data }: CVTemplateProps) {
             {data.education.map((edu, i) => (
               <div key={i} className="mb-4">
                 <h3 className="font-serif text-gray-800">{edu.degree}</h3>
-                <p
-                  className="italic"
-                  style={{ color: "var(--accent)" }}
-                >
+                <p className="italic" style={{ color: "var(--accent)" }}>
                   {edu.school}
                 </p>
                 <p className="text-gray-600 text-sm">{edu.year}</p>

@@ -2,7 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { UserButton, useUser } from "@clerk/nextjs";
-import { House, CircleDollarSign, Settings, FileUser, Plus } from "lucide-react";
+import {
+  House,
+  CircleDollarSign,
+  Settings,
+  FileUser,
+  Plus,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -11,7 +17,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
 );
 
 type Resume = {
@@ -30,20 +36,20 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!isLoaded) return;
-    
+
     const fetchResumes = async () => {
       if (!user) {
         setLoading(false);
         return;
       }
-      
+
       try {
         const { data, error } = await supabase
           .from("resumes")
           .select("*")
           .eq("user_id", user.id)
           .order("created_at", { ascending: false });
-        
+
         if (error) {
           console.error("Error fetching resumes:", error);
         } else if (data) {
@@ -55,7 +61,7 @@ export default function Dashboard() {
         setLoading(false);
       }
     };
-    
+
     fetchResumes();
   }, [user, isLoaded]);
 
@@ -87,7 +93,11 @@ export default function Dashboard() {
             {navItems.map(({ href, label, icon: Icon }) => {
               const isActive = pathname === href;
               return (
-                <Link key={href} href={href} className="w-full flex justify-center">
+                <Link
+                  key={href}
+                  href={href}
+                  className="w-full flex justify-center"
+                >
                   <Button
                     className={`w-[184px] justify-start gap-2 rounded-full shadow-none cursor-pointer
                       ${
@@ -128,7 +138,7 @@ export default function Dashboard() {
               </Link>
             </Button>
           </div>
-          
+
           {loading ? (
             <div className="flex justify-center items-center h-40">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#4F46E5]"></div>
@@ -136,8 +146,12 @@ export default function Dashboard() {
           ) : resumes.length === 0 ? (
             <div className="text-center p-8 border-2 border-dashed rounded-lg">
               <FileUser className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900">No resumes</h3>
-              <p className="mt-1 text-sm text-gray-500">Get started by creating a new resume.</p>
+              <h3 className="mt-2 text-sm font-medium text-gray-900">
+                No resumes
+              </h3>
+              <p className="mt-1 text-sm text-gray-500">
+                Get started by creating a new resume.
+              </p>
               <div className="mt-6">
                 <Button asChild>
                   <Link href="/editor" className="flex items-center gap-2">
@@ -153,12 +167,14 @@ export default function Dashboard() {
                 {/* Card to create new resume */}
                 <div className="flex-shrink-0 w-64 h-64 rounded-2xl border-2 border-dashed border-gray-300 flex flex-col items-center justify-center p-4 hover:border-[#4F46E5] transition-colors">
                   <Plus className="h-12 w-12 text-gray-400 mb-2" />
-                  <p className="text-sm font-medium text-gray-900">Create new resume</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    Create new resume
+                  </p>
                   <Button asChild variant="ghost" className="mt-4">
                     <Link href="/editor">Create</Link>
                   </Button>
                 </div>
-                
+
                 {/* Existing resumes */}
                 {resumes.map((resume) => {
                   let data;
@@ -168,7 +184,7 @@ export default function Dashboard() {
                     console.error("Error parsing resume data:", e);
                     data = {};
                   }
-                  
+
                   return (
                     <div
                       key={resume.id}
@@ -182,7 +198,8 @@ export default function Dashboard() {
                           {data.personal?.title || "No title"}
                         </div>
                         <div className="mt-2 text-xs text-gray-500">
-                          Created: {new Date(resume.created_at).toLocaleDateString()}
+                          Created:{" "}
+                          {new Date(resume.created_at).toLocaleDateString()}
                         </div>
                         <div className="mt-2 text-xs text-gray-500">
                           Template: {resume.template_id || "Default"}

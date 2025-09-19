@@ -5,7 +5,10 @@ export default function ModernTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
 
   return (
-    <div className="max-w-5xl mx-auto bg-white shadow-2xl overflow-hidden rounded-lg print:shadow-none print:rounded-none" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-5xl mx-auto bg-white shadow-2xl overflow-hidden rounded-lg print:shadow-none print:rounded-none"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       <div className="flex flex-col lg:flex-row min-h-[297mm] print:min-h-[297mm]">
         {/* Sidebar */}
         <div
@@ -52,7 +55,10 @@ export default function ModernTemplate({ data }: CVTemplateProps) {
               <span className="text-sm">{data.personal.phone}</span>
             </div>
             <div className="flex items-center gap-3">
-              <Calendar className="w-5 h-5" style={{ color: "var(--accent)" }} />
+              <Calendar
+                className="w-5 h-5"
+                style={{ color: "var(--accent)" }}
+              />
               <span className="text-sm">{new Date().getFullYear()}</span>
             </div>
           </div>
@@ -100,7 +106,10 @@ export default function ModernTemplate({ data }: CVTemplateProps) {
               className="text-2xl font-bold mb-6 border-b-2 pb-2 flex items-center gap-2"
               style={{ color: "var(--accent)", borderColor: "var(--accent)" }}
             >
-              <Briefcase className="w-6 h-6" style={{ color: "var(--accent)" }} />
+              <Briefcase
+                className="w-6 h-6"
+                style={{ color: "var(--accent)" }}
+              />
               Werkervaring
             </h2>
             <div className="space-y-6">
@@ -108,7 +117,10 @@ export default function ModernTemplate({ data }: CVTemplateProps) {
                 <div
                   key={i}
                   className="bg-white rounded-lg p-6 shadow-sm border"
-                  style={{ borderColor: "var(--accent)", boxShadow: "0 1px 3px 0 rgba(0,0,0,0.03)" }}
+                  style={{
+                    borderColor: "var(--accent)",
+                    boxShadow: "0 1px 3px 0 rgba(0,0,0,0.03)",
+                  }}
                 >
                   <div className="mb-3">
                     <h3
@@ -145,7 +157,10 @@ export default function ModernTemplate({ data }: CVTemplateProps) {
                 <div
                   key={i}
                   className="bg-white rounded-lg p-5 shadow-sm border"
-                  style={{ borderColor: "var(--accent)", boxShadow: "0 1px 3px 0 rgba(0,0,0,0.03)" }}
+                  style={{
+                    borderColor: "var(--accent)",
+                    boxShadow: "0 1px 3px 0 rgba(0,0,0,0.03)",
+                  }}
                 >
                   <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-2">
                     <div>
@@ -155,9 +170,7 @@ export default function ModernTemplate({ data }: CVTemplateProps) {
                       >
                         {edu.degree}
                       </h3>
-                      <p
-                        style={{ color: "var(--accent)", opacity: 0.7 }}
-                      >
+                      <p style={{ color: "var(--accent)", opacity: 0.7 }}>
                         {edu.school}
                       </p>
                     </div>

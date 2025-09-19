@@ -6,7 +6,7 @@ export function FashionTemplate({ data }: CVTemplateProps) {
   return (
     <div
       className="max-w-5xl mx-auto"
-      style={{ '--accent': accent } as React.CSSProperties}
+      style={{ "--accent": accent } as React.CSSProperties}
     >
       <div className="bg-white">
         <div className="relative overflow-hidden">
@@ -77,10 +77,7 @@ export function FashionTemplate({ data }: CVTemplateProps) {
                   <h3 className="text-xl font-semibold text-gray-900">
                     {exp.job}
                   </h3>
-                  <p
-                    className="italic"
-                    style={{ color: "var(--accent)" }}
-                  >
+                  <p className="italic" style={{ color: "var(--accent)" }}>
                     {exp.company}
                   </p>
                   <p className="text-gray-700 mt-3">{exp.description}</p>

@@ -7,7 +7,7 @@ export default function TechTemplate({ data }: CVTemplateProps) {
   return (
     <div
       className="max-w-5xl mx-auto font-mono overflow-hidden"
-      style={{ '--accent': accent } as React.CSSProperties}
+      style={{ "--accent": accent } as React.CSSProperties}
     >
       {/* Terminal Header */}
       <div
@@ -115,13 +115,19 @@ export default function TechTemplate({ data }: CVTemplateProps) {
                 style={{ borderLeft: "2px solid var(--accent)" }}
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <Code className="w-4 h-4" style={{ color: "var(--accent-yellow, #fde047)" }} />
+                  <Code
+                    className="w-4 h-4"
+                    style={{ color: "var(--accent-yellow, #fde047)" }}
+                  />
                   <h3 className="text-lg font-bold text-white">{exp.job}</h3>
                   <span style={{ color: "var(--accent-cyan, #22d3ee)" }}>
                     @{exp.company}
                   </span>
                 </div>
-                <p className="text-sm leading-relaxed" style={{ color: "#d1d5db" }}>
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ color: "#d1d5db" }}
+                >
                   {exp.description}
                 </p>
               </div>
@@ -147,7 +153,10 @@ export default function TechTemplate({ data }: CVTemplateProps) {
                 {data.skills.map((skill, i) => (
                   <div key={i} className="flex items-center gap-2">
                     <span style={{ color: "var(--accent)" }}>├──</span>
-                    <Cpu className="w-4 h-4" style={{ color: "var(--accent-yellow, #fde047)" }} />
+                    <Cpu
+                      className="w-4 h-4"
+                      style={{ color: "var(--accent-yellow, #fde047)" }}
+                    />
                     <span className="text-white">{skill}</span>
                     <span style={{ color: "var(--accent)" }}>@latest</span>
                   </div>

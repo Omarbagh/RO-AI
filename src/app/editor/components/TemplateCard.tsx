@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Crown, Eye, TrendingUp, Star, ChevronRight } from "lucide-react";
+import {
+  CheckCircle,
+  Crown,
+  Eye,
+  TrendingUp,
+  Star,
+  ChevronRight,
+} from "lucide-react";
 import { TemplateType } from "../types/templateTypes";
 import { defaultPreviewData } from "../data/dummyPreviewData";
 

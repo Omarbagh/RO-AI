@@ -1,10 +1,4 @@
-import {
-  Document,
-  Packer,
-  Paragraph,
-  TextRun,
-  HeadingLevel,
-} from 'docx';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel } from "docx";
 
 type Experience = {
   job: string;
@@ -31,7 +25,10 @@ type CVData = {
   skills: string[];
 };
 
-export async function generateDocx(templateId: number, data: CVData): Promise<Uint8Array> {
+export async function generateDocx(
+  templateId: number,
+  data: CVData,
+): Promise<Uint8Array> {
   const doc = new Document({
     sections: [
       {
@@ -58,7 +55,7 @@ export async function generateDocx(templateId: number, data: CVData): Promise<Ui
           new Paragraph({
             children: [
               new TextRun({ text: data.personal.email }),
-              new TextRun({ text: ' | ', bold: true }),
+              new TextRun({ text: " | ", bold: true }),
               new TextRun({ text: data.personal.phone }),
             ],
             spacing: { after: 400 },
@@ -66,7 +63,7 @@ export async function generateDocx(templateId: number, data: CVData): Promise<Ui
 
           // Profile Section
           new Paragraph({
-            text: 'Profiel',
+            text: "Profiel",
             heading: HeadingLevel.HEADING_2,
             thematicBreak: true,
           }),
@@ -76,27 +73,27 @@ export async function generateDocx(templateId: number, data: CVData): Promise<Ui
           }),
 
           // Experience Section
-            new Paragraph({
-            text: 'Werkervaring',
+          new Paragraph({
+            text: "Werkervaring",
             heading: HeadingLevel.HEADING_2,
             thematicBreak: true,
-            }),
-            ...data.experience.flatMap((exp: Experience) => [
+          }),
+          ...data.experience.flatMap((exp: Experience) => [
             new Paragraph({
               children: [
-              new TextRun({ text: exp.job, bold: true }),
-              new TextRun({ text: ` @ ${exp.company}`, italics: true }),
+                new TextRun({ text: exp.job, bold: true }),
+                new TextRun({ text: ` @ ${exp.company}`, italics: true }),
               ],
             }),
             new Paragraph({
               text: exp.description,
               spacing: { after: 200 },
             }),
-            ]),
+          ]),
 
           // Education Section
           new Paragraph({
-            text: 'Opleiding',
+            text: "Opleiding",
             heading: HeadingLevel.HEADING_2,
             thematicBreak: true,
           }),
@@ -115,16 +112,17 @@ export async function generateDocx(templateId: number, data: CVData): Promise<Ui
 
           // Skills Section
           new Paragraph({
-            text: 'Skills',
+            text: "Skills",
             heading: HeadingLevel.HEADING_2,
             thematicBreak: true,
           }),
           new Paragraph({
-            children: data.skills.map((skill: string) =>
-              new TextRun({
-                text: `• ${skill}`,
-                break: 1,
-              })
+            children: data.skills.map(
+              (skill: string) =>
+                new TextRun({
+                  text: `• ${skill}`,
+                  break: 1,
+                }),
             ),
           }),
         ],

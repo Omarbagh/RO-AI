@@ -5,7 +5,10 @@ export default function BoldTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
 
   return (
-    <div className="max-w-5xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-5xl mx-auto bg-white"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       {/* Bold Header */}
       <div
         className="p-12 relative overflow-hidden"
@@ -15,7 +18,8 @@ export default function BoldTemplate({ data }: CVTemplateProps) {
         <div
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(to right, var(--accent)20, var(--accent)20)",
+            background:
+              "linear-gradient(to right, var(--accent)20, var(--accent)20)",
             opacity: 0.15,
             pointerEvents: "none",
           }}
@@ -149,10 +153,7 @@ export default function BoldTemplate({ data }: CVTemplateProps) {
                   <h3 className="text-xl font-black text-black">
                     {edu.degree}
                   </h3>
-                  <p
-                    className="font-bold"
-                    style={{ color: "var(--accent)" }}
-                  >
+                  <p className="font-bold" style={{ color: "var(--accent)" }}>
                     {edu.school}
                   </p>
                   <p className="text-gray-700 font-semibold">{edu.year}</p>

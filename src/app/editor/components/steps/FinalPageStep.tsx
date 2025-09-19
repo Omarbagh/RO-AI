@@ -1,8 +1,7 @@
-import { CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Download, Share2 } from "lucide-react"
-import { useState, useEffect } from "react"
-
+import { CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Download, Share2 } from "lucide-react";
+import { useState, useEffect } from "react";
 
 interface FinalPageStepProps {
   handlePrint: () => void;
@@ -13,10 +12,10 @@ export default function FinalPageStep({ handlePrint }: FinalPageStepProps) {
 
   useEffect(() => {
     async function checkProStatus() {
-       const proRes = await fetch("/api/check-pro");
-        const { isPro } = await proRes.json();
-        setIsPro(isPro);
-      } 
+      const proRes = await fetch("/api/check-pro");
+      const { isPro } = await proRes.json();
+      setIsPro(isPro);
+    }
     checkProStatus();
   }, []);
 
@@ -27,9 +26,9 @@ export default function FinalPageStep({ handlePrint }: FinalPageStepProps) {
       </div>
       <div className="flex flex-col items-center justify-center gap-3 mb-6">
         <div className="text-center">
-            <h3 className="font-bold text-black text-lg">
+          <h3 className="font-bold text-black text-lg">
             Hurray! You Have Successfully <br /> Created Your Resume
-            </h3>
+          </h3>
           <p className="text-[#64748B] text-sm mt-2">
             Your professional resume is ready to download
           </p>
@@ -37,7 +36,10 @@ export default function FinalPageStep({ handlePrint }: FinalPageStepProps) {
       </div>
       <div className="space-y-3">
         <div className="grid gap-3 items-center justify-center">
-          <Button onClick={handlePrint} className="bg-[#4F46E5] rounded-full h-10 w-80 hover:bg-gray-800 hover:text-white">
+          <Button
+            onClick={handlePrint}
+            className="bg-[#4F46E5] rounded-full h-10 w-80 hover:bg-gray-800 hover:text-white"
+          >
             <Download className="w-4 h-4" />
             Print / Download as PDF{isPro ? " (With Watermark)" : ""}
           </Button>
@@ -52,5 +54,5 @@ export default function FinalPageStep({ handlePrint }: FinalPageStepProps) {
         </div>
       </div>
     </CardContent>
-  )
+  );
 }

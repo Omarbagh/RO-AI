@@ -7,7 +7,7 @@ export function NewspaperTemplate({ data }: CVTemplateProps) {
   return (
     <div
       className="max-w-5xl mx-auto bg-white"
-      style={{ '--accent': accent } as React.CSSProperties}
+      style={{ "--accent": accent } as React.CSSProperties}
     >
       <div
         className="p-4 text-center"
@@ -16,9 +16,7 @@ export function NewspaperTemplate({ data }: CVTemplateProps) {
         <h1 className="text-4xl font-bold font-serif">
           THE PROFESSIONAL TIMES
         </h1>
-        <p className="text-sm">
-          Career Edition • {new Date().getFullYear()}
-        </p>
+        <p className="text-sm">Career Edition • {new Date().getFullYear()}</p>
       </div>
 
       <div className="p-8">
@@ -71,7 +69,12 @@ export function NewspaperTemplate({ data }: CVTemplateProps) {
             ))}
           </div>
 
-          <div style={{ borderLeft: "4px solid var(--accent)", paddingLeft: "1.5rem" }}>
+          <div
+            style={{
+              borderLeft: "4px solid var(--accent)",
+              paddingLeft: "1.5rem",
+            }}
+          >
             <h3
               className="text-lg font-bold font-serif mb-4"
               style={{ borderBottom: "1px solid var(--accent)" }}

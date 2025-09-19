@@ -4,7 +4,10 @@ export function FinanceTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
 
   return (
-    <div className="max-w-4xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-4xl mx-auto bg-white"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       <div className="bg-gray-900 text-white p-8">
         <div className="flex justify-between items-center">
           <div>
@@ -48,10 +51,7 @@ export function FinanceTemplate({ data }: CVTemplateProps) {
           {data.experience.map((exp, i) => (
             <div key={i} className="mb-6 bg-gray-50 p-4 rounded">
               <h3 className="text-lg font-semibold text-gray-900">{exp.job}</h3>
-              <p
-                className="font-medium"
-                style={{ color: "var(--accent)" }}
-              >
+              <p className="font-medium" style={{ color: "var(--accent)" }}>
                 {exp.company}
               </p>
               <p className="text-gray-700 mt-2">{exp.description}</p>

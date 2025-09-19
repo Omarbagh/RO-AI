@@ -32,9 +32,7 @@ export function AnimatedStepIndicator({
                   <span className="text-lg font-bold">{index + 1}</span>
                 )}
               </div>
-              <span
-                className="text-xs mt-2 font-medium transition-colors duration-300 text-gray-400"
-              >
+              <span className="text-xs mt-2 font-medium transition-colors duration-300 text-gray-400">
                 {step}
               </span>
             </div>

@@ -5,7 +5,10 @@ export function NonProfitTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
 
   return (
-    <div className="max-w-4xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-4xl mx-auto bg-white"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       <div
         className="text-white p-8"
         style={{
@@ -66,10 +69,7 @@ export function NonProfitTemplate({ data }: CVTemplateProps) {
               }}
             >
               <h3 className="text-lg font-semibold text-gray-900">{exp.job}</h3>
-              <p
-                className="font-medium"
-                style={{ color: "var(--accent)" }}
-              >
+              <p className="font-medium" style={{ color: "var(--accent)" }}>
                 {exp.company}
               </p>
               <p className="text-gray-700 mt-2">{exp.description}</p>
