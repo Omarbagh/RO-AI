@@ -48,8 +48,8 @@ export default function Dashboard() {
 
   const handlePrint = useReactToPrint({
     contentRef,
-    documentTitle: previewResume?.data 
-      ? `${previewResume.data.personal?.name || 'Resume'}-CV` 
+    documentTitle: previewResume?.data
+      ? `${previewResume.data.personal?.name || "Resume"}-CV`
       : "Resume",
   });
 
@@ -64,7 +64,7 @@ export default function Dashboard() {
 
       try {
         const token = await getToken({ template: "supabase" });
-        
+
         if (!token) {
           setError("Failed to get authentication token");
           setLoading(false);
@@ -76,13 +76,13 @@ export default function Dashboard() {
           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
           {
             global: { headers: { Authorization: `Bearer ${token}` } },
-          }
+          },
         );
 
         const { data, error: supabaseError } = await supabaseWithAuth
           .from("resumes")
           .select("*")
-          .eq('user_id', user.id)
+          .eq("user_id", user.id)
           .order("created_at", { ascending: false });
 
         if (supabaseError) {
@@ -90,28 +90,30 @@ export default function Dashboard() {
           setError(`Error fetching resumes: ${supabaseError.message}`);
         } else {
           console.log("Resumes fetched:", data);
-          
+
           // Zorg ervoor dat data altijd een object is, niet een string
-          const processedData = data ? data.map(resume => {
-            // Als data een string is, parseer het naar een object
-            if (typeof resume.data === 'string') {
-              try {
-                return {
-                  ...resume,
-                  data: JSON.parse(resume.data)
-                };
-              } catch (e) {
-                console.error("Error parsing resume data:", e);
-                return {
-                  ...resume,
-                  data: {}
-                };
-              }
-            }
-            // Als data al een object is, retourneer het zoals het is
-            return resume;
-          }) : [];
-          
+          const processedData = data
+            ? data.map((resume) => {
+                // Als data een string is, parseer het naar een object
+                if (typeof resume.data === "string") {
+                  try {
+                    return {
+                      ...resume,
+                      data: JSON.parse(resume.data),
+                    };
+                  } catch (e) {
+                    console.error("Error parsing resume data:", e);
+                    return {
+                      ...resume,
+                      data: {},
+                    };
+                  }
+                }
+                // Als data al een object is, retourneer het zoals het is
+                return resume;
+              })
+            : [];
+
           setResumes(processedData);
         }
       } catch (err) {
@@ -257,7 +259,7 @@ export default function Dashboard() {
                 {resumes.map((resume) => {
                   const data = resume.data || {};
                   const TemplateComponent = templates.find(
-                    (t) => t.id === resume.template_id
+                    (t) => t.id === resume.template_id,
                   )?.comp;
 
                   return (
@@ -277,7 +279,7 @@ export default function Dashboard() {
                           </div>
                         )}
                       </div>
-                      
+
                       <div className="flex-grow">
                         <div className="font-bold text-lg truncate">
                           {data.personal?.name || "Untitled Resume"}
@@ -294,8 +296,8 @@ export default function Dashboard() {
                         <Button asChild className="flex-1">
                           <Link href={`/editor/${resume.id}`}>Edit</Link>
                         </Button>
-                        <Button 
-                          variant="outline" 
+                        <Button
+                          variant="outline"
                           className="flex-1"
                           onClick={() => openPreview(resume)}
                         >
@@ -334,7 +336,7 @@ export default function Dashboard() {
                 {(() => {
                   const data = previewResume.data || {};
                   const TemplateComponent = templates.find(
-                    (t) => t.id === previewResume.template_id
+                    (t) => t.id === previewResume.template_id,
                   )?.comp;
 
                   return TemplateComponent ? (
