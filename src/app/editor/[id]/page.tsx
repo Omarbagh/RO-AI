@@ -14,20 +14,20 @@ import {
   CheckCircle,
   Eye,
 } from "lucide-react";
-import { templates } from "./utils/templateMap";
-import { TemplateCard } from "./components/TemplateCard";
-import { AnimatedStepIndicator } from "./components/AnimatedStepIndicator";
-import { ColorPicker } from "./components/ColorPicker";
+import { templates } from "../utils/templateMap";
+import { TemplateCard } from "../components/TemplateCard";
+import { AnimatedStepIndicator } from "../components/AnimatedStepIndicator";
+import { ColorPicker } from "../components/ColorPicker";
 import { CVData } from "@/types/cv";
-import templateFields from "../../../scripts/template-fields.json";
+import templateFields from "../../../../scripts/template-fields.json";
 import { usePathname } from "next/navigation";
 import { useReactToPrint } from "react-to-print";
-import { PersonalStep } from "./components/steps/PersonalStep";
-import { ProfileStep } from "./components/steps/ProfileStep";
-import { ExperienceStep } from "./components/steps/ExperienceStep";
-import { EducationStep } from "./components/steps/EducationStep";
-import { SkillsStep } from "./components/steps/SkillsStep";
-import FinalPageStep from "./components/steps/FinalPageStep";
+import { PersonalStep } from "../components/steps/PersonalStep";
+import { ProfileStep } from "../components/steps/ProfileStep";
+import { ExperienceStep } from "../components/steps/ExperienceStep";
+import { EducationStep } from "../components/steps/EducationStep";
+import { SkillsStep } from "../components/steps/SkillsStep";
+import FinalPageStep from "../components/steps/FinalPageStep";
 import { useParams } from "next/navigation";
 
 const printHideStyle = `
