@@ -38,7 +38,7 @@ const printHideStyle = `
 
 type Resume = {
   id: string;
-  data: any; 
+  data: any;
   template_id: string;
   user_id: string;
   created_at: string;
@@ -96,34 +96,36 @@ export default function EditorPage() {
   const pathname = usePathname();
 
   useEffect(() => {
-  if (resumeIdForParams) {
-    const fetchResume = async () => {
-      try {
-        setLoadingResume(true);
-        const response = await fetch(`/api/get-resume?id=${resumeIdForParams}`);
-        if (response.ok) {
-          const resumeData = await response.json();
-          setExistingResume(resumeData);
-          
-          // Vul formulier in met bestaande data
-          if (resumeData.data) {
-            setFormData(resumeData.data);
-          }
-          if (resumeData.template_id) {
-            setSelectedTemplate(resumeData.template_id);
-            setStep(1); 
-          }
-        }
-      } catch (error) {
-        console.error("Error loading resume:", error);
-      } finally {
-        setLoadingResume(false);
-      }
-    };
+    if (resumeIdForParams) {
+      const fetchResume = async () => {
+        try {
+          setLoadingResume(true);
+          const response = await fetch(
+            `/api/get-resume?id=${resumeIdForParams}`,
+          );
+          if (response.ok) {
+            const resumeData = await response.json();
+            setExistingResume(resumeData);
 
-    fetchResume();
-  }
-}, [resumeIdForParams]); 
+            // Vul formulier in met bestaande data
+            if (resumeData.data) {
+              setFormData(resumeData.data);
+            }
+            if (resumeData.template_id) {
+              setSelectedTemplate(resumeData.template_id);
+              setStep(1);
+            }
+          }
+        } catch (error) {
+          console.error("Error loading resume:", error);
+        } finally {
+          setLoadingResume(false);
+        }
+      };
+
+      fetchResume();
+    }
+  }, [resumeIdForParams]);
 
   useEffect(() => {
     setSaveSuccess(false);
@@ -343,49 +345,49 @@ export default function EditorPage() {
   };
 
   const handleFinish = async () => {
-  if (!selectedTemplate) return;
-  setLoadingSave(true);
-  try {
-    const url = resumeIdForParams ? '/api/update-resume' : '/api/save-resume';
-    const method = resumeIdForParams ? 'PUT' : 'POST';
-    
-    const res = await fetch(url, {
-      method: method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ 
-        templateId: selectedTemplate, 
-        formData,
-        ...(resumeIdForParams && { id: resumeIdForParams })
-      }),
-    });
-    
-    if (res.ok) {
-      const result = await res.json();
-      if (!resumeIdForParams) {
-        setResumeId(result.resumeId);
-        router.push(`/editor/${result.resumeId}`);
+    if (!selectedTemplate) return;
+    setLoadingSave(true);
+    try {
+      const url = resumeIdForParams ? "/api/update-resume" : "/api/save-resume";
+      const method = resumeIdForParams ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          templateId: selectedTemplate,
+          formData,
+          ...(resumeIdForParams && { id: resumeIdForParams }),
+        }),
+      });
+
+      if (res.ok) {
+        const result = await res.json();
+        if (!resumeIdForParams) {
+          setResumeId(result.resumeId);
+          router.push(`/editor/${result.resumeId}`);
+        }
+        const proRes = await fetch("/api/check-pro");
+        const { isPro } = await proRes.json();
+        setIsPro(isPro);
+        setSaveSuccess(true);
       }
-      const proRes = await fetch("/api/check-pro");
-      const { isPro } = await proRes.json();
-      setIsPro(isPro);
-      setSaveSuccess(true);
+    } catch (error) {
+      console.error("Save failed:", error);
+    } finally {
+      setLoadingSave(false);
     }
-  } catch (error) {
-    console.error("Save failed:", error);
-  } finally {
-    setLoadingSave(false);
-  }
-};
+  };
 
   const currentStep = usedSteps[step];
 
   if (loadingResume) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-indigo-50">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4F46E5]"></div>
-    </div>
-  );
-}
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-indigo-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4F46E5]"></div>
+      </div>
+    );
+  }
 
   if (!isSignedIn) {
     return (
