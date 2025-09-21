@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { House, CircleDollarSign, Settings, FileUser, Plus, Menu, ChevronLeft } from "lucide-react";
+import { House, CircleDollarSign, Settings, FileUser, Menu, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -65,12 +65,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   </Link>
                 );
               })}
-            </div>
-            <div className="mt-6 px-3">
-              <Button className={`w-full gap-2 ${isCollapsed ? 'px-2' : ''}`} title={isCollapsed ? "New Resume" : undefined}>
-                <Plus className="size-4" /> 
-                {!isCollapsed && "New Resume"}
-              </Button>
             </div>
           </nav>
         </aside>

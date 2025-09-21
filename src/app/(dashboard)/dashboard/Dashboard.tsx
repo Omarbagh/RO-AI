@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ResumeCard } from "./components/ResumeCard";
-import { Eye, Download, Plus } from "lucide-react";
+import { Eye, Download, Plus, TrendingUp, FileText, Activity, Clock, BarChart3, Sparkles, Trash2 } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { useAuth } from "@clerk/nextjs";
@@ -16,7 +16,6 @@ import Link from "next/link";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -72,7 +71,6 @@ export default function Dashboard() {
   const { getToken } = useAuth();
   const [resumes, setResumes] = useState<Resume[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [previewResume, setPreviewResume] = useState<Resume | null>(null);
   const [activity, setActivity] = useState<ActivityItem[]>([]);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -94,6 +92,48 @@ export default function Dashboard() {
     `,
   });
 
+  const deleteResume = async (resumeId: string) => {
+    if (!user) return;
+    
+    try {
+      const token = await getToken({ template: "supabase" });
+      if (!token) return;
+
+      const supabaseWithAuth = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        { global: { headers: { Authorization: `Bearer ${token}` } } }
+      );
+
+      const { error } = await supabaseWithAuth
+        .from("resumes")
+        .delete()
+        .eq("id", resumeId)
+        .eq("user_id", user.id);
+
+      if (error) {
+        console.error("Error deleting resume:", error);
+        return;
+      }
+
+      // Remove the deleted resume from state
+      setResumes(resumes.filter(resume => resume.id !== resumeId));
+      
+      // Add activity log for deletion
+      const newActivityItem: ActivityItem = {
+        id: Date.now().toString(),
+        description: "Deleted a resume",
+        timestamp: new Date().toISOString(),
+        action_type: "delete"
+      };
+      
+      setActivity(prev => [newActivityItem, ...prev.slice(0, 4)]);
+      
+    } catch (err) {
+      console.error("Unexpected error deleting resume:", err);
+    }
+  };
+
   useEffect(() => {
     if (!isLoaded) return;
 
@@ -106,7 +146,6 @@ export default function Dashboard() {
       try {
         const token = await getToken({ template: "supabase" });
         if (!token) {
-          setError("Failed to get authentication token");
           setLoading(false);
           return;
         }
@@ -126,7 +165,6 @@ export default function Dashboard() {
 
         if (resumesError) {
           console.error("Supabase error:", resumesError);
-          setError(`Error fetching resumes: ${resumesError.message}`);
         } else {
           const processedData = (resumesData || []).map((resume) =>
             typeof resume.data === "string"
@@ -175,7 +213,6 @@ export default function Dashboard() {
 
       } catch (err) {
         console.error("Unexpected error:", err);
-        setError("An unexpected error occurred");
       } finally {
         setLoading(false);
       }
@@ -192,44 +229,108 @@ export default function Dashboard() {
   return (
     <>
       <style>{printHideStyle}</style>
-      <div className="w-full max-w-full overflow-x-hidden px-4">
-        <div className="flex items-center justify-between mb-6">
+      <div className="w-full max-w-full overflow-x-hidden px-4 animate-fade-in">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-            <p className="text-muted-foreground">Manage your resumes and activity</p>
+            <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-indigo-700 bg-clip-text text-transparent">
+              Resume Dashboard
+            </h1>
+            <p className="text-muted-foreground mt-1 flex items-center gap-1">
+              <Sparkles className="h-4 w-4 text-indigo-500" />
+              AI-powered resume management at your fingertips
+            </p>
           </div>
-          <Button className="gap-2" asChild>
+          <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 hover:shadow-lg shadow-md" asChild>
             <Link href="/editor">
-              <Plus className="size-4" /> Create New
+              <Plus className="size-4" /> Create New Resume
             </Link>
           </Button>
         </div>
 
-        {error && (
-          <Card className="mb-6 border-destructive text-destructive w-full">
-            <CardContent className="pt-4">{error}</CardContent>
+        {/* Stats Overview Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+          <Card className="border-0 shadow-md bg-gradient-to-br from-white to-indigo-50/30 hover:shadow-lg transition-all duration-300 group hover-lift">
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="p-3 rounded-lg bg-indigo-100/80 group-hover:bg-indigo-200/60 transition-colors duration-300">
+                  <FileText className="h-6 w-6 text-indigo-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Resumes</p>
+                  <p className="text-2xl font-bold text-gray-900">{resumes.length}</p>
+                </div>
+              </div>
+            </CardContent>
           </Card>
-        )}
+
+          <Card className="border-0 shadow-md bg-gradient-to-br from-white to-green-50/30 hover:shadow-lg transition-all duration-300 group hover-lift">
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="p-3 rounded-lg bg-green-100/80 group-hover:bg-green-200/60 transition-colors duration-300">
+                  <TrendingUp className="h-6 w-6 text-green-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Last Activity</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {activity.length > 0 ? new Date(activity[0].timestamp).toLocaleDateString() : "Never"}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-0 shadow-md bg-gradient-to-br from-white to-blue-50/30 hover:shadow-lg transition-all duration-300 group hover-lift">
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <div className="p-3 rounded-lg bg-blue-100/80 group-hover:bg-blue-200/60 transition-colors duration-300">
+                  <Activity className="h-6 w-6 text-blue-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Recent Actions</p>
+                  <p className="text-2xl font-bold text-gray-900">{activity.length}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         <div className="grid lg:grid-cols-3 gap-6 w-full">
           <div className="lg:col-span-2 space-y-6 w-full">
-            <Card>
-              <CardHeader className="pb-3">
+            {/* Resumes Section */}
+            <Card className="border-0 shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover-lift">
+              <CardHeader className="pb-3 border-b">
                 <div className="flex items-center justify-between w-full">
-                  <CardTitle className="text-lg">Your Resumes</CardTitle>
-                  <Button variant="outline" className="gap-2" size="sm">
-                    <Eye className="size-4" />View All
-                  </Button>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-indigo-600" />
+                    Your Resumes
+                  </CardTitle>
+                  <span className="text-sm text-indigo-600 bg-indigo-100 px-2 py-1 rounded-full">
+                    {resumes.length} items
+                  </span>
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-6">
                 {loading ? (
-                  <div className="h-40 grid place-items-center w-full">Loading...</div>
+                  <div className="h-40 grid place-items-center w-full">
+                    <div className="animate-pulse flex flex-col items-center">
+                      <div className="rounded-full bg-indigo-100 h-12 w-12 mb-3"></div>
+                      <div className="h-4 bg-indigo-100 rounded w-3/4"></div>
+                    </div>
+                  </div>
                 ) : resumes.length === 0 ? (
-                  <div className="text-center py-8">
-                    <p className="text-muted-foreground mb-4">Get started by creating a new resume.</p>
-                    <Button asChild>
-                      <Link href="/editor">New Resume</Link>
+                  <div className="text-center py-8 animate-fade-in">
+                    <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-indigo-100 mb-4">
+                      <FileText className="h-8 w-8 text-indigo-600" />
+                    </div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">No resumes yet</h3>
+                    <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                      Create your first professional resume to kickstart your job search journey.
+                    </p>
+                    <Button className="bg-indigo-600 hover:bg-indigo-700 transition-colors gap-2" asChild>
+                      <Link href="/editor">
+                        <Plus className="size-4" /> Create Resume
+                      </Link>
                     </Button>
                   </div>
                 ) : (
@@ -237,143 +338,173 @@ export default function Dashboard() {
                     <div className="relative w-full">
                       <Carousel className="w-full">
                         <CarouselContent className="w-full">
-                          {resumes.map((resume) => (
+                          {resumes.map((resume, index) => (
                             <CarouselItem key={resume.id} className="px-1 sm:basis-1/2 lg:basis-1/3">
-                              <ResumeCard
-                                resume={resume}
-                                onEdit={() => {}}
-                                onPreview={setPreviewResume}
-                              />
+                              <div className="animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
+                                <ResumeCard
+                                  resume={resume}
+                                  onEdit={() => {}}
+                                  onPreview={setPreviewResume}
+                                  onDelete={deleteResume}
+                                />
+                              </div>
                             </CarouselItem>
                           ))}
                         </CarouselContent>
-                        <CarouselPrevious className="left-2 z-10" />
-                        <CarouselNext className="right-2 z-10" />
+                        <CarouselPrevious className="left-2 z-10 border-indigo-200 text-indigo-600 hover:bg-indigo-50 bg-white shadow-sm" />
+                        <CarouselNext className="right-2 z-10 border-indigo-200 text-indigo-600 hover:bg-indigo-50 bg-white shadow-sm" />
                       </Carousel>
                     </div>
                   ) : (
                     <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 w-full">
-                      {resumes.map((resume) => (
-                        <ResumeCard
-                          key={resume.id}
-                          resume={resume}
-                          onEdit={() => {}}
-                          onPreview={setPreviewResume}
-                        />
+                      {resumes.map((resume, index) => (
+                        <div key={resume.id} className="animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
+                          <ResumeCard
+                            resume={resume}
+                            onEdit={() => {}}
+                            onPreview={setPreviewResume}
+                            onDelete={deleteResume}
+                          />
+                        </div>
                       ))}
                     </div>
                   )
                 )}
               </CardContent>
             </Card>
+
+            {/* Recent Activity Table - Moved beneath the carousel */}
+            <Card className="border-0 shadow-md transition-all duration-300 hover:shadow-lg hover-lift">
+              <CardHeader className="pb-3 border-b">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-indigo-600" />
+                  Recent Activity
+                  <span className="text-sm text-indigo-600 bg-indigo-100 px-2 py-1 rounded-full ml-2">
+                    {activity.length}
+                  </span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                {activity.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                    <Activity className="h-12 w-12 mx-auto text-gray-300 mb-3" />
+                    <p>No activity yet. Create or edit a resume to see activity here.</p>
+                  </div>
+                ) : (
+                  <div className="rounded-lg border border-gray-100 overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <Table>
+                        <TableHeader className="bg-gray-50/50">
+                          <TableRow>
+                            <TableHead className="text-xs font-medium text-gray-600 uppercase tracking-wider">Action</TableHead>
+                            <TableHead className="text-xs font-medium text-gray-600 uppercase tracking-wider">Description</TableHead>
+                            <TableHead className="text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Date & Time</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {activity.map((activityItem, index) => (
+                            <TableRow 
+                              key={activityItem.id} 
+                              className="animate-fade-in border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors"
+                              style={{ animationDelay: `${index * 100}ms` }}
+                            >
+                              <TableCell className="font-medium">
+                                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                  activityItem.action_type === 'create' ? 'bg-green-100 text-green-800' :
+                                  activityItem.action_type === 'update' ? 'bg-blue-100 text-blue-800' :
+                                  activityItem.action_type === 'delete' ? 'bg-red-100 text-red-800' :
+                                  activityItem.action_type === 'view' ? 'bg-purple-100 text-purple-800' :
+                                  'bg-indigo-100 text-indigo-800'
+                                }`}>
+                                  {activityItem.action_type}
+                                </span>
+                              </TableCell>
+                              <TableCell className="text-sm text-gray-700">{activityItem.description}</TableCell>
+                              <TableCell className="text-right">
+                                <div className="flex flex-col items-end">
+                                  <span className="text-sm font-medium text-gray-700">
+                                    {new Date(activityItem.timestamp).toLocaleDateString()}
+                                  </span>
+                                  <span className="text-xs text-gray-500">
+                                    {new Date(activityItem.timestamp).toLocaleTimeString()}
+                                  </span>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </div>
           
+          {/* Right Sidebar */}
           <div className="space-y-6 w-full">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Quick Stats</CardTitle>
+            <Card className="border-0 shadow-md transition-all duration-300 hover:shadow-lg hover-lift">
+              <CardHeader className="pb-3 border-b">
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-indigo-600" />
+                  AI Tips & Best Practices
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Total Resumes</span>
-                    <span className="text-lg font-bold">{resumes.length}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Last Created</span>
-                    <span className="text-sm">
-                      {resumes.length > 0 
-                        ? new Date(resumes[0].created_at).toLocaleDateString() 
-                        : "Never"}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Recent Activity</span>
-                    <span className="text-sm">{activity.length} items</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Tips</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-start gap-2">
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-3 p-3 rounded-lg transition-colors hover:bg-indigo-50/30">
                     <div className="mt-1 size-2 rounded-full bg-indigo-500 flex-shrink-0" />
-                    <span>Keep your resume updated with recent experiences</span>
+                    <span className="text-sm">Use action verbs and quantify achievements for maximum impact</span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li className="flex items-start gap-3 p-3 rounded-lg transition-colors hover:bg-indigo-50/30">
                     <div className="mt-1 size-2 rounded-full bg-indigo-500 flex-shrink-0" />
-                    <span>Use different templates for different job applications</span>
+                    <span className="text-sm">Tailor your resume for each job application using different templates</span>
                   </li>
-                  <li className="flex items-start gap-2">
+                  <li className="flex items-start gap-3 p-3 rounded-lg transition-colors hover:bg-indigo-50/30">
                     <div className="mt-1 size-2 rounded-full bg-indigo-500 flex-shrink-0" />
-                    <span>Download your resume as PDF for sharing</span>
+                    <span className="text-sm">Download as PDF to preserve formatting when sharing with employers</span>
+                  </li>
+                  <li className="flex items-start gap-3 p-3 rounded-lg transition-colors hover:bg-indigo-50/30">
+                    <div className="mt-1 size-2 rounded-full bg-indigo-500 flex-shrink-0" />
+                    <span className="text-sm">Keep your resume to 1-2 pages for optimal readability</span>
                   </li>
                 </ul>
-              </CardContent>
-            </Card>
-
-            {/* Recent Activity Table - Moved to right side */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Recent Activity</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Table>
-                  <TableCaption className="pb-3">
-                    {activity.length === 0 ? "No recent activity" : "A list of your recent activities"}
-                  </TableCaption>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Action</TableHead>
-                      <TableHead>Description</TableHead>
-                      <TableHead className="text-right">Date</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {activity.map((activityItem) => (
-                      <TableRow key={activityItem.id}>
-                        <TableCell className="font-medium capitalize">{activityItem.action_type}</TableCell>
-                        <TableCell className="text-xs">{activityItem.description}</TableCell>
-                        <TableCell className="text-right text-xs">
-                          {new Date(activityItem.timestamp).toLocaleDateString()}
-                          <br />
-                          <span className="text-xs text-muted-foreground">
-                            {new Date(activityItem.timestamp).toLocaleTimeString()}
-                          </span>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
               </CardContent>
             </Card>
           </div>
         </div>
 
+        {/* Resume Preview Dialog */}
         <Dialog open={!!previewResume} onOpenChange={(o) => !o && setPreviewResume(null)}>
-          <DialogContent className="max-w-4xl w-full h-[90vh] flex flex-col">
-            <DialogHeader className="flex-shrink-0">
-              <DialogTitle>{previewResume?.data?.personal?.name || "Resume Preview"}</DialogTitle>
+          <DialogContent className="max-w-4xl w-full h-[90vh] flex flex-col backdrop-blur-sm">
+            <DialogHeader className="flex-shrink-0 pb-4 border-b">
+              <DialogTitle className="text-indigo-600 flex items-center gap-2">
+                <Eye className="h-5 w-5" />
+                {previewResume?.data?.personal?.name || "Resume Preview"}
+              </DialogTitle>
             </DialogHeader>
-            <div className="flex items-center justify-between pb-2 w-full flex-shrink-0 no-print">
-              <div />
-              <Button onClick={handlePrint} className="gap-2">
-                <Download className="size-4" /> Download
+            <div className="flex items-center justify-between py-4 w-full flex-shrink-0 no-print border-b">
+              <div className="text-sm text-muted-foreground">
+                Template: {previewResume?.template_id || "Standard"}
+              </div>
+              <Button 
+                onClick={handlePrint} 
+                className="gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors"
+              >
+                <Download className="size-4" /> Download PDF
               </Button>
             </div>
-            <div className="flex-1 overflow-auto">
+            <div className="flex-1 overflow-auto py-4">
               <div ref={contentRef} className="w-full flex justify-center">
                 {TemplateComp ? (
-                  <div className="w-[210mm]"> {/* Standard A4 width */}
+                  <div className="w-[210mm] shadow-lg rounded"> 
                     <TemplateComp data={previewResume!.data} />
                   </div>
                 ) : (
-                  <div>Template not found</div>
+                  <div className="text-center py-12 text-gray-500">
+                    <FileText className="h-12 w-12 mx-auto mb-4" />
+                    <p>Template not available for preview</p>
+                  </div>
                 )}
               </div>
             </div>
