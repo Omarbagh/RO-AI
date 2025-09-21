@@ -19,7 +19,7 @@ import { TemplateCard } from "../components/TemplateCard";
 import { AnimatedStepIndicator } from "../components/AnimatedStepIndicator";
 import { ColorPicker } from "../components/ColorPicker";
 import { CVData } from "@/types/cv";
-import templateFields from "../../../../scripts/template-fields.json";
+import templateFields from "../../../../../scripts/template-fields.json";
 import { usePathname } from "next/navigation";
 import { useReactToPrint } from "react-to-print";
 import { PersonalStep } from "../components/steps/PersonalStep";

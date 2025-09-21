@@ -32,23 +32,19 @@ export function TemplateCard({
 
   return (
     <div
-      className={`group cursor-pointer transition-all duration-500 hover:scale-[1.02] relative overflow-hidden animate-fade-in-up`}
-      style={{
-        animationDelay: `${index * 100}ms`,
-        animationFillMode: "both",
-      }}
+      className="group relative transition-all duration-500 hover:scale-[1.02] animate-fade-in-up"
+      style={{ animationDelay: `${index * 100}ms`, animationFillMode: "both" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={isLocked ? undefined : onSelect}
     >
       <Card
-        className={`h-full transition-all duration-300 ${
+        className={`h-full relative overflow-hidden transition-all duration-300 ${
           isSelected
             ? "ring-2 ring-indigo-500 shadow-2xl border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50"
             : "border-gray-200 hover:border-indigo-300 hover:shadow-xl"
         } ${isLocked ? "opacity-75" : ""}`}
       >
-        {/* Premium Badge */}
+        {/* PRO badge */}
         {template.pro && (
           <div className="absolute top-4 left-4 z-20">
             <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-lg">
@@ -58,7 +54,7 @@ export function TemplateCard({
           </div>
         )}
 
-        {/* Popularity Badge */}
+        {/* Popularity badge */}
         <div className="absolute top-4 right-4 z-20">
           <Badge
             variant="secondary"
@@ -69,16 +65,16 @@ export function TemplateCard({
           </Badge>
         </div>
 
-        {/* Selection Indicator */}
+        {/* Selected indicator */}
         {isSelected && (
           <div className="absolute top-4 right-16 z-20 bg-indigo-500 text-white rounded-full p-1.5 shadow-lg animate-bounce">
             <CheckCircle className="w-4 h-4" />
           </div>
         )}
 
-        {/* Lock Overlay */}
+        {/* Locked overlay */}
         {isLocked && (
-          <div className="absolute inset-0 z-30 bg-black/30 backdrop-blur-[2px] flex items-center justify-center">
+          <div className="absolute inset-0 z-30 bg-black/30 backdrop-blur-sm flex items-center justify-center">
             <div className="bg-white rounded-xl p-6 shadow-2xl text-center max-w-48">
               <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Crown className="w-6 h-6 text-white" />
@@ -99,26 +95,27 @@ export function TemplateCard({
           </div>
         )}
 
-        {/* Template Preview */}
+        {/* Template preview */}
         <div className="h-64 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden rounded-t-lg relative">
           <div
             className={`absolute inset-0 bg-gradient-to-br ${template.color} opacity-5`}
-          ></div>
-          <div className="relative z-5 transform scale-[0.28] origin-top-left w-[357%] h-[357%] pointer-events-none">
+          />
+          <div className="relative z-10 transform scale-[0.28] origin-top-left w-[357%] h-[357%] pointer-events-none">
             <div className="bg-white rounded-lg shadow-sm">
               <Preview data={defaultPreviewData} />
             </div>
           </div>
 
-          {/* Hover Overlay */}
+          {/* Hover overlay */}
           <div
-            className={`absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-300 ${
+            className={`absolute inset-0 z-20 bg-black/50 flex items-center justify-center transition-opacity duration-300 ${
               isHovered && !isLocked ? "opacity-100" : "opacity-0"
             }`}
           >
             <Button
               size="lg"
               className="bg-white text-gray-900 hover:bg-gray-100 shadow-xl transform scale-110"
+              onClick={onSelect}
             >
               <Eye className="w-5 h-5 mr-2" />
               Preview Template
@@ -165,14 +162,15 @@ export function TemplateCard({
           </div>
           <Button
             size="sm"
+            onClick={!isLocked ? onSelect : undefined}
+            disabled={isLocked}
             className={`w-full transition-all duration-300 ${
               isSelected
                 ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg"
                 : isLocked
-                  ? "bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600"
-                  : "bg-gradient-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700"
+                ? "bg-gradient-to-r from-amber-500 to-orange-500"
+                : "bg-gradient-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700"
             }`}
-            disabled={isLocked}
           >
             {isSelected ? (
               <>
