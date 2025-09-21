@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { House, CircleDollarSign, Settings, FileUser, Menu, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { UserButton } from "@clerk/nextjs";
 
@@ -26,7 +26,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-slate-50 text-foreground w-full">
-      <div className={`grid ${isCollapsed ? 'grid-cols-[80px_1fr]' : 'grid-cols-[260px_1fr]'} min-h-screen transition-all duration-300 w-full`}>
+      <div className={`grid ${isCollapsed ? 'grid-cols-[70px_1fr]' : 'grid-cols-[220px_1fr]'} min-h-screen transition-all duration-300 w-full`}>
         {/* Sidebar with gradient background */}
         <aside 
           className="text-sidebar-foreground border-r border-sidebar-border relative"
@@ -64,7 +64,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     className={`flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all ${
                       isActive
                         ? "bg-indigo-600 text-white shadow-md"
-                        : "text-indigo-700 hover:bg-indigo-500/20 hover:text-indigo-800"
+                        : "text-black hover:bg-indigo-500/20 hover:text-indigo-800"
                     } ${isCollapsed ? "justify-center" : ""}`}
                     title={isCollapsed ? label : undefined}
                   >
@@ -75,30 +75,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               })}
             </div>
           </nav>
-          
-          {/* Sidebar footer with user info when expanded */}
-          {!isCollapsed && (
-            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-indigo-200/20 bg-white/10 backdrop-blur-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <UserButton />
-                  <div className="text-xs text-indigo-700/80">
-                    <div className="font-medium">Your Account</div>
-                    <div className="text-indigo-600/60">Manage profile</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
         </aside>
         
         <main className="w-full">
           <header className="h-16 flex items-center justify-between px-6 border-b bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/60 w-full">
-            <Input 
+            {/* <Input 
               className="w-80 border-indigo-200 focus:border-indigo-400 focus:ring-indigo-400/30" 
               placeholder="Search resumes..." 
-            />
-            <div className="flex items-center gap-3">
+            /> */}
+            <div className="flex items-center gap-3 ml-auto">
               <UserButton />
             </div>
           </header>

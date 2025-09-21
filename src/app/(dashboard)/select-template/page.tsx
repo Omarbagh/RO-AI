@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { TemplateCard } from "../(dashboard)/editor/components/TemplateCard";
+import { TemplateCard } from "../editor/components/TemplateCard";
 import {
   CheckCircle2,
   Filter,
@@ -14,7 +14,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 
-import { templates } from "../(dashboard)/editor/utils/templateMap";
+import { templates } from "../editor/utils/templateMap";
 
 export default function TemplateSelectionPage() {
   const router = useRouter();
@@ -42,25 +42,6 @@ export default function TemplateSelectionPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100">
-      {/* Header */}
-      <header className="sticky top-0 z-30 border-b border-slate-200/60 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => router.push("/dashboard")}
-              className="flex items-center gap-2"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Dashboard
-            </Button>
-            <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-brand to-indigo-600 shadow-inner" />
-            <span className="text-lg font-semibold tracking-tight">CVHero</span>
-          </div>
-        </div>
-      </header>
-
       {/* Main */}
       <main className="container mx-auto px-4 py-10">
         {/* Intro */}
