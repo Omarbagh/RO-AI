@@ -54,7 +54,8 @@ export default function TemplateSelectionPage() {
               Choose a template
             </h1>
             <p className="mt-3 text-slate-600">
-              A clean and modern UI to quickly find the best template for your resume.
+              A clean and modern UI to quickly find the best template for your
+              resume.
             </p>
           </div>
 

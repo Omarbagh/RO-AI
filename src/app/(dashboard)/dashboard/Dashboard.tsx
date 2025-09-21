@@ -3,10 +3,32 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { ResumeCard } from "./components/ResumeCard";
-import { Eye, Download, Plus, TrendingUp, FileText, Activity, Clock, BarChart3, Sparkles, Trash2 } from "lucide-react";
+import {
+  Eye,
+  Download,
+  Plus,
+  TrendingUp,
+  FileText,
+  Activity,
+  Clock,
+  BarChart3,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { useAuth } from "@clerk/nextjs";
@@ -94,7 +116,7 @@ export default function Dashboard() {
 
   const deleteResume = async (resumeId: string) => {
     if (!user) return;
-    
+
     try {
       const token = await getToken({ template: "supabase" });
       if (!token) return;
@@ -102,7 +124,7 @@ export default function Dashboard() {
       const supabaseWithAuth = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        { global: { headers: { Authorization: `Bearer ${token}` } } }
+        { global: { headers: { Authorization: `Bearer ${token}` } } },
       );
 
       const { error } = await supabaseWithAuth
@@ -117,18 +139,17 @@ export default function Dashboard() {
       }
 
       // Remove the deleted resume from state
-      setResumes(resumes.filter(resume => resume.id !== resumeId));
-      
+      setResumes(resumes.filter((resume) => resume.id !== resumeId));
+
       // Add activity log for deletion
       const newActivityItem: ActivityItem = {
         id: Date.now().toString(),
         description: "Deleted a resume",
         timestamp: new Date().toISOString(),
-        action_type: "delete"
+        action_type: "delete",
       };
-      
-      setActivity(prev => [newActivityItem, ...prev.slice(0, 4)]);
-      
+
+      setActivity((prev) => [newActivityItem, ...prev.slice(0, 4)]);
     } catch (err) {
       console.error("Unexpected error deleting resume:", err);
     }
@@ -153,15 +174,16 @@ export default function Dashboard() {
         const supabaseWithAuth = createClient(
           process.env.NEXT_PUBLIC_SUPABASE_URL!,
           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-          { global: { headers: { Authorization: `Bearer ${token}` } } }
+          { global: { headers: { Authorization: `Bearer ${token}` } } },
         );
 
         // Fetch resumes
-        const { data: resumesData, error: resumesError } = await supabaseWithAuth
-          .from("resumes")
-          .select("*")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false });
+        const { data: resumesData, error: resumesError } =
+          await supabaseWithAuth
+            .from("resumes")
+            .select("*")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false });
 
         if (resumesError) {
           console.error("Supabase error:", resumesError);
@@ -169,18 +191,19 @@ export default function Dashboard() {
           const processedData = (resumesData || []).map((resume) =>
             typeof resume.data === "string"
               ? { ...resume, data: JSON.parse(resume.data) }
-              : resume
+              : resume,
           );
           setResumes(processedData);
         }
 
         // Fetch activity from database
-        const { data: activityData, error: activityError } = await supabaseWithAuth
-          .from("activity")
-          .select("*")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false })
-          .limit(5);
+        const { data: activityData, error: activityError } =
+          await supabaseWithAuth
+            .from("activity")
+            .select("*")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false })
+            .limit(5);
 
         if (activityError) {
           console.error("Error fetching activity:", activityError);
@@ -190,13 +213,13 @@ export default function Dashboard() {
               id: "1",
               description: "Created a new resume",
               timestamp: new Date().toISOString(),
-              action_type: "create"
+              action_type: "create",
             },
             {
               id: "2",
               description: "Updated your resume",
               timestamp: new Date(Date.now() - 86400000).toISOString(),
-              action_type: "update"
+              action_type: "update",
             },
           ];
           setActivity(mockActivity);
@@ -206,11 +229,10 @@ export default function Dashboard() {
             id: item.id,
             description: item.description,
             timestamp: item.created_at,
-            action_type: getActionTypeFromDescription(item.description)
+            action_type: getActionTypeFromDescription(item.description),
           }));
           setActivity(formattedActivity);
         }
-
       } catch (err) {
         console.error("Unexpected error:", err);
       } finally {
@@ -223,7 +245,9 @@ export default function Dashboard() {
 
   const TemplateComp = useMemo(() => {
     if (!previewResume) return null;
-    return templates.find((t) => t.id === previewResume.template_id)?.comp || null;
+    return (
+      templates.find((t) => t.id === previewResume.template_id)?.comp || null
+    );
   }, [previewResume]);
 
   return (
@@ -241,7 +265,10 @@ export default function Dashboard() {
               AI-powered resume management at your fingertips
             </p>
           </div>
-          <Button className="gap-2 bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 hover:shadow-lg shadow-md" asChild>
+          <Button
+            className="gap-2 bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 hover:shadow-lg shadow-md"
+            asChild
+          >
             <Link href="/editor">
               <Plus className="size-4" /> Create New Resume
             </Link>
@@ -257,8 +284,12 @@ export default function Dashboard() {
                   <FileText className="h-6 w-6 text-indigo-600" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Resumes</p>
-                  <p className="text-2xl font-bold text-gray-900">{resumes.length}</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Total Resumes
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {resumes.length}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -271,9 +302,13 @@ export default function Dashboard() {
                   <TrendingUp className="h-6 w-6 text-green-600" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Last Activity</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Last Activity
+                  </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {activity.length > 0 ? new Date(activity[0].timestamp).toLocaleDateString() : "Never"}
+                    {activity.length > 0
+                      ? new Date(activity[0].timestamp).toLocaleDateString()
+                      : "Never"}
                   </p>
                 </div>
               </div>
@@ -287,8 +322,12 @@ export default function Dashboard() {
                   <Activity className="h-6 w-6 text-blue-600" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Recent Actions</p>
-                  <p className="text-2xl font-bold text-gray-900">{activity.length}</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Recent Actions
+                  </p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {activity.length}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -323,52 +362,66 @@ export default function Dashboard() {
                     <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-indigo-100 mb-4">
                       <FileText className="h-8 w-8 text-indigo-600" />
                     </div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">No resumes yet</h3>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      No resumes yet
+                    </h3>
                     <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-                      Create your first professional resume to kickstart your job search journey.
+                      Create your first professional resume to kickstart your
+                      job search journey.
                     </p>
-                    <Button className="bg-indigo-600 hover:bg-indigo-700 transition-colors gap-2" asChild>
+                    <Button
+                      className="bg-indigo-600 hover:bg-indigo-700 transition-colors gap-2"
+                      asChild
+                    >
                       <Link href="/editor">
                         <Plus className="size-4" /> Create Resume
                       </Link>
                     </Button>
                   </div>
+                ) : resumes.length > 3 ? (
+                  <div className="relative w-full">
+                    <Carousel className="w-full">
+                      <CarouselContent className="w-full">
+                        {resumes.map((resume, index) => (
+                          <CarouselItem
+                            key={resume.id}
+                            className="px-1 sm:basis-1/2 lg:basis-1/3"
+                          >
+                            <div
+                              className="animate-fade-in"
+                              style={{ animationDelay: `${index * 100}ms` }}
+                            >
+                              <ResumeCard
+                                resume={resume}
+                                onEdit={() => {}}
+                                onPreview={setPreviewResume}
+                                onDelete={deleteResume}
+                              />
+                            </div>
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                      <CarouselPrevious className="left-2 z-10 border-indigo-200 text-indigo-600 hover:bg-indigo-50 bg-white shadow-sm" />
+                      <CarouselNext className="right-2 z-10 border-indigo-200 text-indigo-600 hover:bg-indigo-50 bg-white shadow-sm" />
+                    </Carousel>
+                  </div>
                 ) : (
-                  resumes.length > 3 ? (
-                    <div className="relative w-full">
-                      <Carousel className="w-full">
-                        <CarouselContent className="w-full">
-                          {resumes.map((resume, index) => (
-                            <CarouselItem key={resume.id} className="px-1 sm:basis-1/2 lg:basis-1/3">
-                              <div className="animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
-                                <ResumeCard
-                                  resume={resume}
-                                  onEdit={() => {}}
-                                  onPreview={setPreviewResume}
-                                  onDelete={deleteResume}
-                                />
-                              </div>
-                            </CarouselItem>
-                          ))}
-                        </CarouselContent>
-                        <CarouselPrevious className="left-2 z-10 border-indigo-200 text-indigo-600 hover:bg-indigo-50 bg-white shadow-sm" />
-                        <CarouselNext className="right-2 z-10 border-indigo-200 text-indigo-600 hover:bg-indigo-50 bg-white shadow-sm" />
-                      </Carousel>
-                    </div>
-                  ) : (
-                    <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 w-full">
-                      {resumes.map((resume, index) => (
-                        <div key={resume.id} className="animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
-                          <ResumeCard
-                            resume={resume}
-                            onEdit={() => {}}
-                            onPreview={setPreviewResume}
-                            onDelete={deleteResume}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )
+                  <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 w-full">
+                    {resumes.map((resume, index) => (
+                      <div
+                        key={resume.id}
+                        className="animate-fade-in"
+                        style={{ animationDelay: `${index * 100}ms` }}
+                      >
+                        <ResumeCard
+                          resume={resume}
+                          onEdit={() => {}}
+                          onPreview={setPreviewResume}
+                          onDelete={deleteResume}
+                        />
+                      </div>
+                    ))}
+                  </div>
                 )}
               </CardContent>
             </Card>
@@ -388,7 +441,10 @@ export default function Dashboard() {
                 {activity.length === 0 ? (
                   <div className="text-center py-8 text-gray-500">
                     <Activity className="h-12 w-12 mx-auto text-gray-300 mb-3" />
-                    <p>No activity yet. Create or edit a resume to see activity here.</p>
+                    <p>
+                      No activity yet. Create or edit a resume to see activity
+                      here.
+                    </p>
                   </div>
                 ) : (
                   <div className="rounded-lg border border-gray-100 overflow-hidden">
@@ -396,37 +452,55 @@ export default function Dashboard() {
                       <Table>
                         <TableHeader className="bg-gray-50/50">
                           <TableRow>
-                            <TableHead className="text-xs font-medium text-gray-600 uppercase tracking-wider">Action</TableHead>
-                            <TableHead className="text-xs font-medium text-gray-600 uppercase tracking-wider">Description</TableHead>
-                            <TableHead className="text-right text-xs font-medium text-gray-600 uppercase tracking-wider">Date & Time</TableHead>
+                            <TableHead className="text-xs font-medium text-gray-600 uppercase tracking-wider">
+                              Action
+                            </TableHead>
+                            <TableHead className="text-xs font-medium text-gray-600 uppercase tracking-wider">
+                              Description
+                            </TableHead>
+                            <TableHead className="text-right text-xs font-medium text-gray-600 uppercase tracking-wider">
+                              Date & Time
+                            </TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
                           {activity.map((activityItem, index) => (
-                            <TableRow 
-                              key={activityItem.id} 
+                            <TableRow
+                              key={activityItem.id}
                               className="animate-fade-in border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors"
                               style={{ animationDelay: `${index * 100}ms` }}
                             >
                               <TableCell className="font-medium">
-                                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                  activityItem.action_type === 'create' ? 'bg-green-100 text-green-800' :
-                                  activityItem.action_type === 'update' ? 'bg-blue-100 text-blue-800' :
-                                  activityItem.action_type === 'delete' ? 'bg-red-100 text-red-800' :
-                                  activityItem.action_type === 'view' ? 'bg-purple-100 text-purple-800' :
-                                  'bg-indigo-100 text-indigo-800'
-                                }`}>
+                                <span
+                                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                    activityItem.action_type === "create"
+                                      ? "bg-green-100 text-green-800"
+                                      : activityItem.action_type === "update"
+                                        ? "bg-blue-100 text-blue-800"
+                                        : activityItem.action_type === "delete"
+                                          ? "bg-red-100 text-red-800"
+                                          : activityItem.action_type === "view"
+                                            ? "bg-purple-100 text-purple-800"
+                                            : "bg-indigo-100 text-indigo-800"
+                                  }`}
+                                >
                                   {activityItem.action_type}
                                 </span>
                               </TableCell>
-                              <TableCell className="text-sm text-gray-700">{activityItem.description}</TableCell>
+                              <TableCell className="text-sm text-gray-700">
+                                {activityItem.description}
+                              </TableCell>
                               <TableCell className="text-right">
                                 <div className="flex flex-col items-end">
                                   <span className="text-sm font-medium text-gray-700">
-                                    {new Date(activityItem.timestamp).toLocaleDateString()}
+                                    {new Date(
+                                      activityItem.timestamp,
+                                    ).toLocaleDateString()}
                                   </span>
                                   <span className="text-xs text-gray-500">
-                                    {new Date(activityItem.timestamp).toLocaleTimeString()}
+                                    {new Date(
+                                      activityItem.timestamp,
+                                    ).toLocaleTimeString()}
                                   </span>
                                 </div>
                               </TableCell>
@@ -440,7 +514,7 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </div>
-          
+
           {/* Right Sidebar */}
           <div className="space-y-6 w-full">
             <Card className="border-0 shadow-md transition-all duration-300 hover:shadow-lg hover-lift">
@@ -454,19 +528,30 @@ export default function Dashboard() {
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3 p-3 rounded-lg transition-colors hover:bg-indigo-50/30">
                     <div className="mt-1 size-2 rounded-full bg-indigo-500 flex-shrink-0" />
-                    <span className="text-sm">Use action verbs and quantify achievements for maximum impact</span>
+                    <span className="text-sm">
+                      Use action verbs and quantify achievements for maximum
+                      impact
+                    </span>
                   </li>
                   <li className="flex items-start gap-3 p-3 rounded-lg transition-colors hover:bg-indigo-50/30">
                     <div className="mt-1 size-2 rounded-full bg-indigo-500 flex-shrink-0" />
-                    <span className="text-sm">Tailor your resume for each job application using different templates</span>
+                    <span className="text-sm">
+                      Tailor your resume for each job application using
+                      different templates
+                    </span>
                   </li>
                   <li className="flex items-start gap-3 p-3 rounded-lg transition-colors hover:bg-indigo-50/30">
                     <div className="mt-1 size-2 rounded-full bg-indigo-500 flex-shrink-0" />
-                    <span className="text-sm">Download as PDF to preserve formatting when sharing with employers</span>
+                    <span className="text-sm">
+                      Download as PDF to preserve formatting when sharing with
+                      employers
+                    </span>
                   </li>
                   <li className="flex items-start gap-3 p-3 rounded-lg transition-colors hover:bg-indigo-50/30">
                     <div className="mt-1 size-2 rounded-full bg-indigo-500 flex-shrink-0" />
-                    <span className="text-sm">Keep your resume to 1-2 pages for optimal readability</span>
+                    <span className="text-sm">
+                      Keep your resume to 1-2 pages for optimal readability
+                    </span>
                   </li>
                 </ul>
               </CardContent>
@@ -475,7 +560,10 @@ export default function Dashboard() {
         </div>
 
         {/* Resume Preview Dialog */}
-        <Dialog open={!!previewResume} onOpenChange={(o) => !o && setPreviewResume(null)}>
+        <Dialog
+          open={!!previewResume}
+          onOpenChange={(o) => !o && setPreviewResume(null)}
+        >
           <DialogContent className="max-w-4xl w-full h-[90vh] flex flex-col backdrop-blur-sm">
             <DialogHeader className="flex-shrink-0 pb-4 border-b">
               <DialogTitle className="text-indigo-600 flex items-center gap-2">
@@ -487,8 +575,8 @@ export default function Dashboard() {
               <div className="text-sm text-muted-foreground">
                 Template: {previewResume?.template_id || "Standard"}
               </div>
-              <Button 
-                onClick={handlePrint} 
+              <Button
+                onClick={handlePrint}
                 className="gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors"
               >
                 <Download className="size-4" /> Download PDF
@@ -497,7 +585,7 @@ export default function Dashboard() {
             <div className="flex-1 overflow-auto py-4">
               <div ref={contentRef} className="w-full flex justify-center">
                 {TemplateComp ? (
-                  <div className="w-[210mm] shadow-lg rounded"> 
+                  <div className="w-[210mm] shadow-lg rounded">
                     <TemplateComp data={previewResume!.data} />
                   </div>
                 ) : (

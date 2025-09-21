@@ -2,16 +2,22 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Eye } from "lucide-react";
 
 export function TemplateCard({
-  template, 
+  template,
   isSelected,
   onSelect,
 }: {
-  template: any; 
+  template: any;
   isSelected: boolean;
   onSelect: () => void;
 }) {
@@ -24,7 +30,9 @@ export function TemplateCard({
       <CardContent className="p-0">
         <div className="relative">
           <AspectRatio ratio={4 / 3}>
-            <div className={`h-full w-full bg-gradient-to-br ${template.accent ?? "from-indigo-500 to-indigo-700"} p-4`}>
+            <div
+              className={`h-full w-full bg-gradient-to-br ${template.accent ?? "from-indigo-500 to-indigo-700"} p-4`}
+            >
               <div className="h-full w-full rounded-xl bg-white/70 p-4 shadow-sm backdrop-blur">
                 <div className="grid h-full grid-rows-6 gap-2">
                   <div className="row-span-1 flex items-center gap-3">
@@ -47,7 +55,10 @@ export function TemplateCard({
             </div>
           </AspectRatio>
           <div className="absolute right-3 top-3">
-            <Badge variant="secondary" className="backdrop-blur bg-white/80 border-slate-200/80">
+            <Badge
+              variant="secondary"
+              className="backdrop-blur bg-white/80 border-slate-200/80"
+            >
               {template.category}
             </Badge>
           </div>
@@ -71,18 +82,27 @@ export function TemplateCard({
                   <DialogTitle>{template.name}</DialogTitle>
                 </DialogHeader>
                 <AspectRatio ratio={16 / 10}>
-                  <div className={`h-full w-full rounded-xl bg-gradient-to-br ${template.accent || "from-indigo-500 to-indigo-700"} p-6`} >
+                  <div
+                    className={`h-full w-full rounded-xl bg-gradient-to-br ${template.accent || "from-indigo-500 to-indigo-700"} p-6`}
+                  >
                     <div className="h-full w-full rounded-xl bg-white/70 shadow-inner" />
                   </div>
                 </AspectRatio>
                 <div className="flex justify-end">
-                  <Button onClick={onSelect} className="bg-gradient-to-r from-brand to-indigo-600 text-white">
+                  <Button
+                    onClick={onSelect}
+                    className="bg-gradient-to-r from-brand to-indigo-600 text-white"
+                  >
                     Select this template
                   </Button>
                 </div>
               </DialogContent>
             </Dialog>
-            <Button onClick={onSelect} size="sm" className="bg-gradient-to-r from-brand to-indigo-600 text-white">
+            <Button
+              onClick={onSelect}
+              size="sm"
+              className="bg-gradient-to-r from-brand to-indigo-600 text-white"
+            >
               Choose
             </Button>
           </div>

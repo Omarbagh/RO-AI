@@ -103,7 +103,7 @@ export default function EditorPage() {
 
   const [step, setStep] = useState(1);
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(
-    templateIdFromQuery
+    templateIdFromQuery,
   );
 
   useEffect(() => {

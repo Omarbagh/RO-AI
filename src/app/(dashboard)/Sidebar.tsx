@@ -3,7 +3,14 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { House, CircleDollarSign, Settings, FileUser, Menu, ChevronLeft } from "lucide-react";
+import {
+  House,
+  CircleDollarSign,
+  Settings,
+  FileUser,
+  Menu,
+  ChevronLeft,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -26,12 +33,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-slate-50 text-foreground w-full">
-      <div className={`grid ${isCollapsed ? 'grid-cols-[70px_1fr]' : 'grid-cols-[220px_1fr]'} min-h-screen transition-all duration-300 w-full`}>
+      <div
+        className={`grid ${isCollapsed ? "grid-cols-[70px_1fr]" : "grid-cols-[220px_1fr]"} min-h-screen transition-all duration-300 w-full`}
+      >
         {/* Sidebar with gradient background */}
-        <aside 
+        <aside
           className="text-sidebar-foreground border-r border-sidebar-border relative"
           style={{
-            background: "linear-gradient(180deg, rgba(79, 70, 229, 0.1) 0%, rgba(100, 49, 221, 0.1) 69.49%, rgba(109, 40, 217, 0.1) 100%)"
+            background:
+              "linear-gradient(180deg, rgba(79, 70, 229, 0.1) 0%, rgba(100, 49, 221, 0.1) 69.49%, rgba(109, 40, 217, 0.1) 100%)",
           }}
         >
           <div className="h-16 flex items-center px-6 justify-between backdrop-blur-sm bg-white/5">
@@ -43,13 +53,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 CVHero
               </div>
             )}
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={toggleSidebar}
               className="h-8 w-8 bg-white/10 hover:bg-white/20 text-indigo-700"
             >
-              {isCollapsed ? <Menu className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+              {isCollapsed ? (
+                <Menu className="h-4 w-4" />
+              ) : (
+                <ChevronLeft className="h-4 w-4" />
+              )}
             </Button>
           </div>
           <Separator className="bg-indigo-200/30" />
@@ -76,7 +90,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
           </nav>
         </aside>
-        
+
         <main className="w-full">
           <header className="h-16 flex items-center justify-between px-6 border-b bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/60 w-full">
             {/* <Input 
