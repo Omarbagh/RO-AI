@@ -27,11 +27,19 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-slate-50 text-foreground w-full">
       <div className={`grid ${isCollapsed ? 'grid-cols-[80px_1fr]' : 'grid-cols-[260px_1fr]'} min-h-screen transition-all duration-300 w-full`}>
-        <aside className="bg-sidebar text-sidebar-foreground border-r border-sidebar-border relative">
-          <div className="h-16 flex items-center px-6 justify-between">
+        {/* Sidebar with gradient background */}
+        <aside 
+          className="text-sidebar-foreground border-r border-sidebar-border relative"
+          style={{
+            background: "linear-gradient(180deg, rgba(79, 70, 229, 0.1) 0%, rgba(100, 49, 221, 0.1) 69.49%, rgba(109, 40, 217, 0.1) 100%)"
+          }}
+        >
+          <div className="h-16 flex items-center px-6 justify-between backdrop-blur-sm bg-white/5">
             {!isCollapsed && (
-              <div className="flex items-center gap-2 font-extrabold tracking-tight text-lg">
-                <div className="size-7 rounded-md bg-gradient-to-br from-indigo-500 to-violet-600" />
+              <div className="flex items-center gap-2 font-extrabold tracking-tight text-lg text-indigo-800">
+                <div className="size-7 rounded-md bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">CV</span>
+                </div>
                 CVHero
               </div>
             )}
@@ -39,12 +47,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               variant="ghost" 
               size="icon" 
               onClick={toggleSidebar}
-              className="h-8 w-8"
+              className="h-8 w-8 bg-white/10 hover:bg-white/20 text-indigo-700"
             >
               {isCollapsed ? <Menu className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
             </Button>
           </div>
-          <Separator />
+          <Separator className="bg-indigo-200/30" />
           <nav className="p-3">
             <div className="space-y-1">
               {navItems.map(({ href, label, icon: Icon }) => {
@@ -53,24 +61,43 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   <Link
                     key={href}
                     href={href}
-                    className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    className={`flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all ${
                       isActive
-                        ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                    }`}
+                        ? "bg-indigo-600 text-white shadow-md"
+                        : "text-indigo-700 hover:bg-indigo-500/20 hover:text-indigo-800"
+                    } ${isCollapsed ? "justify-center" : ""}`}
                     title={isCollapsed ? label : undefined}
                   >
-                    <Icon className="size-4" />
+                    <Icon className="size-5" />
                     {!isCollapsed && label}
                   </Link>
                 );
               })}
             </div>
           </nav>
+          
+          {/* Sidebar footer with user info when expanded */}
+          {!isCollapsed && (
+            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-indigo-200/20 bg-white/10 backdrop-blur-sm">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <UserButton />
+                  <div className="text-xs text-indigo-700/80">
+                    <div className="font-medium">Your Account</div>
+                    <div className="text-indigo-600/60">Manage profile</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </aside>
+        
         <main className="w-full">
           <header className="h-16 flex items-center justify-between px-6 border-b bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/60 w-full">
-            <Input className="w-80" placeholder="Search resumes..." />
+            <Input 
+              className="w-80 border-indigo-200 focus:border-indigo-400 focus:ring-indigo-400/30" 
+              placeholder="Search resumes..." 
+            />
             <div className="flex items-center gap-3">
               <UserButton />
             </div>

@@ -46,7 +46,7 @@ export function ResumeCard({
   };
   
   return (
-    <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300 h-full flex flex-col border-0 shadow-md bg-gradient-to-br from-white to-gray-50/70 hover-lift">
+    <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300 h-[500px] flex flex-col border-0 shadow-md bg-gradient-to-br from-white to-gray-50/70 hover-lift">
       {/* Preview Section with Gradient Background */}
       <div className="aspect-[4/5] bg-gradient-to-br from-indigo-50/40 to-blue-50/40 overflow-hidden relative border-b">
         {TemplateComp ? (
@@ -90,12 +90,6 @@ export function ResumeCard({
           <span>Created: {new Date(resume.created_at).toLocaleDateString()}</span>
         </div>
         
-        {/* Additional Info (if available) */}
-        {personal.email && (
-          <div className="mt-2 text-xs text-gray-500 truncate">
-            {personal.email}
-          </div>
-        )}
       </CardContent>
       
       {/* Action Buttons */}
