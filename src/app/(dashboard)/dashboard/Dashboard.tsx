@@ -266,42 +266,6 @@ export default function Dashboard() {
                 )}
               </CardContent>
             </Card>
-            
-            {/* Recent Activity Table */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Recent Activity</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <Table>
-                  <TableCaption className="pb-3">
-                    {activity.length === 0 ? "No recent activity" : "A list of your recent activities"}
-                  </TableCaption>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Action</TableHead>
-                      <TableHead>Description</TableHead>
-                      <TableHead className="text-right">Date</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {activity.map((activityItem) => (
-                      <TableRow key={activityItem.id}>
-                        <TableCell className="font-medium capitalize">{activityItem.action_type}</TableCell>
-                        <TableCell>{activityItem.description}</TableCell>
-                        <TableCell className="text-right">
-                          {new Date(activityItem.timestamp).toLocaleDateString()}
-                          <br />
-                          <span className="text-xs text-muted-foreground">
-                            {new Date(activityItem.timestamp).toLocaleTimeString()}
-                          </span>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </CardContent>
-            </Card>
           </div>
           
           <div className="space-y-6 w-full">
@@ -350,6 +314,42 @@ export default function Dashboard() {
                     <span>Download your resume as PDF for sharing</span>
                   </li>
                 </ul>
+              </CardContent>
+            </Card>
+
+            {/* Recent Activity Table - Moved to right side */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">Recent Activity</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableCaption className="pb-3">
+                    {activity.length === 0 ? "No recent activity" : "A list of your recent activities"}
+                  </TableCaption>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Action</TableHead>
+                      <TableHead>Description</TableHead>
+                      <TableHead className="text-right">Date</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {activity.map((activityItem) => (
+                      <TableRow key={activityItem.id}>
+                        <TableCell className="font-medium capitalize">{activityItem.action_type}</TableCell>
+                        <TableCell className="text-xs">{activityItem.description}</TableCell>
+                        <TableCell className="text-right text-xs">
+                          {new Date(activityItem.timestamp).toLocaleDateString()}
+                          <br />
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(activityItem.timestamp).toLocaleTimeString()}
+                          </span>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </CardContent>
             </Card>
           </div>
