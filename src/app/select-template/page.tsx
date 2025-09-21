@@ -1,10 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { TemplateCard } from "./TemplateCard";
+import { TemplateCard } from "../(dashboard)/editor/components/TemplateCard";
 import {
   CheckCircle2,
   Filter,
@@ -13,9 +14,10 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import { templates } from "../utils/templateMap";
+import { templates } from "../(dashboard)/editor/utils/templateMap";
 
 export default function TemplateSelectionPage() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<"All" | string>("All");
   const [selected, setSelected] = useState<string | null>(null);
@@ -33,21 +35,26 @@ export default function TemplateSelectionPage() {
     });
   }, [query, category]);
 
+  const handleContinue = () => {
+    if (!selected) return;
+    router.push(`/editor?templateId=${selected}`);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100">
+      {/* Header */}
       <header className="sticky top-0 z-30 border-b border-slate-200/60 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-brand to-indigo-600 shadow-inner" />
-            <span className="text-lg font-semibold tracking-tight">Templates</span>
+            <span className="text-lg font-semibold tracking-tight">CVHero</span>
           </div>
-          <Button variant="outline" className="hidden sm:inline-flex">
-            <Sparkles className="mr-2" /> Feedback
-          </Button>
         </div>
       </header>
 
+      {/* Main */}
       <main className="container mx-auto px-4 py-10">
+        {/* Intro */}
         <section className="mb-10">
           <div className="mx-auto max-w-3xl text-center">
             <Badge className="mb-3 bg-gradient-to-r from-brand to-indigo-600 text-white border-0">
@@ -61,7 +68,9 @@ export default function TemplateSelectionPage() {
             </p>
           </div>
 
+          {/* Filters */}
           <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            {/* Search */}
             <div className="col-span-2 flex items-center gap-3 rounded-xl border bg-white p-2 shadow-sm">
               <Search className="ml-2 h-5 w-5 text-slate-400" />
               <Input
@@ -71,6 +80,7 @@ export default function TemplateSelectionPage() {
                 className="border-0 shadow-none focus-visible:ring-0"
               />
             </div>
+            {/* Category filter */}
             <div className="flex items-center gap-2 overflow-x-auto">
               {["All", "Business", "Creative", "Tech", "Simple"].map((c) => (
                 <Button
@@ -90,6 +100,7 @@ export default function TemplateSelectionPage() {
           </div>
         </section>
 
+        {/* Templates */}
         <section>
           <div className="mb-6 flex items-center justify-between">
             <div className="flex items-center gap-2 text-slate-600">
@@ -98,6 +109,7 @@ export default function TemplateSelectionPage() {
             </div>
           </div>
 
+          {/* Template grid */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((t, idx) => (
               <TemplateCard
@@ -111,17 +123,25 @@ export default function TemplateSelectionPage() {
             ))}
           </div>
 
+          {/* Selected */}
           {selected && (
-            <div className="mt-8 flex items-center justify-center">
+            <div className="mt-8 flex flex-col items-center gap-4">
               <Button className="bg-gradient-to-r from-brand to-indigo-600 text-white">
                 <CheckCircle2 className="mr-2" /> Selected:{" "}
                 {templates.find((x) => x.id === selected)?.name}
+              </Button>
+              <Button
+                onClick={handleContinue}
+                className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6"
+              >
+                Continue to Editor
               </Button>
             </div>
           )}
         </section>
       </main>
 
+      {/* Footer */}
       <footer className="mt-12 border-t bg-white/60">
         <div className="container mx-auto px-4 py-6 text-center text-sm text-slate-500">
           © {new Date().getFullYear()} Templates. Modern and clean.
@@ -130,4 +150,3 @@ export default function TemplateSelectionPage() {
     </div>
   );
 }
-

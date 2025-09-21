@@ -20,7 +20,7 @@ import { AnimatedStepIndicator } from "./components/AnimatedStepIndicator";
 import { ColorPicker } from "./components/ColorPicker";
 import { CVData } from "@/types/cv";
 import templateFields from "../../../../scripts/template-fields.json";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useReactToPrint } from "react-to-print";
 import { PersonalStep } from "./components/steps/PersonalStep";
 import { ProfileStep } from "./components/steps/ProfileStep";
@@ -71,10 +71,10 @@ type TouchedType = {
 export default function EditorPage() {
   const router = useRouter();
   const { isSignedIn } = useUser();
+  const searchParams = useSearchParams();
+  const templateIdFromQuery = searchParams.get("templateId");
   const params = useParams();
   const resumeIdForParams = params.id as string;
-  const [step, setStep] = useState(0);
-  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const [formData, setFormData] = useState<CVData>({
     personal: { name: "", title: "", email: "", phone: "", photoUrl: "" },
     profile: "",
@@ -94,6 +94,17 @@ export default function EditorPage() {
   const [showColorPicker, setShowColorPicker] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (!templateIdFromQuery && !resumeIdForParams) {
+      router.replace("/select-template");
+    }
+  }, [templateIdFromQuery, resumeIdForParams, router]);
+
+  const [step, setStep] = useState(1);
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(
+    templateIdFromQuery
+  );
 
   useEffect(() => {
     if (resumeIdForParams) {

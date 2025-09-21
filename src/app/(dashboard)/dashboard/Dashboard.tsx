@@ -168,8 +168,8 @@ export default function Dashboard() {
   return (
     <>
       <style>{printHideStyle}</style>
-      <div className="w-full">
-        <div className="flex items-center justify-between">
+      <div className="w-full max-w-full overflow-x-hidden">
+        <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
             <p className="text-muted-foreground">Manage your resumes and activity</p>
@@ -182,12 +182,12 @@ export default function Dashboard() {
         </div>
 
         {error && (
-          <Card className="mt-6 border-destructive text-destructive w-full">
+          <Card className="mb-6 border-destructive text-destructive w-full">
             <CardContent className="pt-4">{error}</CardContent>
           </Card>
         )}
 
-        <div className="grid lg:grid-cols-3 gap-6 mt-6 w-full">
+        <div className="grid lg:grid-cols-3 gap-6 w-full">
           <div className="lg:col-span-2 space-y-4 w-full">
             <div className="flex items-center justify-between w-full">
               <h2 className="text-lg font-semibold">Your Resumes</h2>
@@ -216,19 +216,6 @@ export default function Dashboard() {
                 <div className="relative w-full">
                   <Carousel className="w-full">
                     <CarouselContent className="w-full">
-                      <CarouselItem className="px-1 sm:basis-1/2 lg:basis-1/3">
-                        <Card className="border-dashed w-full">
-                          <CardContent className="p-6 grid place-items-center text-center w-full">
-                            <div className="w-full">
-                              <div className="mx-auto size-10 rounded-md bg-gradient-to-br from-indigo-500 to-violet-600" />
-                              <div className="mt-3 font-semibold">Create new resume</div>
-                              <Button className="mt-3" asChild>
-                                <Link href="/editor">Create</Link>
-                              </Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </CarouselItem>
                       {resumes.map((resume) => (
                         <CarouselItem key={resume.id} className="px-1 sm:basis-1/2 lg:basis-1/3">
                           <ResumeCard
@@ -239,23 +226,12 @@ export default function Dashboard() {
                         </CarouselItem>
                       ))}
                     </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
+                    <CarouselPrevious className="left-2 z-10" />
+                    <CarouselNext className="right-2 z-10" />
                   </Carousel>
                 </div>
               ) : (
                 <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 w-full">
-                  <Card className="border-dashed w-full">
-                    <CardContent className="p-6 grid place-items-center text-center w-full">
-                      <div className="w-full">
-                        <div className="mx-auto size-10 rounded-md bg-gradient-to-br from-indigo-500 to-violet-600" />
-                        <div className="mt-3 font-semibold">Create new resume</div>
-                        <Button className="mt-3" asChild>
-                          <Link href="/editor">Create</Link>
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
                   {resumes.map((resume) => (
                     <ResumeCard
                       key={resume.id}

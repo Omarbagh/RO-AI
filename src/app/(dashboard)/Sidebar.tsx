@@ -25,14 +25,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-slate-50 text-foreground">
-      <div className={`grid ${isCollapsed ? 'grid-cols-[80px_1fr]' : 'grid-cols-[260px_1fr]'} min-h-screen transition-all duration-300`}>
+    <div className="min-h-screen bg-gradient-to-br from-background to-slate-50 text-foreground w-full">
+      <div className={`grid ${isCollapsed ? 'grid-cols-[80px_1fr]' : 'grid-cols-[260px_1fr]'} min-h-screen transition-all duration-300 w-full`}>
         <aside className="bg-sidebar text-sidebar-foreground border-r border-sidebar-border relative">
           <div className="h-16 flex items-center px-6 justify-between">
             {!isCollapsed && (
               <div className="flex items-center gap-2 font-extrabold tracking-tight text-lg">
                 <div className="size-7 rounded-md bg-gradient-to-br from-indigo-500 to-violet-600" />
-                CVHero
+                ResumePro
               </div>
             )}
             <Button 
@@ -74,14 +74,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
           </nav>
         </aside>
-        <main>
-          <header className="h-16 flex items-center justify-between px-6 border-b bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <main className="w-full">
+          <header className="h-16 flex items-center justify-between px-6 border-b bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/60 w-full">
             <Input className="w-80" placeholder="Search resumes..." />
             <div className="flex items-center gap-3">
-             <UserButton />
+              <UserButton />
             </div>
           </header>
-          <div className="p-6 max-w-7xl mx-auto">{children}</div>
+          <div className="p-6 w-full max-w-full">{children}</div>
         </main>
       </div>
     </div>
