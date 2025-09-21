@@ -11,7 +11,7 @@ import {
   Filter,
   LayoutTemplate,
   Search,
-  Sparkles,
+  ArrowLeft,
 } from "lucide-react";
 
 import { templates } from "../(dashboard)/editor/utils/templateMap";
@@ -46,6 +46,15 @@ export default function TemplateSelectionPage() {
       <header className="sticky top-0 z-30 border-b border-slate-200/60 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push("/dashboard")}
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Dashboard
+            </Button>
             <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-brand to-indigo-600 shadow-inner" />
             <span className="text-lg font-semibold tracking-tight">CVHero</span>
           </div>
@@ -111,30 +120,25 @@ export default function TemplateSelectionPage() {
 
           {/* Template grid */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((t, idx) => (
+            {filtered.map((t) => (
               <TemplateCard
                 key={t.id}
                 template={t}
                 isSelected={selected === t.id}
-                onSelect={() => setSelected(t.id)}
-                isPro={t.pro ?? false}
-                index={idx}
+                onSelect={() => {
+                  setSelected(t.id);
+                  handleContinue(); // Automatically continue to editor when selected
+                }}
               />
             ))}
           </div>
 
-          {/* Selected */}
+          {/* Selected indicator (optional) */}
           {selected && (
             <div className="mt-8 flex flex-col items-center gap-4">
               <Button className="bg-gradient-to-r from-brand to-indigo-600 text-white">
                 <CheckCircle2 className="mr-2" /> Selected:{" "}
                 {templates.find((x) => x.id === selected)?.name}
-              </Button>
-              <Button
-                onClick={handleContinue}
-                className="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6"
-              >
-                Continue to Editor
               </Button>
             </div>
           )}
@@ -144,7 +148,7 @@ export default function TemplateSelectionPage() {
       {/* Footer */}
       <footer className="mt-12 border-t bg-white/60">
         <div className="container mx-auto px-4 py-6 text-center text-sm text-slate-500">
-          © {new Date().getFullYear()} Templates. Modern and clean.
+          © {new Date().getFullYear()} CVHero. Modern and clean.
         </div>
       </footer>
     </div>

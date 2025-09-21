@@ -32,7 +32,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             {!isCollapsed && (
               <div className="flex items-center gap-2 font-extrabold tracking-tight text-lg">
                 <div className="size-7 rounded-md bg-gradient-to-br from-indigo-500 to-violet-600" />
-                ResumePro
+                CVHero
               </div>
             )}
             <Button 

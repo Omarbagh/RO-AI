@@ -40,7 +40,21 @@ type ActivityItem = {
 
 const printHideStyle = `
 @media print {
-  .no-print { display: none !important; }
+  .no-print, .no-print * { 
+    display: none !important; 
+  }
+  
+  body, html {
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  @page {
+    margin: 0;
+    size: auto;
+  }
 }
 `;
 
@@ -68,6 +82,16 @@ export default function Dashboard() {
     documentTitle: previewResume?.data
       ? `${previewResume.data.personal?.name || "Resume"}-CV`
       : "Resume",
+    pageStyle: `
+      @page { 
+        margin: 0; 
+        size: auto;
+      }
+      body { 
+        -webkit-print-color-adjust: exact; 
+        print-color-adjust: exact;
+      }
+    `,
   });
 
   useEffect(() => {
@@ -168,7 +192,7 @@ export default function Dashboard() {
   return (
     <>
       <style>{printHideStyle}</style>
-      <div className="w-full max-w-full overflow-x-hidden">
+      <div className="w-full max-w-full overflow-x-hidden px-4">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
@@ -188,101 +212,104 @@ export default function Dashboard() {
         )}
 
         <div className="grid lg:grid-cols-3 gap-6 w-full">
-          <div className="lg:col-span-2 space-y-4 w-full">
-            <div className="flex items-center justify-between w-full">
-              <h2 className="text-lg font-semibold">Your Resumes</h2>
-              <Button variant="outline" className="gap-2">
-                <Eye className="size-4" />View All
-              </Button>
-            </div>
-            {loading ? (
-              <Card className="w-full">
-                <CardContent className="h-40 grid place-items-center w-full">Loading...</CardContent>
-              </Card>
-            ) : resumes.length === 0 ? (
-              <Card className="w-full">
-                <CardHeader>
-                  <CardTitle>No resumes</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">Get started by creating a new resume.</p>
-                  <Button className="mt-4" asChild>
-                    <Link href="/editor">New Resume</Link>
+          <div className="lg:col-span-2 space-y-6 w-full">
+            <Card>
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between w-full">
+                  <CardTitle className="text-lg">Your Resumes</CardTitle>
+                  <Button variant="outline" className="gap-2" size="sm">
+                    <Eye className="size-4" />View All
                   </Button>
-                </CardContent>
-              </Card>
-            ) : (
-              resumes.length > 3 ? (
-                <div className="relative w-full">
-                  <Carousel className="w-full">
-                    <CarouselContent className="w-full">
+                </div>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <div className="h-40 grid place-items-center w-full">Loading...</div>
+                ) : resumes.length === 0 ? (
+                  <div className="text-center py-8">
+                    <p className="text-muted-foreground mb-4">Get started by creating a new resume.</p>
+                    <Button asChild>
+                      <Link href="/editor">New Resume</Link>
+                    </Button>
+                  </div>
+                ) : (
+                  resumes.length > 3 ? (
+                    <div className="relative w-full">
+                      <Carousel className="w-full">
+                        <CarouselContent className="w-full">
+                          {resumes.map((resume) => (
+                            <CarouselItem key={resume.id} className="px-1 sm:basis-1/2 lg:basis-1/3">
+                              <ResumeCard
+                                resume={resume}
+                                onEdit={() => {}}
+                                onPreview={setPreviewResume}
+                              />
+                            </CarouselItem>
+                          ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="left-2 z-10" />
+                        <CarouselNext className="right-2 z-10" />
+                      </Carousel>
+                    </div>
+                  ) : (
+                    <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 w-full">
                       {resumes.map((resume) => (
-                        <CarouselItem key={resume.id} className="px-1 sm:basis-1/2 lg:basis-1/3">
-                          <ResumeCard
-                            resume={resume}
-                            onEdit={() => {}}
-                            onPreview={setPreviewResume}
-                          />
-                        </CarouselItem>
+                        <ResumeCard
+                          key={resume.id}
+                          resume={resume}
+                          onEdit={() => {}}
+                          onPreview={setPreviewResume}
+                        />
                       ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="left-2 z-10" />
-                    <CarouselNext className="right-2 z-10" />
-                  </Carousel>
-                </div>
-              ) : (
-                <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 w-full">
-                  {resumes.map((resume) => (
-                    <ResumeCard
-                      key={resume.id}
-                      resume={resume}
-                      onEdit={() => {}}
-                      onPreview={setPreviewResume}
-                    />
-                  ))}
-                </div>
-              )
-            )}
+                    </div>
+                  )
+                )}
+              </CardContent>
+            </Card>
             
             {/* Recent Activity Table */}
-            <div className="mt-8">
-              <h2 className="text-lg font-semibold mb-4">Recent Activity</h2>
-              <Card>
-                <CardContent className="p-0">
-                  <Table>
-                    <TableCaption>{activity.length === 0 ? "No recent activity" : "A list of your recent activities"}</TableCaption>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Action</TableHead>
-                        <TableHead>Description</TableHead>
-                        <TableHead className="text-right">Date</TableHead>
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">Recent Activity</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <Table>
+                  <TableCaption className="pb-3">
+                    {activity.length === 0 ? "No recent activity" : "A list of your recent activities"}
+                  </TableCaption>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Action</TableHead>
+                      <TableHead>Description</TableHead>
+                      <TableHead className="text-right">Date</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {activity.map((activityItem) => (
+                      <TableRow key={activityItem.id}>
+                        <TableCell className="font-medium capitalize">{activityItem.action_type}</TableCell>
+                        <TableCell>{activityItem.description}</TableCell>
+                        <TableCell className="text-right">
+                          {new Date(activityItem.timestamp).toLocaleDateString()}
+                          <br />
+                          <span className="text-xs text-muted-foreground">
+                            {new Date(activityItem.timestamp).toLocaleTimeString()}
+                          </span>
+                        </TableCell>
                       </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {activity.map((activityItem) => (
-                        <TableRow key={activityItem.id}>
-                          <TableCell className="font-medium capitalize">{activityItem.action_type}</TableCell>
-                          <TableCell>{activityItem.description}</TableCell>
-                          <TableCell className="text-right">
-                            {new Date(activityItem.timestamp).toLocaleDateString()}
-                            <br />
-                            <span className="text-xs text-muted-foreground">
-                              {new Date(activityItem.timestamp).toLocaleTimeString()}
-                            </span>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-            </div>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
           </div>
           
-          <div className="space-y-4 w-full">
-            <h2 className="text-lg font-semibold">Quick Stats</h2>
-            <Card className="w-full">
-              <CardContent className="pt-6">
+          <div className="space-y-6 w-full">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">Quick Stats</CardTitle>
+              </CardHeader>
+              <CardContent>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">Total Resumes</span>
@@ -304,8 +331,8 @@ export default function Dashboard() {
               </CardContent>
             </Card>
             
-            <Card className="w-full">
-              <CardHeader>
+            <Card>
+              <CardHeader className="pb-3">
                 <CardTitle className="text-lg">Tips</CardTitle>
               </CardHeader>
               <CardContent>
@@ -329,22 +356,26 @@ export default function Dashboard() {
         </div>
 
         <Dialog open={!!previewResume} onOpenChange={(o) => !o && setPreviewResume(null)}>
-          <DialogContent className="max-w-5xl w-full">
-            <DialogHeader>
+          <DialogContent className="max-w-4xl w-full h-[90vh] flex flex-col">
+            <DialogHeader className="flex-shrink-0">
               <DialogTitle>{previewResume?.data?.personal?.name || "Resume Preview"}</DialogTitle>
             </DialogHeader>
-            <div className="flex items-center justify-between pb-2 w-full">
+            <div className="flex items-center justify-between pb-2 w-full flex-shrink-0 no-print">
               <div />
-              <Button onClick={handlePrint} className="gap-2 no-print">
-                <Download className="size-4"/> Download
+              <Button onClick={handlePrint} className="gap-2">
+                <Download className="size-4" /> Download
               </Button>
             </div>
-            <div ref={contentRef} className="overflow-auto max-h-[70vh] w-full">
-              {TemplateComp ? (
-                <TemplateComp data={previewResume!.data} />
-              ) : (
-                <div>Template not found</div>
-              )}
+            <div className="flex-1 overflow-auto">
+              <div ref={contentRef} className="w-full flex justify-center">
+                {TemplateComp ? (
+                  <div className="w-[210mm]"> {/* Standard A4 width */}
+                    <TemplateComp data={previewResume!.data} />
+                  </div>
+                ) : (
+                  <div>Template not found</div>
+                )}
+              </div>
             </div>
           </DialogContent>
         </Dialog>
