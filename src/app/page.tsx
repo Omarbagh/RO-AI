@@ -207,25 +207,26 @@ export default function Index() {
 
   // Move template filtering logic to useEffect
   useEffect(() => {
-    // Filter templates to show only bold, modern, and one random template
-    const featuredTemplates = templates.filter(
-      (template) =>
-        template.name.toLowerCase().includes("bold") ||
-        template.name.toLowerCase().includes("modern"),
+    // Filter templates to show only bold template and two random ones
+    const boldTemplates = templates.filter(
+      (template) => template.name.toLowerCase().includes("bold impact")
     );
 
-    const finalTemplates = [...featuredTemplates];
+    const finalTemplates = [...boldTemplates];
 
+    // If we don't have enough templates, add random ones
     if (finalTemplates.length < 3) {
       const remainingTemplates = templates.filter(
-        (template) => !finalTemplates.includes(template),
+        (template) => !finalTemplates.includes(template)
       );
-      if (remainingTemplates.length > 0) {
-        const randomTemplate =
-          remainingTemplates[
-            Math.floor(Math.random() * remainingTemplates.length)
-          ];
+      
+      // Add random templates until we have 3
+      while (finalTemplates.length < 3 && remainingTemplates.length > 0) {
+        const randomIndex = Math.floor(Math.random() * remainingTemplates.length);
+        const randomTemplate = remainingTemplates[randomIndex];
         finalTemplates.push(randomTemplate);
+        // Remove the selected template from remaining templates
+        remainingTemplates.splice(randomIndex, 1);
       }
     }
 
