@@ -57,7 +57,7 @@ const sampleResumeData = {
     title: "Senior Software Engineer",
     email: "john.doe@email.com",
     phone: "(123) 456-7890",
-    photoUrl: "/public/person-dummy.jpg",
+    photoUrl: "/person-dummy.jpg",
     address: "San Francisco, CA",
     linkedin: "linkedin.com/in/johndoe",
     website: "johndoe.dev",
@@ -100,9 +100,6 @@ const sampleResumeData = {
     "MongoDB",
     "PostgreSQL",
     "Leadership",
-    "Mentoring",
-    "Agile Methodology",
-    "Problem Solving",
   ],
   settings: {
     accent: "#4F46E5",
