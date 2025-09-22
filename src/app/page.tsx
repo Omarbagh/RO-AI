@@ -17,10 +17,13 @@ import {
   TrendingUp,
   Activity,
   Plus,
+  Star,
+  CheckCircle,
 } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { PricingTable, SignUpButton } from "@clerk/nextjs";
 import LandingFooter from "@/components/LandingFooter";
+import { templates } from "./(dashboard)/editor/utils/templateMap";
 
 function useReveal() {
   const ref = useRef<HTMLElement | null>(null);
@@ -45,10 +48,69 @@ function useReveal() {
   return ref;
 }
 
+// Sample template data
+const premiumTemplates = [
+  {
+    id: 1,
+    name: "Modern Professional",
+    category: "Professional",
+    description: "Clean, corporate design perfect for any industry",
+    popularity: 95,
+    color: "from-blue-500 to-purple-600",
+    features: ["ATS Optimized", "Modern Layout", "Easy to Customize"]
+  },
+  {
+    id: 2,
+    name: "Creative Innovator",
+    category: "Creative",
+    description: "Bold design for creative professionals and designers",
+    popularity: 88,
+    color: "from-orange-500 to-red-600",
+    features: ["Visual Impact", "Unique Layout", "Portfolio Ready"]
+  },
+  {
+    id: 3,
+    name: "Executive Minimalist",
+    category: "Executive",
+    description: "Sophisticated design for senior-level positions",
+    popularity: 92,
+    color: "from-gray-600 to-slate-800",
+    features: ["Executive Style", "Minimalist", "Professional"]
+  },
+  {
+    id: 4,
+    name: "Tech Specialist",
+    category: "Technology",
+    description: "Designed for developers and IT professionals",
+    popularity: 90,
+    color: "from-green-500 to-teal-600",
+    features: ["Tech Focused", "Skills Highlight", "Modern"]
+  },
+  {
+    id: 5,
+    name: "Academic Scholar",
+    category: "Academic",
+    description: "Perfect for researchers and academic positions",
+    popularity: 85,
+    color: "from-indigo-500 to-purple-700",
+    features: ["Academic Format", "Publication Ready", "Formal"]
+  },
+  {
+    id: 6,
+    name: "Startup Visionary",
+    category: "Startup",
+    description: "Dynamic design for entrepreneurs and startup roles",
+    popularity: 87,
+    color: "from-pink-500 to-rose-600",
+    features: ["Energetic Design", "Innovation Focus", "Modern"]
+  }
+];
+
 export default function Index() {
   const howRef = useReveal();
   const featuresRef = useReveal();
   const pricingRef = useReveal();
+  const templatesRef = useReveal();
 
   return (
     <div className="bg-gradient-to-b from-background via-background to-background min-h-screen">
@@ -114,7 +176,7 @@ export default function Index() {
                 </Button>
               </SignUpButton>
               <Button asChild size="lg" variant="outline">
-                <a href="#pricing">View Pricing</a>
+                <a href="#templates">View Templates</a>
               </Button>
             </div>
 
@@ -251,32 +313,78 @@ export default function Index() {
             </div>
           </div>
 
-          {/* Templates marquee */}
-          <div className="mt-14">
-            <div className="text-center text-sm font-medium text-muted-foreground">
-              Premium templates
+          {/* Premium Templates Section */}
+          <section id="templates" ref={templatesRef as any} className="mt-20">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Premium Templates
+              </h2>
+              <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+                Choose from professionally designed templates that are optimized for 
+                ATS systems and designed to impress recruiters.
+              </p>
             </div>
-            <div className="marquee mt-4">
-              <div className="marquee-inner">
-                {[...Array(10)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-36 w-[300px] rounded-xl bg-gradient-to-br from-[#4F46E5]/15 via-background to-indigo-400/15 p-[1px]"
-                  >
-                    <div className="h-full w-full rounded-[11px] bg-card" />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {premiumTemplates.map((template) => (
+                <div
+                  key={template.id}
+                  className="group relative bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                >
+                  {/* Template Preview */}
+                  <div className={`h-32 bg-gradient-to-r ${template.color} relative overflow-hidden`}>
+                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300" />
+                    <div className="absolute top-3 right-3 flex items-center gap-1 bg-white/90 px-2 py-1 rounded-full">
+                      <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                      <span className="text-xs font-semibold text-gray-700">{template.popularity}%</span>
+                    </div>
+                    <div className="absolute bottom-3 left-3">
+                      <span className="bg-black/20 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm">
+                        {template.category}
+                      </span>
+                    </div>
                   </div>
-                ))}
-                {[...Array(10)].map((_, i) => (
-                  <div
-                    key={`dup-${i}`}
-                    className="h-36 w-[300px] rounded-xl bg-gradient-to-br from-[#4F46E5]/15 via-background to-indigo-400/15 p-[1px]"
-                  >
-                    <div className="h-full w-full rounded-[11px] bg-card" />
+
+                  {/* Template Info */}
+                  <div className="p-5">
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="font-semibold text-gray-900 text-lg">{template.name}</h3>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-4">{template.description}</p>
+                    
+                    {/* Features */}
+                    <div className="space-y-2 mb-4">
+                      {template.features.map((feature, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <span className="text-xs text-gray-500">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <Button className="w-full bg-[#4F46E5] hover:bg-[#5B51E8] text-white text-sm">
+                      Use This Template
+                    </Button>
                   </div>
-                ))}
-              </div>
+
+                  {/* Hover Effect */}
+                  <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#4F46E5]/20 rounded-xl pointer-events-none transition-all duration-300" />
+                </div>
+              ))}
             </div>
-          </div>
+
+            {/* CTA */}
+            <div className="text-center mt-8">
+              <SignUpButton>
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-[#4F46E5] to-[#7E22CE] hover:from-[#5B51E8] hover:to-[#8B5CF6] text-white px-8"
+                >
+                  Explore All {premiumTemplates.length}+ Templates
+                </Button>
+              </SignUpButton>
+            </div>
+          </section>
         </div>
       </section>
 
@@ -535,32 +643,8 @@ export default function Index() {
       {/* Landing Footer */}
       <LandingFooter />
 
-      {/* Marquee Animation Styles */}
+      {/* Global Styles */}
       <style jsx global>{`
-        .marquee {
-          overflow: hidden;
-          position: relative;
-        }
-
-        .marquee-inner {
-          display: flex;
-          width: max-content;
-          animation: marquee 40s linear infinite;
-        }
-
-        .marquee-inner > * {
-          margin-right: 1rem;
-        }
-
-        @keyframes marquee {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-
         .bg-dot-grid {
           background-image: radial-gradient(
             circle,

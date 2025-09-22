@@ -25,12 +25,7 @@ import {
   FileText,
   Activity,
   Clock,
-  BarChart3,
   Sparkles,
-  Trash2,
-  CheckCircle,
-  Target,
-  Zap,
   Calendar,
 } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
