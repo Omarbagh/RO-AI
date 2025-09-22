@@ -1,24 +1,24 @@
-import { CVTemplateProps } from '@/types/cv';
+import { CVTemplateProps } from "@/types/cv";
 
 export function AcademicTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
-  
+
   return (
-    <div className="max-w-4xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-4xl mx-auto bg-white"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       {/* Top border accent color */}
       <div
         className="border-t-8 pt-8 pb-6 mb-8"
-        style={{ borderColor: 'var(--accent)' }}
+        style={{ borderColor: "var(--accent)" }}
       >
         <div className="text-center">
           <h1 className="text-4xl font-serif text-gray-900 mb-3">
             {data.personal.name}
           </h1>
           {/* Titel kleur */}
-          <p
-            className="text-xl mb-4"
-            style={{ color: 'var(--accent)' }}
-          >
+          <p className="text-xl mb-4" style={{ color: "var(--accent)" }}>
             {data.personal.title}
           </p>
           <div className="flex justify-center gap-6 text-gray-600">
@@ -33,8 +33,8 @@ export function AcademicTemplate({ data }: CVTemplateProps) {
           <h2
             className="text-2xl font-serif border-b-2 pb-2 mb-4"
             style={{
-              color: 'var(--accent)',
-              borderColor: 'var(--accent)',
+              color: "var(--accent)",
+              borderColor: "var(--accent)",
             }}
           >
             Research Interests
@@ -46,8 +46,8 @@ export function AcademicTemplate({ data }: CVTemplateProps) {
           <h2
             className="text-2xl font-serif border-b-2 pb-2 mb-6"
             style={{
-              color: 'var(--accent)',
-              borderColor: 'var(--accent)',
+              color: "var(--accent)",
+              borderColor: "var(--accent)",
             }}
           >
             Academic Positions
@@ -56,7 +56,7 @@ export function AcademicTemplate({ data }: CVTemplateProps) {
             <div key={i} className="mb-6">
               <h3 className="text-lg font-semibold text-gray-900">{exp.job}</h3>
               {/* Company in accent color */}
-              <p className="italic" style={{ color: 'var(--accent)' }}>
+              <p className="italic" style={{ color: "var(--accent)" }}>
                 {exp.company}
               </p>
               <p className="text-gray-700 mt-2">{exp.description}</p>
@@ -69,8 +69,8 @@ export function AcademicTemplate({ data }: CVTemplateProps) {
             <h2
               className="text-2xl font-serif border-b-2 pb-2 mb-4"
               style={{
-                color: 'var(--accent)',
-                borderColor: 'var(--accent)',
+                color: "var(--accent)",
+                borderColor: "var(--accent)",
               }}
             >
               Research Skills
@@ -79,7 +79,9 @@ export function AcademicTemplate({ data }: CVTemplateProps) {
               {data.skills.map((skill, i) => (
                 <li key={i} className="text-gray-700 flex items-start">
                   {/* Bullet in accent color */}
-                  <span style={{ color: 'var(--accent)' }} className="mr-2">•</span>
+                  <span style={{ color: "var(--accent)" }} className="mr-2">
+                    •
+                  </span>
                   {skill}
                 </li>
               ))}
@@ -90,8 +92,8 @@ export function AcademicTemplate({ data }: CVTemplateProps) {
             <h2
               className="text-2xl font-serif border-b-2 pb-2 mb-4"
               style={{
-                color: 'var(--accent)',
-                borderColor: 'var(--accent)',
+                color: "var(--accent)",
+                borderColor: "var(--accent)",
               }}
             >
               Education
@@ -100,7 +102,7 @@ export function AcademicTemplate({ data }: CVTemplateProps) {
               <div key={i} className="mb-4">
                 <h3 className="font-semibold text-gray-900">{edu.degree}</h3>
                 {/* School in accent color */}
-                <p className="italic" style={{ color: 'var(--accent)' }}>
+                <p className="italic" style={{ color: "var(--accent)" }}>
                   {edu.school}
                 </p>
                 <p className="text-gray-600">{edu.year}</p>

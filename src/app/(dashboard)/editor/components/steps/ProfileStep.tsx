@@ -22,11 +22,15 @@ export function ProfileStep({
 }: ProfileStepProps) {
   return (
     <div>
-       <div className="flex items-center gap-1 mb-2">
-          <label className="block text-sm font-medium m-0">Professional Summary</label>
-          <p className="text-red-500 text-base leading-none">*</p>
-        </div>
-      <SummaryAIField onFill={(generatedText) => updateProfile(generatedText)} />
+      <div className="flex items-center gap-1 mb-2">
+        <label className="block text-sm font-medium m-0">
+          Professional Summary
+        </label>
+        <p className="text-red-500 text-base leading-none">*</p>
+      </div>
+      <SummaryAIField
+        onFill={(generatedText) => updateProfile(generatedText)}
+      />
       <Textarea
         value={formData.profile}
         onChange={(e) => updateProfile(e.target.value)}
@@ -35,9 +39,7 @@ export function ProfileStep({
         className={`${error && touched.profile ? "border-red-500" : ""} h-48 focus:outline-nonefocus:!border-gray-200 focus:!ring-0 ${!formData.profile ? "bg-gray-100" : "bg-white"}`}
       />
       {error && touched.profile && (
-        <div className="text-red-500 text-xs mt-1">
-          {error}
-        </div>
+        <div className="text-red-500 text-xs mt-1">{error}</div>
       )}
     </div>
   );

@@ -5,12 +5,16 @@ export default function TimelineTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
 
   return (
-    <div className="max-w-4xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-4xl mx-auto bg-white"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       {/* Header */}
       <div
         className="text-center py-12"
         style={{
-          background: "linear-gradient(to bottom, var(--accent-bg, #f8fafc), #fff)",
+          background:
+            "linear-gradient(to bottom, var(--accent-bg, #f8fafc), #fff)",
         }}
       >
         {data.personal.photoUrl && (
@@ -37,7 +41,10 @@ export default function TimelineTemplate({ data }: CVTemplateProps) {
         >
           {data.personal.title}
         </p>
-        <div className="flex justify-center gap-8" style={{ color: "var(--accent)" }}>
+        <div
+          className="flex justify-center gap-8"
+          style={{ color: "var(--accent)" }}
+        >
           <div className="flex items-center gap-2">
             <Mail className="w-5 h-5" style={{ color: "var(--accent)" }} />
             {data.personal.email}
@@ -59,7 +66,10 @@ export default function TimelineTemplate({ data }: CVTemplateProps) {
             Professioneel Profiel
           </h2>
           <div className="max-w-3xl mx-auto text-center">
-            <p className="text-lg" style={{ color: "var(--accent)", opacity: 0.7 }}>
+            <p
+              className="text-lg"
+              style={{ color: "var(--accent)", opacity: 0.7 }}
+            >
               {data.profile}
             </p>
           </div>
@@ -92,8 +102,12 @@ export default function TimelineTemplate({ data }: CVTemplateProps) {
                 ></div>
 
                 {/* Content card */}
-                <div className={`flex ${i % 2 === 0 ? "justify-start" : "justify-end"}`}>
-                  <div className={`w-5/12 ${i % 2 === 0 ? "text-right pr-8" : "text-left pl-8"}`}>
+                <div
+                  className={`flex ${i % 2 === 0 ? "justify-start" : "justify-end"}`}
+                >
+                  <div
+                    className={`w-5/12 ${i % 2 === 0 ? "text-right pr-8" : "text-left pl-8"}`}
+                  >
                     <div
                       className="bg-white rounded-lg p-6 shadow-lg"
                       style={{
@@ -102,7 +116,10 @@ export default function TimelineTemplate({ data }: CVTemplateProps) {
                         opacity: 0.92,
                       }}
                     >
-                      <h3 className="text-xl font-bold mb-2" style={{ color: "var(--accent)" }}>
+                      <h3
+                        className="text-xl font-bold mb-2"
+                        style={{ color: "var(--accent)" }}
+                      >
                         {exp.job}
                       </h3>
                       <p

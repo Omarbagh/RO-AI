@@ -6,7 +6,7 @@ export function InfluencerTemplate({ data }: CVTemplateProps) {
   return (
     <div
       className="max-w-4xl mx-auto"
-      style={{ '--accent': accent } as React.CSSProperties}
+      style={{ "--accent": accent } as React.CSSProperties}
     >
       <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
         <div

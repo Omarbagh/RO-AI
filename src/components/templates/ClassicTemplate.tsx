@@ -3,9 +3,12 @@ import { Mail, Phone, Calendar } from "lucide-react";
 
 export default function ClassicTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
- 
+
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-lg" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-4xl mx-auto bg-white shadow-lg"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       {/* Header */}
       <div
         className="p-8"
@@ -14,10 +17,7 @@ export default function ClassicTemplate({ data }: CVTemplateProps) {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-bold mb-2">{data.personal.name}</h1>
-            <p
-              className="text-xl"
-              style={{ color: "rgba(255,255,255,0.85)" }}
-            >
+            <p className="text-xl" style={{ color: "rgba(255,255,255,0.85)" }}>
               {data.personal.title}
             </p>
           </div>

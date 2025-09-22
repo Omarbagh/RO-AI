@@ -49,7 +49,7 @@ for (const file of templateFiles) {
 // Output als JSON bestand
 fs.writeFileSync(
   path.join(__dirname, "./template-fields.json"),
-  JSON.stringify(fieldUsage, null, 2)
+  JSON.stringify(fieldUsage, null, 2),
 );
 
 console.log("✅ Scan afgerond. Check scripts/template-fields.json");

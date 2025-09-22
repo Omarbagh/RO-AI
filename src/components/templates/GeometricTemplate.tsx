@@ -2,9 +2,12 @@ import { CVTemplateProps } from "@/types/cv";
 
 export function GeometricTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
-  
+
   return (
-    <div className="max-w-5xl mx-auto bg-gray-100" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-5xl mx-auto bg-gray-100"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       <div className="bg-white">
         <div className="relative">
           <div
@@ -19,10 +22,7 @@ export function GeometricTemplate({ data }: CVTemplateProps) {
             <h1 className="text-5xl font-bold text-gray-900 mb-3">
               {data.personal.name}
             </h1>
-            <p
-              className="text-2xl mb-8"
-              style={{ color: "var(--accent)" }}
-            >
+            <p className="text-2xl mb-8" style={{ color: "var(--accent)" }}>
               {data.personal.title}
             </p>
           </div>
@@ -57,11 +57,7 @@ export function GeometricTemplate({ data }: CVTemplateProps) {
                     style={{ borderColor: "var(--accent)" }}
                   >
                     <h3 className="font-bold text-gray-900">{exp.job}</h3>
-                    <p
-                      style={{ color: "var(--accent)" }}
-                    >
-                      {exp.company}
-                    </p>
+                    <p style={{ color: "var(--accent)" }}>{exp.company}</p>
                     <p className="text-gray-700 text-sm">{exp.description}</p>
                   </div>
                 ))}

@@ -16,17 +16,17 @@ export default function CreativeTemplate({ data }: CVTemplateProps) {
           background: "var(--accent, #a21caf)",
         }}
       >
-        <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.2)" }}></div>
+        <div
+          className="absolute inset-0"
+          style={{ background: "rgba(0,0,0,0.2)" }}
+        ></div>
         <div className="relative z-10">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-5xl font-bold mb-3 text-shadow">
                 {data.personal.name}
               </h1>
-              <p
-                className="text-2xl font-light"
-                style={{ color: "#ffe999" }}
-              >
+              <p className="text-2xl font-light" style={{ color: "#ffe999" }}>
                 {data.personal.title}
               </p>
               <div className="mt-6 flex items-center gap-6 text-lg">

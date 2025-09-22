@@ -6,7 +6,7 @@ export function SportsTemplate({ data }: CVTemplateProps) {
   return (
     <div
       className="max-w-5xl mx-auto"
-      style={{ '--accent': accent } as React.CSSProperties}
+      style={{ "--accent": accent } as React.CSSProperties}
     >
       <div
         className="text-white p-10"
@@ -55,10 +55,7 @@ export function SportsTemplate({ data }: CVTemplateProps) {
               }}
             >
               <h3 className="text-xl font-bold text-gray-900">{exp.job}</h3>
-              <p
-                className="font-semibold"
-                style={{ color: "var(--accent)" }}
-              >
+              <p className="font-semibold" style={{ color: "var(--accent)" }}>
                 {exp.company}
               </p>
               <p className="text-gray-700 mt-2">{exp.description}</p>

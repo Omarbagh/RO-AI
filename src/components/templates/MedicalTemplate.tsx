@@ -1,15 +1,14 @@
 import { CVTemplateProps } from "@/types/cv";
 
 export function MedicalTemplate({ data }: CVTemplateProps) {
-   const accent = data.settings?.accent || "#1E40AF";
- 
+  const accent = data.settings?.accent || "#1E40AF";
 
   return (
-    <div className="max-w-4xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
-      <div
-        className="text-white p-8"
-        style={{ background: "var(--accent)" }}
-      >
+    <div
+      className="max-w-4xl mx-auto bg-white"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
+      <div className="text-white p-8" style={{ background: "var(--accent)" }}>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-bold mb-2">
@@ -90,10 +89,7 @@ export function MedicalTemplate({ data }: CVTemplateProps) {
               style={{ borderColor: "#e5e7eb" }}
             >
               <h3 className="text-lg font-semibold text-gray-800">{exp.job}</h3>
-              <p
-                className="font-medium"
-                style={{ color: "var(--accent)" }}
-              >
+              <p className="font-medium" style={{ color: "var(--accent)" }}>
                 {exp.company}
               </p>
               <p className="text-gray-700 mt-2">{exp.description}</p>
@@ -157,11 +153,7 @@ export function MedicalTemplate({ data }: CVTemplateProps) {
                 }}
               >
                 <h3 className="font-semibold text-gray-800">{edu.degree}</h3>
-                <p
-                  style={{ color: "var(--accent)" }}
-                >
-                  {edu.school}
-                </p>
+                <p style={{ color: "var(--accent)" }}>{edu.school}</p>
                 <p className="text-gray-600 text-sm">{edu.year}</p>
               </div>
             ))}

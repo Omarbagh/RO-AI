@@ -306,7 +306,6 @@ export const allTemplates: TemplateInfo[] = [
   },
 ];
 
-
 export const templatesByCategory = {
   professional: allTemplates.filter((t) => t.category === "professional"),
   creative: allTemplates.filter((t) => t.category === "creative"),

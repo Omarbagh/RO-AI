@@ -1,20 +1,26 @@
-import { CVTemplateProps } from '@/types/cv';
-import { Mail, Phone } from 'lucide-react';
+import { CVTemplateProps } from "@/types/cv";
+import { Mail, Phone } from "lucide-react";
 
 export default function BasicTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
   return (
-    <div className="max-w-[800px] mx-auto bg-white rounded-lg shadow-md overflow-hidden font-sans" style={{ "--accent": accent } as React.CSSProperties}>
+    <div
+      className="max-w-[800px] mx-auto bg-white rounded-lg shadow-md overflow-hidden font-sans"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       {/* Header */}
       <div
         className="flex flex-col items-center p-6 md:flex-row md:justify-between md:items-end border-b"
-        style={{ backgroundColor: 'var(--accent)', borderColor: 'var(--accent)' }}
+        style={{
+          backgroundColor: "var(--accent)",
+          borderColor: "var(--accent)",
+        }}
       >
         {/* Foto */}
         {data.personal.photoUrl && (
           <div
             className="w-20 h-20 rounded-full overflow-hidden border-2 mb-4 md:mb-0"
-            style={{ borderColor: '#fff' }}
+            style={{ borderColor: "#fff" }}
           >
             <img
               src={data.personal.photoUrl}
@@ -51,8 +57,8 @@ export default function BasicTemplate({ data }: CVTemplateProps) {
           <h2
             className="text-xl font-semibold uppercase border-b pb-1"
             style={{
-              color: 'var(--accent)',
-              borderColor: 'var(--accent)',
+              color: "var(--accent)",
+              borderColor: "var(--accent)",
             }}
           >
             Profiel
@@ -67,8 +73,8 @@ export default function BasicTemplate({ data }: CVTemplateProps) {
           <h2
             className="text-xl font-semibold uppercase border-b pb-1"
             style={{
-              color: 'var(--accent)',
-              borderColor: 'var(--accent)',
+              color: "var(--accent)",
+              borderColor: "var(--accent)",
             }}
           >
             Werkervaring
@@ -80,7 +86,7 @@ export default function BasicTemplate({ data }: CVTemplateProps) {
                   <h3 className="text-md font-medium text-gray-900">
                     {exp.job}
                   </h3>
-                  <span className="text-sm" style={{ color: 'var(--accent)' }}>
+                  <span className="text-sm" style={{ color: "var(--accent)" }}>
                     {exp.company}
                   </span>
                 </div>
@@ -95,8 +101,8 @@ export default function BasicTemplate({ data }: CVTemplateProps) {
           <h2
             className="text-xl font-semibold uppercase border-b pb-1"
             style={{
-              color: 'var(--accent)',
-              borderColor: 'var(--accent)',
+              color: "var(--accent)",
+              borderColor: "var(--accent)",
             }}
           >
             Opleiding
@@ -110,7 +116,7 @@ export default function BasicTemplate({ data }: CVTemplateProps) {
                   </p>
                   <p className="text-sm text-gray-600">{edu.school}</p>
                 </div>
-                <span className="text-sm" style={{ color: 'var(--accent)' }}>
+                <span className="text-sm" style={{ color: "var(--accent)" }}>
                   {edu.year}
                 </span>
               </div>
@@ -123,8 +129,8 @@ export default function BasicTemplate({ data }: CVTemplateProps) {
           <h2
             className="text-xl font-semibold uppercase border-b pb-1"
             style={{
-              color: 'var(--accent)',
-              borderColor: 'var(--accent)',
+              color: "var(--accent)",
+              borderColor: "var(--accent)",
             }}
           >
             Skills
@@ -135,8 +141,8 @@ export default function BasicTemplate({ data }: CVTemplateProps) {
                 key={i}
                 className="px-3 py-1 rounded-full text-xs font-medium"
                 style={{
-                  backgroundColor: 'var(--accent)',
-                  color: '#fff',
+                  backgroundColor: "var(--accent)",
+                  color: "#fff",
                 }}
               >
                 {skill}

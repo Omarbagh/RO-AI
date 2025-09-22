@@ -5,12 +5,15 @@ export default function ExecutiveTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
 
   return (
-    <div className="max-w-5xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-5xl mx-auto bg-white"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       {/* Header */}
       <div
         className="p-10 text-white"
         style={{
-          background: "#111827", 
+          background: "#111827",
         }}
       >
         <div className="flex items-center justify-between">
@@ -29,10 +32,7 @@ export default function ExecutiveTemplate({ data }: CVTemplateProps) {
             )}
             <div>
               <h1 className="text-4xl font-bold mb-2">{data.personal.name}</h1>
-              <p
-                className="text-xl"
-                style={{ color: "var(--accent)" }}
-              >
+              <p className="text-xl" style={{ color: "var(--accent)" }}>
                 {data.personal.title}
               </p>
               <div className="mt-4 flex gap-6 text-sm">

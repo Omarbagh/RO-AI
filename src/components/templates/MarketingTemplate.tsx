@@ -1,10 +1,13 @@
-import { CVTemplateProps } from '@/types/cv';
+import { CVTemplateProps } from "@/types/cv";
 
 export function MarketingTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
 
   return (
-    <div className="max-w-5xl mx-auto bg-white" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-5xl mx-auto bg-white"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       <div className="relative overflow-hidden">
         <div
           className="absolute inset-0"
@@ -92,9 +95,7 @@ export function MarketingTemplate({ data }: CVTemplateProps) {
                     className="w-8 h-8 rounded-full flex items-center justify-center"
                     style={{ background: "var(--accent)", color: "#fff" }}
                   >
-                    <span className="font-bold text-sm">
-                      {i + 1}
-                    </span>
+                    <span className="font-bold text-sm">{i + 1}</span>
                   </div>
                 </div>
                 <p className="text-gray-700">{exp.description}</p>
@@ -149,10 +150,7 @@ export function MarketingTemplate({ data }: CVTemplateProps) {
                 }}
               >
                 <h3 className="font-bold text-gray-900">{edu.degree}</h3>
-                <p
-                  className="font-semibold"
-                  style={{ color: "var(--accent)" }}
-                >
+                <p className="font-semibold" style={{ color: "var(--accent)" }}>
                   {edu.school}
                 </p>
                 <p className="text-gray-600">{edu.year}</p>

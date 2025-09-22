@@ -9,7 +9,6 @@ export interface TemplateInfo {
   preview: string;
   component: React.ComponentType<CVTemplateProps>;
   fileName: string;
-
 }
 
 export interface TemplateCategory {

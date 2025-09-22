@@ -6,7 +6,7 @@ export function GamingTemplate({ data }: CVTemplateProps) {
   return (
     <div
       className="max-w-5xl mx-auto font-mono"
-      style={{ '--accent': accent } as React.CSSProperties}
+      style={{ "--accent": accent } as React.CSSProperties}
     >
       <div
         className="p-4 border-b-2"
@@ -39,10 +39,7 @@ export function GamingTemplate({ data }: CVTemplateProps) {
           >
             &gt; {data.personal.name.toUpperCase()}
           </h1>
-          <p
-            className="text-xl mb-4"
-            style={{ color: "var(--accent)" }}
-          >
+          <p className="text-xl mb-4" style={{ color: "var(--accent)" }}>
             CLASS: {data.personal.title}
           </p>
 
@@ -62,10 +59,7 @@ export function GamingTemplate({ data }: CVTemplateProps) {
           >
             [MISSION BRIEFING]
           </h2>
-          <p
-            className="leading-relaxed"
-            style={{ color: "var(--accent)" }}
-          >
+          <p className="leading-relaxed" style={{ color: "var(--accent)" }}>
             {data.profile}
           </p>
         </div>
@@ -87,23 +81,14 @@ export function GamingTemplate({ data }: CVTemplateProps) {
               style={{ borderColor: "#374151" }}
             >
               <div className="flex justify-between items-start mb-2">
-                <h3
-                  className="font-bold"
-                  style={{ color: "var(--accent)" }}
-                >
+                <h3 className="font-bold" style={{ color: "var(--accent)" }}>
                   {exp.job}
                 </h3>
-                <span
-                  className="text-sm"
-                  style={{ color: "var(--accent)" }}
-                >
+                <span className="text-sm" style={{ color: "var(--accent)" }}>
                   ★ COMPLETED
                 </span>
               </div>
-              <p
-                className="text-sm mb-2"
-                style={{ color: "var(--accent)" }}
-              >
+              <p className="text-sm mb-2" style={{ color: "var(--accent)" }}>
                 Location: {exp.company}
               </p>
               <p className="text-gray-300 text-sm">{exp.description}</p>
@@ -112,10 +97,7 @@ export function GamingTemplate({ data }: CVTemplateProps) {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          <div
-            className="border p-6"
-            style={{ borderColor: "var(--accent)" }}
-          >
+          <div className="border p-6" style={{ borderColor: "var(--accent)" }}>
             <h2
               className="text-xl font-bold mb-4"
               style={{ color: "var(--accent)" }}
@@ -135,10 +117,7 @@ export function GamingTemplate({ data }: CVTemplateProps) {
             </div>
           </div>
 
-          <div
-            className="border p-6"
-            style={{ borderColor: "var(--accent)" }}
-          >
+          <div className="border p-6" style={{ borderColor: "var(--accent)" }}>
             <h2
               className="text-xl font-bold mb-4"
               style={{ color: "var(--accent)" }}
@@ -157,10 +136,7 @@ export function GamingTemplate({ data }: CVTemplateProps) {
                 >
                   {edu.degree}
                 </div>
-                <div
-                  className="text-sm"
-                  style={{ color: "var(--accent)" }}
-                >
+                <div className="text-sm" style={{ color: "var(--accent)" }}>
                   {edu.school}
                 </div>
                 <div className="text-gray-400 text-xs">{edu.year}</div>

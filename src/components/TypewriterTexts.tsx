@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 // Define the properties for the TypewriterTexts component
 interface TypewriterTextsProps {
@@ -19,7 +19,7 @@ const TypewriterTexts: React.FC<TypewriterTextsProps> = ({
   // State to keep track of the current text index
   const [textIndex, setTextIndex] = useState(0);
   // State to manage the currently displayed text
-  const [displayedText, setDisplayedText] = useState('');
+  const [displayedText, setDisplayedText] = useState("");
   // State to determine if the component is deleting text
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -60,7 +60,7 @@ const TypewriterTexts: React.FC<TypewriterTextsProps> = ({
     <h1
       className="text-3xl sm:text-5xl font-bold text-center text-[#1E293B] leading-tight whitespace-pre-line"
       style={{
-        fontFamily: 'Poppins, sans-serif',
+        fontFamily: "Poppins, sans-serif",
       }}
     >
       {displayedText}

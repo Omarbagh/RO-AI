@@ -4,7 +4,10 @@ export function CorporateBlueTemplate({ data }: CVTemplateProps) {
   const accent = data.settings?.accent || "#1E40AF";
 
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-lg" style={{ '--accent': accent } as React.CSSProperties}>
+    <div
+      className="max-w-4xl mx-auto bg-white shadow-lg"
+      style={{ "--accent": accent } as React.CSSProperties}
+    >
       <div
         className="p-8"
         style={{ backgroundColor: "var(--accent)", color: "#fff" }}
@@ -12,10 +15,7 @@ export function CorporateBlueTemplate({ data }: CVTemplateProps) {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-4xl font-bold mb-2">{data.personal.name}</h1>
-            <p
-              className="text-xl"
-              style={{ color: "rgba(255,255,255,0.85)" }}
-            >
+            <p className="text-xl" style={{ color: "rgba(255,255,255,0.85)" }}>
               {data.personal.title}
             </p>
             <div className="mt-4 space-y-1 text-sm">
@@ -69,10 +69,7 @@ export function CorporateBlueTemplate({ data }: CVTemplateProps) {
               style={{ backgroundColor: "rgba(var(--accent-rgb),0.07)" }}
             >
               <h3 className="text-lg font-semibold text-gray-900">{exp.job}</h3>
-              <p
-                className="font-medium"
-                style={{ color: "var(--accent)" }}
-              >
+              <p className="font-medium" style={{ color: "var(--accent)" }}>
                 {exp.company}
               </p>
               <p className="text-gray-700 mt-2">{exp.description}</p>
