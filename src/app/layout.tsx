@@ -84,7 +84,10 @@ function ProfessionalNavbar() {
             {isSignedIn ? (
               <div className="flex items-center space-x-4">
                 <Link href="/dashboard">
-                  <Button variant="ghost" className="text-gray-700 hover:text-[#4F46E5]">
+                  <Button
+                    variant="ghost"
+                    className="text-gray-700 hover:text-[#4F46E5]"
+                  >
                     Dashboard
                   </Button>
                 </Link>
@@ -93,7 +96,10 @@ function ProfessionalNavbar() {
             ) : (
               <>
                 <SignInButton>
-                  <Button variant="ghost" className="text-gray-700 hover:text-[#4F46E5]">
+                  <Button
+                    variant="ghost"
+                    className="text-gray-700 hover:text-[#4F46E5]"
+                  >
                     Sign In
                   </Button>
                 </SignInButton>
@@ -111,7 +117,11 @@ function ProfessionalNavbar() {
             className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {isMobileMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
           </button>
         </div>
 
@@ -129,12 +139,15 @@ function ProfessionalNavbar() {
                   {item.name}
                 </Link>
               ))}
-              
+
               <div className="pt-4 border-t border-gray-200/50 space-y-3">
                 {isSignedIn ? (
                   <>
                     <Link href="/dashboard" className="block w-full">
-                      <Button variant="outline" className="w-full justify-center">
+                      <Button
+                        variant="outline"
+                        className="w-full justify-center"
+                      >
                         Dashboard
                       </Button>
                     </Link>
@@ -142,7 +155,10 @@ function ProfessionalNavbar() {
                 ) : (
                   <>
                     <SignInButton>
-                      <Button variant="outline" className="w-full justify-center">
+                      <Button
+                        variant="outline"
+                        className="w-full justify-center"
+                      >
                         Sign In
                       </Button>
                     </SignInButton>
@@ -170,14 +186,7 @@ function SimpleNavbar() {
     <nav className="bg-white border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-[#4F46E5] to-[#7E22CE] rounded-lg flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-lg font-bold text-gray-900">ResumeAI</span>
-          </Link>
-
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 justify-end w-full">
             <Link href="/">
               <Button variant="ghost" size="sm">
                 ← Back to Home
@@ -208,12 +217,15 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <html lang="en" className={poppins.variable}>
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta name="description" content="Create professional, ATS-friendly resumes in minutes with AI-powered optimization." />
+          <meta
+            name="description"
+            content="Create professional, ATS-friendly resumes in minutes with AI-powered optimization."
+          />
         </head>
         <body className="font-[var(--font-poppins)] antialiased bg-white text-gray-900">
           {/* Conditionally render navbar based on route */}
           {isLandingPage ? <ProfessionalNavbar /> : <SimpleNavbar />}
-          
+
           {/* Main content with appropriate padding */}
           <main className={isLandingPage ? "pt-16" : ""}>
             <Providers>{children}</Providers>

@@ -92,15 +92,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </aside>
 
         <main className="w-full">
-          <header className="h-16 flex items-center justify-between px-6 border-b bg-background/60 backdrop-blur supports-[backdrop-filter]:bg-background/60 w-full">
-            {/* <Input 
-              className="w-80 border-indigo-200 focus:border-indigo-400 focus:ring-indigo-400/30" 
-              placeholder="Search resumes..." 
-            /> */}
-            <div className="flex items-center gap-3 ml-auto">
-              <UserButton />
-            </div>
-          </header>
           <div className="p-6 w-full max-w-full">{children}</div>
         </main>
       </div>

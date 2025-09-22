@@ -413,7 +413,7 @@ export default function EditorPage() {
                 <Edit3 className="w-10 h-10 text-white" />
               </div>
               <CardTitle className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">
-                Welcome to ResumeAI
+                Welcome to CVHero
               </CardTitle>
               <p className="text-gray-600 text-lg">
                 Create stunning, professional resumes in minutes

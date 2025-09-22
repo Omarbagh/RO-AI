@@ -59,7 +59,9 @@ const TypewriterTexts: React.FC<TypewriterTextsProps> = ({
   }, [displayedText, isDeleting, textIndex, texts, speed, delay, deleteDelay]);
 
   return (
-    <span className={`bg-gradient-to-r from-[#4F46E5] to-indigo-400 bg-clip-text text-transparent ${className}`}>
+    <span
+      className={`bg-gradient-to-r from-[#4F46E5] to-indigo-400 bg-clip-text text-transparent ${className}`}
+    >
       {displayedText}
       <span className="animate-pulse">|</span>
     </span>

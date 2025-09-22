@@ -117,11 +117,18 @@ body {
   }
 }
 
-@layer base { html { scroll-behavior: smooth; } }
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
 
 @layer utilities {
   .bg-dot-grid {
-    background-image: radial-gradient(hsl(var(--foreground)/0.12) 1px, transparent 1px);
+    background-image: radial-gradient(
+      hsl(var(--foreground) / 0.12) 1px,
+      transparent 1px
+    );
     background-size: 20px 20px;
   }
   .aurora {
@@ -132,28 +139,50 @@ body {
     content: "";
     position: absolute;
     inset: -10%;
-    background: conic-gradient(from 180deg at 50% 50%, rgba(79,70,229,0.35), rgba(236,72,153,0.25), rgba(14,165,233,0.25), rgba(79,70,229,0.35));
+    background: conic-gradient(
+      from 180deg at 50% 50%,
+      rgba(79, 70, 229, 0.35),
+      rgba(236, 72, 153, 0.25),
+      rgba(14, 165, 233, 0.25),
+      rgba(79, 70, 229, 0.35)
+    );
     filter: blur(60px);
     animation: aurora-rot 18s linear infinite;
     transform-origin: center;
     pointer-events: none;
   }
   @keyframes aurora-rot {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
   .marquee {
-    display: flex; gap: 1rem; overflow: hidden;
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    display: flex;
+    gap: 1rem;
+    overflow: hidden;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
   }
   .marquee-inner {
-    display: flex; gap: 1rem; min-width: max-content; animation: marquee-left 25s linear infinite;
+    display: flex;
+    gap: 1rem;
+    min-width: max-content;
+    animation: marquee-left 25s linear infinite;
   }
   @keyframes marquee-left {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
   }
 }
-
 
 @keyframes fade-in {
   from {

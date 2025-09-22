@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Sparkles, Twitter, Github, Mail } from "lucide-react";
+import { Sparkles, Linkedin, Mail } from "lucide-react";
 
 export default function LandingFooter() {
   return (
@@ -12,20 +12,24 @@ export default function LandingFooter() {
               <div className="w-10 h-10 bg-gradient-to-br from-[#4F46E5] to-[#7E22CE] rounded-xl flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-white">ResumeAI</span>
+              <span className="text-xl font-bold text-white">CVHero</span>
             </Link>
             <p className="text-gray-300 mb-6 max-w-md">
-              Create professional, ATS-friendly resumes in minutes with AI-powered optimization. 
-              Join thousands of professionals who've landed their dream jobs.
+              Create professional, ATS-friendly resumes in minutes with
+              AI-powered optimization. Join thousands of professionals who've
+              landed their dream jobs.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Twitter className="w-5 h-5" />
+              <a
+                href="#"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Github className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a
+                href="#"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 <Mail className="w-5 h-5" />
               </a>
             </div>
@@ -35,10 +39,38 @@ export default function LandingFooter() {
           <div>
             <h3 className="font-semibold text-lg mb-4">Product</h3>
             <ul className="space-y-2">
-              <li><Link href="#features" className="text-gray-300 hover:text-white transition-colors">Features</Link></li>
-              <li><Link href="#templates" className="text-gray-300 hover:text-white transition-colors">Templates</Link></li>
-              <li><Link href="#pricing" className="text-gray-300 hover:text-white transition-colors">Pricing</Link></li>
-              <li><Link href="#testimonials" className="text-gray-300 hover:text-white transition-colors">Testimonials</Link></li>
+              <li>
+                <Link
+                  href="#features"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Features
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#templates"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Templates
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#pricing"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Pricing
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="#testimonials"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Testimonials
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -46,26 +78,63 @@ export default function LandingFooter() {
           <div>
             <h3 className="font-semibold text-lg mb-4">Support</h3>
             <ul className="space-y-2">
-              <li><Link href="/help" className="text-gray-300 hover:text-white transition-colors">Help Center</Link></li>
-              <li><Link href="/contact" className="text-gray-300 hover:text-white transition-colors">Contact Us</Link></li>
-              <li><Link href="/privacy" className="text-gray-300 hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="text-gray-300 hover:text-white transition-colors">Terms of Service</Link></li>
+              <li>
+                <Link
+                  href="/help"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Help Center
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/contact"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/privacy"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/terms"
+                  className="text-gray-300 hover:text-white transition-colors"
+                >
+                  Terms of Service
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            © 2024 ResumeAI. All rights reserved.
+            © 2025 CVHero. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link href="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">
+            <Link
+              href="/privacy"
+              className="text-gray-400 hover:text-white text-sm transition-colors"
+            >
               Privacy
             </Link>
-            <Link href="/terms" className="text-gray-400 hover:text-white text-sm transition-colors">
+            <Link
+              href="/terms"
+              className="text-gray-400 hover:text-white text-sm transition-colors"
+            >
               Terms
             </Link>
-            <Link href="/cookies" className="text-gray-400 hover:text-white text-sm transition-colors">
+            <Link
+              href="/cookies"
+              className="text-gray-400 hover:text-white text-sm transition-colors"
+            >
               Cookies
             </Link>
           </div>
