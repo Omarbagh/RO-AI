@@ -96,6 +96,7 @@ const sampleResumeData = {
     "Node.js",
     "Python",
     "AWS",
+    "Python", 
     "Docker",
     "MongoDB",
     "PostgreSQL",
@@ -109,7 +110,7 @@ const sampleResumeData = {
 // Template Preview Component that uses the actual template component
 function TemplatePreview({ template }: { template: any }) {
   const TemplateComponent = template.comp;
-
+ 
   if (!TemplateComponent) {
     return (
       <div className="bg-white p-8 rounded-lg shadow-lg">
@@ -331,16 +332,7 @@ export default function Index() {
             </div>
 
             {/* Social proof */}
-            <div className="mt-8 text-xs uppercase tracking-widest text-muted-foreground/80">
-              Trusted by candidates from
-            </div>
-            <div className="mt-3 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">
-              <span className="opacity-80">Google</span>
-              <span className="opacity-80">Microsoft</span>
-              <span className="opacity-80">Stripe</span>
-              <span className="opacity-80">Shopify</span>
-              <span className="opacity-80">Airbnb</span>
-            </div>
+             
           </div>
 
           {/* Real Dashboard Preview */}
