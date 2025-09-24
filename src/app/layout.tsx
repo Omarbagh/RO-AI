@@ -178,36 +178,6 @@ function ProfessionalNavbar() {
   );
 }
 
-// Simple Navbar for non-landing pages
-function SimpleNavbar() {
-  const { isSignedIn } = useUser();
-
-  return (
-    <nav className="bg-white border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-4 justify-end w-full">
-            <Link href="/">
-              <Button variant="ghost" size="sm">
-                ← Back to Home
-              </Button>
-            </Link>
-            {isSignedIn ? (
-              <UserButton afterSignOutUrl="/" />
-            ) : (
-              <SignInButton>
-                <Button variant="outline" size="sm">
-                  Sign In
-                </Button>
-              </SignInButton>
-            )}
-          </div>
-        </div>
-      </div>
-    </nav>
-  );
-}
-
 export default function RootLayout({ children }: RootLayoutProps) {
   const pathname = usePathname();
   const isLandingPage = pathname === "/";
@@ -224,7 +194,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </head>
         <body className="font-[var(--font-poppins)] antialiased bg-white text-gray-900">
           {/* Conditionally render navbar based on route */}
-          {isLandingPage ? <ProfessionalNavbar /> : <SimpleNavbar />}
+          {isLandingPage ? <ProfessionalNavbar /> : ""}
 
           {/* Main content with appropriate padding */}
           <main className={isLandingPage ? "pt-16" : ""}>

@@ -10,6 +10,7 @@ import {
   FileUser,
   Menu,
   ChevronLeft,
+  User
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input";
@@ -20,7 +21,7 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: House },
   { href: "/editor", label: "Editor", icon: FileUser },
   { href: "/billing", label: "Billing", icon: CircleDollarSign },
-  { href: "/settings", label: "Settings", icon: Settings },
+  { href: "/profile", label: "Profile", icon: User }
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -47,9 +48,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="h-16 flex items-center px-6 justify-between backdrop-blur-sm bg-white/5">
             {!isCollapsed && (
               <div className="flex items-center gap-2 font-extrabold tracking-tight text-lg text-indigo-800">
-                <div className="size-7 rounded-md bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">CV</span>
-                </div>
                 CVHero
               </div>
             )}
@@ -57,7 +55,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               variant="ghost"
               size="icon"
               onClick={toggleSidebar}
-              className="h-8 w-8 bg-white/10 hover:bg-white/20 text-indigo-700"
+              className="h-8 w-8 bg-white/40 hover:bg-white/20 text-indigo-700"
             >
               {isCollapsed ? (
                 <Menu className="h-4 w-4" />
