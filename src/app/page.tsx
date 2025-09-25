@@ -310,8 +310,8 @@ export default function Index() {
 
             {/* Description */}
             <p className="mt-6 text-lg text-muted-foreground">
-              Create a standout resume in minutes with the power of AI –
-              beautifully designed, fully tailored to your experience, and
+              Create a standout resume in minutes with the power of AI,
+              beautifully designed, fully tailored to your experience and
               optimized to help you land your next big opportunity with
               confidence.
             </p>
@@ -438,12 +438,11 @@ export default function Index() {
                 <div className="flex items-center gap-2 mb-2">
                   <Sparkles className="h-4 w-4 text-[#4F46E5]" />
                   <span className="text-sm font-medium text-[#4F46E5]">
-                    AI Suggestions
+                    AI Tips & Best Practices
                   </span>
                 </div>
                 <p className="text-xs text-gray-600">
-                  Your Software Engineer resume could be improved with more
-                  quantifiable achievements. Try our AI optimizer!
+                  Keep your resume to 1-2 pages for optimal readability
                 </p>
               </div>
             </div>
@@ -577,8 +576,7 @@ export default function Index() {
             How It Works
           </h2>
           <p className="mt-4 text-muted-foreground">
-            Upload your resume or start from scratch. Enter details, pick a
-            style, and let AI optimize it. Download and apply with confidence!
+            Choose a template, enter your details and let AI optimize it. Download and apply with confidence!
           </p>
         </div>
         <div className="relative mt-12">
@@ -586,46 +584,46 @@ export default function Index() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
-                icon: Upload,
-                title: "Upload or Start Fresh",
-                desc: "Import your resume or begin in minutes.",
+              icon: Palette,
+              title: "Pick Your Template",
+              desc: "Select one of our professionally designed resume templates.",
               },
               {
-                icon: User,
-                title: "Tell Us About You",
-                desc: "Add roles, skills, and achievements.",
+              icon: User,
+              title: "Add Your Details",
+              desc: "Fill in your personal information, experience, skills and achievements.",
               },
               {
-                icon: Wand2,
-                title: "Let AI Optimize",
-                desc: "Enhance impact and pass ATS scans.",
+              icon: Sparkles,
+              title: "AI Optimization",
+              desc: "Let AI enhance your resume for maximum impact.",
               },
               {
-                icon: DownloadCloud,
-                title: "Export & Apply",
-                desc: "One‑click download in PDF or DOCX.",
+              icon: DownloadCloud,
+              title: "Download & Apply",
+              desc: "Export your resume instantly and start applying.",
               },
             ].map(({ icon: Icon, title, desc }, i) => (
               <div
-                key={title}
-                className="relative rounded-2xl bg-gradient-to-br from-[#4F46E5]/20 via-transparent to-indigo-400/20 p-[1px] transition-shadow hover:shadow-xl"
+              key={title}
+              className="relative rounded-2xl bg-gradient-to-br from-[#4F46E5]/20 via-transparent to-indigo-400/20 p-[1px] transition-shadow hover:shadow-xl"
               >
-                <div className="rounded-[15px] border border-border bg-card p-6">
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
-                      <div className="absolute inset-0 rounded-full bg-[#4F46E5]/20 blur-sm" />
-                      <div className="relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#4F46E5]/10 text-[#4F46E5] ring-1 ring-[#4F46E5]/30">
-                        <Icon className="h-5 w-5" />
-                      </div>
-                    </div>
-                    <span className="text-xs font-semibold text-muted-foreground">
-                      Step {i + 1}
-                    </span>
+              <div className="rounded-[15px] border border-border bg-card p-6">
+                <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-full bg-[#4F46E5]/20 blur-sm" />
+                  <div className="relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#4F46E5]/10 text-[#4F46E5] ring-1 ring-[#4F46E5]/30">
+                  <Icon className="h-5 w-5" />
                   </div>
-                  <h3 className="mt-4 text-lg font-semibold">{title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{desc}</p>
                 </div>
-                <div className="hidden lg:block absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-[#4F46E5]/40" />
+                <span className="text-xs font-semibold text-muted-foreground">
+                  Step {i + 1}
+                </span>
+                </div>
+                <h3 className="mt-4 text-lg font-semibold">{title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{desc}</p>
+              </div>
+              <div className="hidden lg:block absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-[#4F46E5]/40" />
               </div>
             ))}
           </div>
@@ -658,42 +656,37 @@ export default function Index() {
           </h2>
           <p className="mt-4 text-muted-foreground">
             Effortlessly create professional resumes with AI-driven content
-            suggestions, customizable templates, real-time feedback, and
+            suggestions, customizable templates and
             one-click downloads. Stand out with tailored achievements, modern
-            design, and seamless editing—all in one place.
+            design, and seamless editing, all in one place.
           </p>
         </div>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[
             {
               icon: FileCheck2,
-              title: "ATS‑Friendly",
-              desc: "Built to pass applicant tracking systems.",
+              title: "Dashboard Overview",
+              desc: "Manage all your resumes in one place.",
             },
             {
               icon: Sparkles,
-              title: "AI Bullet Points",
+              title: "AI Integration",
               desc: "Generated, quantified, and tailored.",
             },
             {
               icon: Palette,
               title: "Modern Templates",
-              desc: "Curated designs that recruiters love.",
-            },
-            {
-              icon: Gauge,
-              title: "Real‑time Scoring",
-              desc: "Instant feedback to improve impact.",
+              desc: "Professional designs that recruiters love.",
             },
             {
               icon: DownloadCloud,
               title: "One‑Click Export",
-              desc: "PDF and DOCX downloads anytime.",
+              desc: "Easily donwload your resume in PDF or DOCX format.",
             },
             {
-              icon: Shield,
-              title: "Privacy First",
-              desc: "Your data is encrypted and secure.",
+              icon: Wand2,
+              title: "Instant Personalization",
+              desc: "Customize your resume style and content in seconds.",
             },
           ].map(({ icon: Icon, title, desc }, i) => (
             <div
@@ -753,27 +746,20 @@ export default function Index() {
         </div>
 
         {/* Additional Pricing Info */}
-        <div className="mt-12 text-center">
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="rounded-lg bg-gradient-to-br from-[#4F46E5]/5 to-indigo-400/5 p-6">
-              <Sparkles className="h-8 w-8 text-[#4F46E5] mx-auto mb-4" />
-              <h4 className="font-semibold">Free Trial</h4>
-              <p className="text-sm text-muted-foreground mt-2">
-                14-day free trial on all paid plans
-              </p>
-            </div>
-            <div className="rounded-lg bg-gradient-to-br from-[#4F46E5]/5 to-indigo-400/5 p-6">
+        <div className="mt-12 flex justify-center">
+          <div className="grid gap-8 md:grid-cols-2 max-w-2xl w-full">
+            <div className="rounded-lg bg-gradient-to-br from-[#4F46E5]/5 to-indigo-400/5 p-6 text-center">
               <Shield className="h-8 w-8 text-[#4F46E5] mx-auto mb-4" />
               <h4 className="font-semibold">No Risk</h4>
               <p className="text-sm text-muted-foreground mt-2">
-                Cancel anytime, no hidden fees
+          Cancel anytime, no hidden fees
               </p>
             </div>
-            <div className="rounded-lg bg-gradient-to-br from-[#4F46E5]/5 to-indigo-400/5 p-6">
+            <div className="rounded-lg bg-gradient-to-br from-[#4F46E5]/5 to-indigo-400/5 p-6 text-center">
               <DownloadCloud className="h-8 w-8 text-[#4F46E5] mx-auto mb-4" />
               <h4 className="font-semibold">Instant Access</h4>
               <p className="text-sm text-muted-foreground mt-2">
-                Get started immediately after signup
+          Get started immediately after signup
               </p>
             </div>
           </div>
