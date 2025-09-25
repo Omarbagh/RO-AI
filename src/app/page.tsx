@@ -662,7 +662,7 @@ export default function Index() {
           </p>
         </div>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[
+            {[
             {
               icon: FileCheck2,
               title: "Dashboard Overview",
@@ -681,39 +681,50 @@ export default function Index() {
             {
               icon: DownloadCloud,
               title: "One‑Click Export",
-              desc: "Easily donwload your resume in PDF or DOCX format.",
+              desc: "Easily download your resume in PDF or DOCX format.",
             },
             {
               icon: Wand2,
               title: "Instant Personalization",
               desc: "Customize your resume style and content in seconds.",
             },
-          ].map(({ icon: Icon, title, desc }, i) => (
+            {
+              icon: Wand2,
+              title: "Cover Letter Generator",
+              desc: "Generate tailored cover letters for every job application.",
+              comingSoon: true,
+            },
+            ].map(({ icon: Icon, title, desc, comingSoon }, i) => (
             <div
               key={title}
               className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#4F46E5]/20 via-transparent to-indigo-400/20 p-[1px] transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
             >
               <div className="relative rounded-[15px] border border-border bg-card p-6">
-                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-[#4F46E5]/10 text-[#4F46E5]">
-                  <Icon className="h-5 w-5" />
-                </div>
-                <h3 className="text-lg font-semibold">{title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{desc}</p>
-                {i === 1 && (
-                  <span className="absolute right-4 top-4 rounded-full bg-[#4F46E5]/10 px-2 py-0.5 text-[10px] font-semibold text-[#4F46E5]">
-                    New
-                  </span>
-                )}
+              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-[#4F46E5]/10 text-[#4F46E5]">
+                <Icon className="h-5 w-5" />
+              </div>
+              <h3 className="text-lg font-semibold">{title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{desc}</p>
+              {comingSoon && (
+                <span className="absolute right-4 top-4 rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-semibold text-yellow-700 border border-yellow-300">
+                Coming Soon
+                </span>
+              )}
+              {i === 1 && !comingSoon && (
+                <span className="absolute right-4 top-4 rounded-full bg-[#4F46E5]/10 px-2 py-0.5 text-[10px] font-semibold text-[#4F46E5]">
+                New
+                </span>
+              )}
               </div>
               <div
-                className="pointer-events-none absolute -inset-16 -z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-40"
-                style={{
-                  background:
-                    "radial-gradient(600px circle at var(--x,50%) var(--y,50%), hsl(var(--primary)/.35), transparent 40%)",
-                }}
+              className="pointer-events-none absolute -inset-16 -z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-40"
+              style={{
+                background:
+                "radial-gradient(600px circle at var(--x,50%) var(--y,50%), hsl(var(--primary)/.35), transparent 40%)",
+              }}
               />
             </div>
-          ))}
+            ))}
         </div>
       </section>
 
