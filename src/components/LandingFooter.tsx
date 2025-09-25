@@ -16,22 +16,21 @@ export default function LandingFooter() {
             </Link>
             <p className="text-gray-300 mb-6 max-w-md">
               Create professional, ATS-friendly resumes in minutes with
-              AI-powered optimization. Join thousands of professionals who've
-              landed their dream jobs.
+              AI-powered optimization.
+            </p>
+            <p className="text-gray-300 mb-6 max-w-md">
+              KVK: 95561072
+              <br />
+              Email: info@novaweb.studio
             </p>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://www.linkedin.com/company/nova-web-studio-web-design"
                 className="text-gray-400 hover:text-white transition-colors"
               >
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <Mail className="w-5 h-5" />
-              </a>
+
             </div>
           </div>
 
@@ -80,14 +79,6 @@ export default function LandingFooter() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/help"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Help Center
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/contact"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
@@ -118,26 +109,6 @@ export default function LandingFooter() {
           <p className="text-gray-400 text-sm">
             © 2025 CVHero. All rights reserved.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
-            <Link
-              href="/privacy"
-              className="text-gray-400 hover:text-white text-sm transition-colors"
-            >
-              Privacy
-            </Link>
-            <Link
-              href="/terms"
-              className="text-gray-400 hover:text-white text-sm transition-colors"
-            >
-              Terms
-            </Link>
-            <Link
-              href="/cookies"
-              className="text-gray-400 hover:text-white text-sm transition-colors"
-            >
-              Cookies
-            </Link>
-          </div>
         </div>
       </div>
     </footer>
