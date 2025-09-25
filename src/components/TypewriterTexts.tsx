@@ -8,6 +8,7 @@ interface TypewriterTextsProps {
   speed?: number;
   delay?: number;
   deleteDelay?: number;
+  className?: string;
 }
 
 const TypewriterTexts: React.FC<TypewriterTextsProps> = ({
@@ -15,6 +16,7 @@ const TypewriterTexts: React.FC<TypewriterTextsProps> = ({
   speed = 150, // Speed of typing in milliseconds
   delay = 2200, // Delay after typing a text
   deleteDelay = 80, // Speed of deleting in milliseconds
+  className = "",
 }) => {
   // State to keep track of the current text index
   const [textIndex, setTextIndex] = useState(0);
@@ -57,15 +59,12 @@ const TypewriterTexts: React.FC<TypewriterTextsProps> = ({
   }, [displayedText, isDeleting, textIndex, texts, speed, delay, deleteDelay]);
 
   return (
-    <h1
-      className="text-3xl sm:text-5xl font-bold text-center text-[#1E293B] leading-tight whitespace-pre-line"
-      style={{
-        fontFamily: "Poppins, sans-serif",
-      }}
+    <span
+      className={`bg-gradient-to-r from-[#4F46E5] to-indigo-400 bg-clip-text text-transparent ${className}`}
     >
       {displayedText}
       <span className="animate-pulse">|</span>
-    </h1>
+    </span>
   );
 };
 

@@ -25,9 +25,8 @@ import {
   FileText,
   Activity,
   Clock,
-  BarChart3,
   Sparkles,
-  Trash2,
+  Calendar,
 } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import { createClient } from "@supabase/supabase-js";
@@ -88,6 +87,76 @@ const getActionTypeFromDescription = (description: string): string => {
   return "other";
 };
 
+// Helper function to calculate resume completion percentage
+const calculateCompletion = (resumeData: any): number => {
+  if (!resumeData) return 0;
+
+  let completedFields = 0;
+  let totalFields = 0;
+
+  // Personal Information
+  if (resumeData.personal) {
+    const personalFields = ["name", "email", "phone", "location"];
+    totalFields += personalFields.length;
+    completedFields += personalFields.filter(
+      (field) => resumeData.personal[field],
+    ).length;
+  }
+
+  // Professional Summary
+  if (resumeData.summary) {
+    totalFields += 1;
+    if (resumeData.summary.trim().length > 0) completedFields += 1;
+  }
+
+  // Work Experience
+  if (resumeData.experience && Array.isArray(resumeData.experience)) {
+    totalFields += 1;
+    if (resumeData.experience.length > 0) completedFields += 1;
+  }
+
+  // Education
+  if (resumeData.education && Array.isArray(resumeData.education)) {
+    totalFields += 1;
+    if (resumeData.education.length > 0) completedFields += 1;
+  }
+
+  // Skills
+  if (resumeData.skills && Array.isArray(resumeData.skills)) {
+    totalFields += 1;
+    if (resumeData.skills.length > 0) completedFields += 1;
+  }
+
+  return totalFields > 0
+    ? Math.round((completedFields / totalFields) * 100)
+    : 0;
+};
+
+// Helper function to get status info based on completion
+const getStatusInfo = (completion: number) => {
+  if (completion >= 90) {
+    return { label: "Complete", color: "bg-green-100 text-green-800" };
+  } else if (completion >= 50) {
+    return { label: "In Progress", color: "bg-blue-100 text-blue-800" };
+  } else {
+    return { label: "Draft", color: "bg-yellow-100 text-yellow-800" };
+  }
+};
+
+// Helper function to format date
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffTime = Math.abs(now.getTime() - date.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 1) return "Today";
+  if (diffDays === 2) return "Yesterday";
+  if (diffDays <= 7) return `${diffDays - 1} days ago`;
+  if (diffDays <= 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+};
+
 export default function Dashboard() {
   const { user, isLoaded } = useUser();
   const { getToken } = useAuth();
@@ -113,6 +182,17 @@ export default function Dashboard() {
       }
     `,
   });
+
+  // Get top 2 resumes for the preview cards
+  const topResumes = useMemo(() => {
+    return resumes.slice(0, 2).map((resume) => ({
+      ...resume,
+      completion: calculateCompletion(resume.data),
+      status: getStatusInfo(calculateCompletion(resume.data)),
+      lastUpdated: formatDate(resume.created_at),
+      title: resume.data?.personal?.name || "Untitled Resume",
+    }));
+  }, [resumes]);
 
   const deleteResume = async (resumeId: string) => {
     if (!user) return;
@@ -275,7 +355,50 @@ export default function Dashboard() {
           </Button>
         </div>
 
-        {/* Stats Overview Cards */}
+        {/* New Progress Cards - Replacing the old ones */}
+        {resumes.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              Recent Resumes
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {topResumes.map((resume, index) => (
+                <div
+                  key={resume.id}
+                  className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h4 className="font-semibold text-gray-900">
+                        {resume.title}
+                      </h4>
+                      <p className="text-xs text-gray-500 flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        {resume.lastUpdated}
+                      </p>
+                    </div>
+                    <div
+                      className={`text-xs px-2 py-1 rounded-full ${resume.status.color}`}
+                    >
+                      {resume.status.label}
+                    </div>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full mb-2">
+                    <div
+                      className="h-full bg-[#4F46E5] rounded-full transition-all duration-500"
+                      style={{ width: `${resume.completion}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    Completion: {resume.completion}%
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Original Stats Overview Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
           <Card className="border-0 shadow-md bg-gradient-to-br from-white to-indigo-50/30 hover:shadow-lg transition-all duration-300 group hover-lift">
             <CardContent className="p-6">
@@ -426,7 +549,7 @@ export default function Dashboard() {
               </CardContent>
             </Card>
 
-            {/* Recent Activity Table - Moved beneath the carousel */}
+            {/* Recent Activity Table */}
             <Card className="border-0 shadow-md transition-all duration-300 hover:shadow-lg hover-lift">
               <CardHeader className="pb-3 border-b">
                 <CardTitle className="text-lg flex items-center gap-2">
