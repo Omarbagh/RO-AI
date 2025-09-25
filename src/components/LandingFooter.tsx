@@ -40,7 +40,7 @@ export default function LandingFooter() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="#features"
+                  href="/#features"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Features
@@ -48,7 +48,7 @@ export default function LandingFooter() {
               </li>
               <li>
                 <Link
-                  href="#templates"
+                  href="/#templates"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Templates
@@ -56,18 +56,18 @@ export default function LandingFooter() {
               </li>
               <li>
                 <Link
-                  href="#pricing"
+                  href="/#how-it-works"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Pricing
+                  How it works
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#testimonials"
+                  href="/#pricing"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
-                  Testimonials
+                  Pricing
                 </Link>
               </li>
             </ul>
@@ -79,15 +79,7 @@ export default function LandingFooter() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/contact"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/privacy"
+                  href="/privacy-policy"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Privacy Policy
@@ -95,7 +87,7 @@ export default function LandingFooter() {
               </li>
               <li>
                 <Link
-                  href="/terms"
+                  href="/terms-of-service"
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   Terms of Service

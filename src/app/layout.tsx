@@ -180,7 +180,7 @@ function ProfessionalNavbar() {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   const pathname = usePathname();
-  const isLandingPage = pathname === "/";
+  const isLandingPage = pathname !== "/dashboard";
 
   return (
     <ClerkProvider>
