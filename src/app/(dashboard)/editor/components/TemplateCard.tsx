@@ -10,26 +10,28 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Eye, CheckCircle2 } from "lucide-react";
+import { Eye, CheckCircle2, Lock, Crown } from "lucide-react";
 import { templates } from "../utils/templateMap";
 
 export function TemplateCard({
   template,
   isSelected,
+  isLocked = false,
   onSelect,
 }: {
   template: any;
   isSelected: boolean;
+  isLocked?: boolean;
   onSelect: () => void;
 }) {
   // Find the actual template component for preview
-  const TemplateComponent = templates.find(t => t.id === template.id)?.comp;
+  const TemplateComponent = templates.find((t) => t.id === template.id)?.comp;
 
   return (
     <Card
       className={`group overflow-hidden border-gray-200 transition-all duration-300 hover:shadow-lg hover:border-gray-300 ${
         isSelected ? "ring-2 ring-indigo-600 ring-offset-2" : ""
-      }`}
+      } ${isLocked ? "opacity-70 grayscale" : ""}`}
     >
       <CardContent className="p-0">
         <div className="relative">
@@ -58,15 +60,29 @@ export function TemplateCard({
               </div>
             </div>
           </AspectRatio>
+
+          {/* Lock overlay for locked templates */}
+          {isLocked && (
+            <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+              <div className="text-center text-white p-4">
+                <Lock className="h-8 w-8 mx-auto mb-2" />
+                <p className="font-semibold">Pro Feature</p>
+                <p className="text-sm opacity-90">Upgrade to unlock</p>
+              </div>
+            </div>
+          )}
+
           <div className="absolute right-3 top-3">
             <Badge
               variant="secondary"
-              className="bg-white/90 backdrop-blur-sm border-gray-200 text-gray-700 font-medium"
+              className={`bg-white/90 backdrop-blur-sm border-gray-200 text-gray-700 font-medium ${
+                isLocked ? "opacity-50" : ""
+              }`}
             >
               {template.category}
             </Badge>
           </div>
-          
+
           {isSelected && (
             <div className="absolute left-3 top-3">
               <Badge className="bg-green-600 text-white border-0">
@@ -75,23 +91,52 @@ export function TemplateCard({
               </Badge>
             </div>
           )}
+
+          {/* Pro badge for locked templates */}
+          {isLocked && (
+            <div className="absolute left-3 top-3">
+              <Badge className="bg-gradient-to-r from-purple-600 to-pink-600 text-white border-0">
+                <Crown className="h-3 w-3 mr-1" />
+                Pro
+              </Badge>
+            </div>
+          )}
         </div>
 
         <div className="p-4">
           <div className="mb-3">
-            <h3 className="font-semibold text-gray-900 mb-1">{template.name}</h3>
-            <p className="text-sm text-gray-600 leading-relaxed">{template.description}</p>
+            <h3
+              className={`font-semibold text-gray-900 mb-1 ${isLocked ? "opacity-70" : ""}`}
+            >
+              {template.name}
+              {isLocked && (
+                <Lock className="h-4 w-4 inline ml-2 text-gray-400" />
+              )}
+            </h3>
+            <p
+              className={`text-sm text-gray-600 leading-relaxed ${isLocked ? "opacity-70" : ""}`}
+            >
+              {template.description}
+            </p>
           </div>
-          
+
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
-                    className="border-gray-300 hover:bg-gray-50"
-                    onClick={(e) => e.stopPropagation()}
+                    className={`border-gray-300 hover:bg-gray-50 ${
+                      isLocked ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (isLocked) {
+                        e.preventDefault();
+                      }
+                    }}
+                    disabled={isLocked}
                   >
                     <Eye className="h-4 w-4 mr-1" />
                     Preview
@@ -101,41 +146,55 @@ export function TemplateCard({
                   <DialogHeader>
                     <DialogTitle className="text-indigo-600 flex items-center gap-2">
                       {template.name} - Preview
+                      {isLocked && (
+                        <Badge className="bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+                          <Crown className="h-3 w-3 mr-1" />
+                          Pro Feature
+                        </Badge>
+                      )}
                     </DialogTitle>
                     <p className="text-sm text-gray-600 font-normal">
                       {template.description}
                     </p>
                   </DialogHeader>
-                  
+
                   <div className="flex-1 overflow-auto bg-gray-50 rounded-lg p-4">
                     <div className="bg-white rounded-lg shadow-lg mx-auto max-w-4xl">
                       {TemplateComponent ? (
                         <div className="scale-90 origin-top">
                           {/* Render the actual template component with sample data */}
-                          <TemplateComponent data={{
-                            personal: {
-                              name: "John Doe",
-                              email: "john.doe@example.com",
-                              phone: "+1 (555) 123-4567",
-                              location: "New York, NY"
-                            },
-                            summary: "Experienced professional with a proven track record of success...",
-                            experience: [
-                              {
-                                company: "Tech Company",
-                                position: "Senior Developer",
-                                period: "2020 - Present"
-                              }
-                            ],
-                            education: [
-                              {
-                                institution: "University of Technology",
-                                degree: "Bachelor of Science",
-                                period: "2016 - 2020"
-                              }
-                            ],
-                            skills: ["JavaScript", "React", "Node.js", "TypeScript"]
-                          }} />
+                          <TemplateComponent
+                            data={{
+                              personal: {
+                                name: "John Doe",
+                                email: "john.doe@example.com",
+                                phone: "+1 (555) 123-4567",
+                                location: "New York, NY",
+                              },
+                              summary:
+                                "Experienced professional with a proven track record of success...",
+                              experience: [
+                                {
+                                  company: "Tech Company",
+                                  position: "Senior Developer",
+                                  period: "2020 - Present",
+                                },
+                              ],
+                              education: [
+                                {
+                                  institution: "University of Technology",
+                                  degree: "Bachelor of Science",
+                                  period: "2016 - 2020",
+                                },
+                              ],
+                              skills: [
+                                "JavaScript",
+                                "React",
+                                "Node.js",
+                                "TypeScript",
+                              ],
+                            }}
+                          />
                         </div>
                       ) : (
                         <div className="h-96 flex items-center justify-center text-gray-500">
@@ -147,34 +206,60 @@ export function TemplateCard({
                       )}
                     </div>
                   </div>
-                  
+
                   <div className="flex justify-between items-center pt-4 border-t">
                     <div className="text-sm text-gray-600">
                       <Badge variant="outline" className="mr-2">
                         {template.category}
                       </Badge>
+                      {isLocked && (
+                        <Badge className="bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+                          Pro Template
+                        </Badge>
+                      )}
                     </div>
                     <Button
-                      onClick={onSelect}
-                      className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                      onClick={isLocked ? () => {} : onSelect}
+                      className={
+                        isLocked
+                          ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+                          : "bg-indigo-600 hover:bg-indigo-700 text-white"
+                      }
                     >
-                      <CheckCircle2 className="h-4 w-4 mr-2" />
-                      Use This Template
+                      {isLocked ? (
+                        <>
+                          <Crown className="h-4 w-4 mr-2" />
+                          Upgrade to Pro
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle2 className="h-4 w-4 mr-2" />
+                          Use This Template
+                        </>
+                      )}
                     </Button>
                   </div>
                 </DialogContent>
               </Dialog>
-              
+
               <Button
-                onClick={onSelect}
+                onClick={isLocked ? () => {} : onSelect}
                 size="sm"
                 className={`${
-                  isSelected 
-                    ? "bg-green-600 hover:bg-green-700" 
-                    : "bg-indigo-600 hover:bg-indigo-700"
-                } text-white transition-colors`}
+                  isLocked
+                    ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white cursor-pointer"
+                    : isSelected
+                      ? "bg-green-600 hover:bg-green-700 text-white"
+                      : "bg-indigo-600 hover:bg-indigo-700 text-white"
+                } transition-colors`}
+                disabled={isLocked && !isSelected}
               >
-                {isSelected ? (
+                {isLocked ? (
+                  <>
+                    <Lock className="h-4 w-4 mr-1" />
+                    Locked
+                  </>
+                ) : isSelected ? (
                   <>
                     <CheckCircle2 className="h-4 w-4 mr-1" />
                     Selected

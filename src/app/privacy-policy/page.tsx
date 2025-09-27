@@ -1,7 +1,16 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Shield, FileText, Lock, Eye, User, DownloadCloud, Mail, Building } from "lucide-react";
+import {
+  Shield,
+  FileText,
+  Lock,
+  Eye,
+  User,
+  DownloadCloud,
+  Mail,
+  Building,
+} from "lucide-react";
 import LandingFooter from "@/components/LandingFooter";
 
 function useReveal() {
@@ -32,10 +41,10 @@ export default function PrivacyPolicy() {
   const contentRef = useReveal();
   const contactRef = useReveal();
 
-  const currentDate = new Date().toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+  const currentDate = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
   return (
@@ -66,8 +75,8 @@ export default function PrivacyPolicy() {
 
             {/* Description */}
             <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Transparency and trust are at the core of everything we do. 
-              Learn how we protect your data and respect your privacy.
+              Transparency and trust are at the core of everything we do. Learn
+              how we protect your data and respect your privacy.
             </p>
 
             {/* Last Updated */}
@@ -80,7 +89,10 @@ export default function PrivacyPolicy() {
       </section>
 
       {/* Privacy Policy Content */}
-      <section ref={contentRef as any} className="relative container mx-auto px-4 py-16">
+      <section
+        ref={contentRef as any}
+        className="relative container mx-auto px-4 py-16"
+      >
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute left-10 top-10 h-40 w-40 rounded-full bg-[#4F46E5]/10 blur-2xl" />
           <div className="absolute right-16 bottom-0 h-48 w-48 rounded-full bg-indigo-400/10 blur-3xl" />
@@ -93,8 +105,8 @@ export default function PrivacyPolicy() {
               📜 Privacy Policy – CVHero (by Nova Web Studio)
             </h2>
             <p className="text-lg text-muted-foreground">
-              CVHero is a service provided by Nova Web Studio. 
-              We respect your privacy and are committed to protecting your personal data.
+              CVHero is a service provided by Nova Web Studio. We respect your
+              privacy and are committed to protecting your personal data.
             </p>
           </div>
 
@@ -107,12 +119,24 @@ export default function PrivacyPolicy() {
                   <div className="p-3 rounded-lg bg-[#4F46E5]/10">
                     <User className="h-6 w-6 text-[#4F46E5]" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900">1. Information We Collect</h3>
+                  <h3 className="text-xl font-bold text-gray-900">
+                    1. Information We Collect
+                  </h3>
                 </div>
                 <div className="space-y-4 text-gray-700">
-                  <p><strong>Personal Information:</strong> name, email address, contact details, and any data you choose to include in your CV or profile.</p>
-                  <p><strong>Usage Data:</strong> IP address, browser type, device information, and interactions with our website.</p>
-                  <p><strong>Cookies & Tracking:</strong> small data files used to improve user experience, analytics, and preferences.</p>
+                  <p>
+                    <strong>Personal Information:</strong> name, email address,
+                    contact details, and any data you choose to include in your
+                    CV or profile.
+                  </p>
+                  <p>
+                    <strong>Usage Data:</strong> IP address, browser type,
+                    device information, and interactions with our website.
+                  </p>
+                  <p>
+                    <strong>Cookies & Tracking:</strong> small data files used
+                    to improve user experience, analytics, and preferences.
+                  </p>
                 </div>
               </div>
             </div>
@@ -124,11 +148,19 @@ export default function PrivacyPolicy() {
                   <div className="p-3 rounded-lg bg-green-500/10">
                     <DownloadCloud className="h-6 w-6 text-green-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900">2. How We Use Your Information</h3>
+                  <h3 className="text-xl font-bold text-gray-900">
+                    2. How We Use Your Information
+                  </h3>
                 </div>
                 <div className="space-y-4 text-gray-700">
-                  <p>To provide and improve our services (CV creation, storage, and sharing).</p>
-                  <p>To communicate with you (updates, customer support, notifications).</p>
+                  <p>
+                    To provide and improve our services (CV creation, storage,
+                    and sharing).
+                  </p>
+                  <p>
+                    To communicate with you (updates, customer support,
+                    notifications).
+                  </p>
                   <p>To ensure security and prevent fraud.</p>
                   <p>To comply with legal obligations.</p>
                 </div>
@@ -142,12 +174,22 @@ export default function PrivacyPolicy() {
                   <div className="p-3 rounded-lg bg-blue-500/10">
                     <Eye className="h-6 w-6 text-blue-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900">3. How We Share Information</h3>
+                  <h3 className="text-xl font-bold text-gray-900">
+                    3. How We Share Information
+                  </h3>
                 </div>
                 <div className="space-y-4 text-gray-700">
-                  <p><strong>We do not sell or rent your personal information.</strong> We may share data only with:</p>
+                  <p>
+                    <strong>
+                      We do not sell or rent your personal information.
+                    </strong>{" "}
+                    We may share data only with:
+                  </p>
                   <ul className="list-disc list-inside space-y-2 ml-4">
-                    <li>Service providers (hosting, analytics, payment processing) engaged by Nova Web Studio.</li>
+                    <li>
+                      Service providers (hosting, analytics, payment processing)
+                      engaged by Nova Web Studio.
+                    </li>
                     <li>Legal authorities when required by law.</li>
                     <li>With your explicit consent.</li>
                   </ul>
@@ -162,10 +204,13 @@ export default function PrivacyPolicy() {
                   <div className="p-3 rounded-lg bg-purple-500/10">
                     <Lock className="h-6 w-6 text-purple-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900">4. Data Retention</h3>
+                  <h3 className="text-xl font-bold text-gray-900">
+                    4. Data Retention
+                  </h3>
                 </div>
                 <p className="text-gray-700">
-                  We keep your data only as long as necessary to provide our services or comply with legal obligations.
+                  We keep your data only as long as necessary to provide our
+                  services or comply with legal obligations.
                 </p>
               </div>
             </div>
@@ -177,7 +222,9 @@ export default function PrivacyPolicy() {
                   <div className="p-3 rounded-lg bg-orange-500/10">
                     <Shield className="h-6 w-6 text-orange-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900">5. Your Rights</h3>
+                  <h3 className="text-xl font-bold text-gray-900">
+                    5. Your Rights
+                  </h3>
                 </div>
                 <div className="space-y-4 text-gray-700">
                   <p>Depending on your location, you may have the right to:</p>
@@ -197,22 +244,31 @@ export default function PrivacyPolicy() {
                   <div className="p-3 rounded-lg bg-red-500/10">
                     <Lock className="h-6 w-6 text-red-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900">6. Security</h3>
+                  <h3 className="text-xl font-bold text-gray-900">
+                    6. Security
+                  </h3>
                 </div>
                 <p className="text-gray-700">
-                  Nova Web Studio applies reasonable technical and organizational measures to protect your personal information, but no system is 100% secure.
+                  Nova Web Studio applies reasonable technical and
+                  organizational measures to protect your personal information,
+                  but no system is 100% secure.
                 </p>
               </div>
             </div>
 
             {/* Section 7 - Company Information */}
-            <div ref={contactRef as any} className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#4F46E5]/20 via-transparent to-indigo-400/20 p-[1px]">
+            <div
+              ref={contactRef as any}
+              className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#4F46E5]/20 via-transparent to-indigo-400/20 p-[1px]"
+            >
               <div className="rounded-[15px] bg-white p-6 md:p-8">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="p-3 rounded-lg bg-[#4F46E5]/10">
                     <Building className="h-6 w-6 text-[#4F46E5]" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900">7. Company Information</h3>
+                  <h3 className="text-xl font-bold text-gray-900">
+                    7. Company Information
+                  </h3>
                 </div>
                 <div className="space-y-4 text-gray-700">
                   <p>CVHero is operated by:</p>
@@ -227,7 +283,9 @@ export default function PrivacyPolicy() {
                     </div>
                     <div>
                       <p className="font-medium">Registered Address:</p>
-                      <p className="text-gray-600">Pieter van den Hoogenbandstraat 23, 3118JV, Schiedam</p>
+                      <p className="text-gray-600">
+                        Pieter van den Hoogenbandstraat 23, 3118JV, Schiedam
+                      </p>
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="font-medium">Email:</span>
@@ -243,10 +301,13 @@ export default function PrivacyPolicy() {
           <div className="mt-12 text-center">
             <div className="bg-gradient-to-r from-[#4F46E5]/5 to-indigo-400/5 rounded-2xl p-8 border border-[#4F46E5]/20">
               <Shield className="h-12 w-12 text-[#4F46E5] mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Your Trust is Our Priority</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                Your Trust is Our Priority
+              </h3>
               <p className="text-muted-foreground">
-                We're committed to being transparent about our data practices and keeping your information secure.
-                If you have any questions about this policy, please don't hesitate to contact us.
+                We're committed to being transparent about our data practices
+                and keeping your information secure. If you have any questions
+                about this policy, please don't hesitate to contact us.
               </p>
             </div>
           </div>
@@ -274,7 +335,7 @@ export default function PrivacyPolicy() {
 
         /* Custom bullet points */
         ul.list-disc li::marker {
-          color: #4F46E5;
+          color: #4f46e5;
         }
       `}</style>
     </div>

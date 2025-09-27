@@ -3,20 +3,14 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  House,
-  FileUser,
-  Menu,
-  ChevronLeft,
-  User
-} from "lucide-react";
+import { House, FileUser, Menu, ChevronLeft, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: House },
   { href: "/editor", label: "Editor", icon: FileUser },
-  { href: "/profile", label: "Profile", icon: User }
+  { href: "/profile", label: "Profile", icon: User },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -36,7 +30,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           background:
             "linear-gradient(180deg, rgba(79, 70, 229, 0.1) 0%, rgba(100, 49, 221, 0.1) 69.49%, rgba(109, 40, 217, 0.1) 100%)",
           width: isCollapsed ? "70px" : "220px",
-          transition: "width 0.3s ease-in-out"
+          transition: "width 0.3s ease-in-out",
         }}
       >
         <div className="h-16 flex items-center px-6 justify-between backdrop-blur-sm bg-white/5">
@@ -84,11 +78,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Main Content with proper spacing */}
-      <main 
+      <main
         className="flex-1 min-h-screen overflow-auto"
         style={{
           marginLeft: isCollapsed ? "70px" : "220px",
-          transition: "margin-left 0.3s ease-in-out"
+          transition: "margin-left 0.3s ease-in-out",
         }}
       >
         <div className="p-6 w-full max-w-full">{children}</div>

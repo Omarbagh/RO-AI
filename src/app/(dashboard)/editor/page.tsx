@@ -101,13 +101,13 @@ export default function EditorPage() {
       setHasValidTemplate(true);
       return;
     }
-    
+
     // If we have a template ID from query, it's valid
     if (templateIdFromQuery) {
       setHasValidTemplate(true);
       return;
     }
-    
+
     // If no valid template or resume ID, redirect to template selection
     if (!templateIdFromQuery && !resumeIdForParams) {
       router.replace("/select-template");
@@ -520,7 +520,7 @@ export default function EditorPage() {
                 style={{ maxWidth: 140 }}
               />
             </div>
-            
+
             {/* Save Draft Button */}
             <div className="mb-4">
               <Button
@@ -620,7 +620,7 @@ export default function EditorPage() {
                 )}
               </div>
             </div>
-            
+
             {/* Kleurenkiezer */}
             {currentStep !== "Final" && (
               <div className="mb-4">
@@ -640,7 +640,7 @@ export default function EditorPage() {
                 />
               </div>
             )}
-            
+
             {/* Steps form */}
             <div className="flex-1 space-y-6 overflow-y-auto">
               {currentStep === "Personal" && (
@@ -697,7 +697,7 @@ export default function EditorPage() {
                 />
               )}
             </div>
-            
+
             {/* Sticky Navigation buttons */}
             <div className="sticky bottom-0 bg-white/95 pt-6 pb-6 border-t border-gray-200 z-10">
               <div className="flex justify-end">

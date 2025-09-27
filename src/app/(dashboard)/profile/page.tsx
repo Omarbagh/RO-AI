@@ -9,11 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  UserProfile,
-  useUser,
-  useClerk,
-} from "@clerk/nextjs";
+import { UserProfile, useUser, useClerk } from "@clerk/nextjs";
 import {
   User,
   Mail,
@@ -37,7 +33,7 @@ export default function ProfilePage() {
 
   const handleSaveBio = async () => {
     if (!user) return;
-    
+
     try {
       await user.update({
         unsafeMetadata: {
@@ -147,13 +143,14 @@ export default function ProfilePage() {
                         </p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-3 text-sm">
                       <MapPin className="h-4 w-4 text-gray-400" />
                       <div>
                         <p className="text-gray-500">Location</p>
                         <p className="font-medium">
-                          {typeof user.unsafeMetadata?.location === "string" && user.unsafeMetadata.location !== ""
+                          {typeof user.unsafeMetadata?.location === "string" &&
+                          user.unsafeMetadata.location !== ""
                             ? user.unsafeMetadata.location
                             : "Not specified"}
                         </p>
@@ -171,7 +168,7 @@ export default function ProfilePage() {
                         </p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-3 text-sm">
                       <Globe className="h-4 w-4 text-gray-400" />
                       <div>
@@ -228,8 +225,9 @@ export default function ProfilePage() {
               ) : (
                 <div>
                   <p className="text-gray-700">
-                    {typeof user.unsafeMetadata?.bio === "string" && user.unsafeMetadata.bio !== "" 
-                      ? user.unsafeMetadata.bio 
+                    {typeof user.unsafeMetadata?.bio === "string" &&
+                    user.unsafeMetadata.bio !== ""
+                      ? user.unsafeMetadata.bio
                       : "No bio added yet."}
                   </p>
                   <Button
@@ -260,26 +258,34 @@ export default function ProfilePage() {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">Email verified</span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                    user.primaryEmailAddress?.verification.status === "verified" 
-                      ? "bg-green-100 text-green-800" 
-                      : "bg-yellow-100 text-yellow-800"
-                  }`}>
-                    {user.primaryEmailAddress?.verification.status === "verified" ? "Verified" : "Pending"}
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                      user.primaryEmailAddress?.verification.status ===
+                      "verified"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-yellow-100 text-yellow-800"
+                    }`}
+                  >
+                    {user.primaryEmailAddress?.verification.status ===
+                    "verified"
+                      ? "Verified"
+                      : "Pending"}
                   </span>
                 </div>
-                
+
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">2FA enabled</span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                    user.twoFactorEnabled 
-                      ? "bg-green-100 text-green-800" 
-                      : "bg-gray-100 text-gray-800"
-                  }`}>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                      user.twoFactorEnabled
+                        ? "bg-green-100 text-green-800"
+                        : "bg-gray-100 text-gray-800"
+                    }`}
+                  >
                     {user.twoFactorEnabled ? "Enabled" : "Disabled"}
                   </span>
                 </div>
-                
+
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">Account status</span>
                   <span className="px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
@@ -303,34 +309,40 @@ export default function ProfilePage() {
                 <Button
                   variant="outline"
                   className="w-full justify-start gap-3 text-gray-700 hover:text-indigo-600 hover:border-indigo-200"
-                  onClick={() => openUserProfile({ 
-                    // @ts-expect-error - Clerk types might not be up to date
-                    initialPage: "email" 
-                  })}
+                  onClick={() =>
+                    openUserProfile({
+                      // @ts-expect-error - Clerk types might not be up to date
+                      initialPage: "email",
+                    })
+                  }
                 >
                   <Mail className="h-4 w-4" />
                   Update Email
                 </Button>
-                
+
                 <Button
                   variant="outline"
                   className="w-full justify-start gap-3 text-gray-700 hover:text-indigo-600 hover:border-indigo-200"
-                  onClick={() => openUserProfile({ 
-                    // @ts-expect-error - Clerk types might not be up to date
-                    initialPage: "password" 
-                  })}
+                  onClick={() =>
+                    openUserProfile({
+                      // @ts-expect-error - Clerk types might not be up to date
+                      initialPage: "password",
+                    })
+                  }
                 >
                   <Shield className="h-4 w-4" />
                   Change Password
                 </Button>
-                
+
                 <Button
                   variant="outline"
                   className="w-full justify-start gap-3 text-gray-700 hover:text-indigo-600 hover:border-indigo-200"
-                  onClick={() => openUserProfile({ 
-                    // @ts-expect-error - Clerk types might not be up to date
-                    initialPage: "account" 
-                  })}
+                  onClick={() =>
+                    openUserProfile({
+                      // @ts-expect-error - Clerk types might not be up to date
+                      initialPage: "account",
+                    })
+                  }
                 >
                   <User className="h-4 w-4" />
                   Account Details
@@ -350,7 +362,7 @@ export default function ProfilePage() {
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div className="h-2 bg-gray-200 rounded-full">
-                  <div 
+                  <div
                     className="h-full bg-[#4F46E5] rounded-full transition-all duration-500"
                     style={{ width: `${calculateProfileCompletion(user)}%` }}
                   />
@@ -358,21 +370,33 @@ export default function ProfilePage() {
                 <p className="text-sm text-gray-600 text-center">
                   {calculateProfileCompletion(user)}% complete
                 </p>
-                
+
                 <div className="space-y-2">
                   {[
                     { label: "Profile photo", completed: !!user.imageUrl },
                     { label: "Full name", completed: !!user.fullName },
-                    { label: "Email verified", completed: user.primaryEmailAddress?.verification.status === "verified" },
-                    { label: "Bio added", completed: !!user.unsafeMetadata?.bio },
+                    {
+                      label: "Email verified",
+                      completed:
+                        user.primaryEmailAddress?.verification.status ===
+                        "verified",
+                    },
+                    {
+                      label: "Bio added",
+                      completed: !!user.unsafeMetadata?.bio,
+                    },
                   ].map((item, index) => (
                     <div key={index} className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${
-                        item.completed ? "bg-green-500" : "bg-gray-300"
-                      }`} />
-                      <span className={`text-sm ${
-                        item.completed ? "text-gray-700" : "text-gray-400"
-                      }`}>
+                      <div
+                        className={`w-2 h-2 rounded-full ${
+                          item.completed ? "bg-green-500" : "bg-gray-300"
+                        }`}
+                      />
+                      <span
+                        className={`text-sm ${
+                          item.completed ? "text-gray-700" : "text-gray-400"
+                        }`}
+                      >
                         {item.label}
                       </span>
                     </div>
@@ -395,7 +419,7 @@ function calculateProfileCompletion(user: any): number {
     user.primaryEmailAddress?.verification.status === "verified",
     !!user.unsafeMetadata?.bio,
   ];
-  
+
   const completed = checks.filter(Boolean).length;
   return Math.round((completed / checks.length) * 100);
 }

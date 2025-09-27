@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,20 +11,59 @@ import {
   Filter,
   LayoutTemplate,
   Search,
-  ArrowLeft,
   Sparkles,
+  Crown,
 } from "lucide-react";
 import { templates } from "../editor/utils/templateMap";
-import Link from "next/link";
+import { useAuth, useUser } from "@clerk/nextjs";
+import { SignedIn } from "@clerk/nextjs";
+import { CheckoutButton } from "@clerk/nextjs/experimental";
 
 export default function TemplateSelectionPage() {
   const router = useRouter();
+  const { user, isLoaded } = useUser();
+  const { has } = useAuth();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<"All" | string>("All");
   const [selected, setSelected] = useState<string | null>(null);
+  const [isProUser, setIsProUser] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  // Check if user has pro plan
+  useEffect(() => {
+    const checkProStatus = async () => {
+      if (!isLoaded || !user) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // Check if user has pro plan using Clerk's has() function
+        const hasProPlan = await has({ plan: "pro" });
+        setIsProUser(hasProPlan);
+      } catch (error) {
+        console.error("Error checking pro status:", error);
+        setIsProUser(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkProStatus();
+  }, [user, isLoaded, has]);
+
+  // Filter templates based on user plan
   const filtered = useMemo(() => {
-    return templates.filter((t) => {
+    let availableTemplates = templates;
+
+    // If user is not pro, only show templates with "Free" in the name
+    if (!isProUser && !loading) {
+      availableTemplates = templates.filter((t) =>
+        t.name.toLowerCase().includes("free"),
+      );
+    }
+
+    return availableTemplates.filter((t) => {
       const matchCat = category === "All" || t.category === category;
       const q = query.trim().toLowerCase();
       const matchQ =
@@ -34,12 +73,41 @@ export default function TemplateSelectionPage() {
         (t.category || "").toLowerCase().includes(q);
       return matchCat && matchQ;
     });
-  }, [query, category]);
+  }, [query, category, isProUser, loading]);
 
   const handleContinue = () => {
     if (!selected) return;
+
+    // Check if selected template requires pro
+    const selectedTemplate = templates.find((t) => t.id === selected);
+    const isProTemplate =
+      selectedTemplate && !selectedTemplate.name.toLowerCase().includes("free");
+
+    if (isProTemplate && !isProUser) {
+      // Show upgrade message or redirect to upgrade page
+      alert("Upgrade to Pro to use this premium template! 🚀");
+      return;
+    }
+
     router.push(`/editor?templateId=${selected}`);
   };
+
+  // Check if selected template requires pro
+  const selectedTemplate = selected
+    ? templates.find((t) => t.id === selected)
+    : null;
+  const isSelectedTemplatePro =
+    selectedTemplate && !selectedTemplate.name.toLowerCase().includes("free");
+
+  if (loading) {
+    return (
+      <div className="w-full max-w-full overflow-x-hidden px-4 animate-fade-in">
+        <div className="flex justify-center items-center min-h-96">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-full overflow-x-hidden px-4 animate-fade-in">
@@ -51,10 +119,45 @@ export default function TemplateSelectionPage() {
           </h1>
           <p className="text-muted-foreground mt-1 flex items-center gap-1">
             <Sparkles className="h-4 w-4 text-indigo-500" />
-            Select the perfect template for your resume
+            {isProUser
+              ? "Access all premium templates with your Pro plan 🎉"
+              : "Free plan: Basic template only. Upgrade to Pro for unlimited options!"}
           </p>
         </div>
       </div>
+
+      {/* Upgrade Banner for Free Users */}
+      {!isProUser && (
+        <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Crown className="h-5 w-5 text-blue-600" />
+              <div>
+                <h3 className="font-semibold text-blue-900">Upgrade to Pro</h3>
+                <p className="text-blue-700 text-sm">
+                  Unlock all premium templates, unlimited CVs, and advanced
+                  features
+                </p>
+              </div>
+            </div>
+            <SignedIn>
+              <CheckoutButton
+                planId="cplan_334J23pEpXcBH3uvZ6K3Sn9RlyZ"
+                planPeriod="month"
+                checkoutProps={{
+                  appearance: {},
+                }}
+                onSubscriptionComplete={() => {
+                  console.log("Subscription completed!");
+                }}
+                newSubscriptionRedirectUrl="/dashboard"
+              >
+                Upgrade Now
+              </CheckoutButton>
+            </SignedIn>
+          </div>
+        </div>
+      )}
 
       {/* Filters Section */}
       <div className="mb-8">
@@ -67,15 +170,26 @@ export default function TemplateSelectionPage() {
                 <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search templates by name, category, or description..."
+                  placeholder={
+                    isProUser
+                      ? "Search templates by name, category, or description..."
+                      : "Search available templates..."
+                  }
                   className="pl-10 border-gray-300 focus:border-indigo-500"
                 />
               </div>
             </div>
-            
+
             {/* Category Filter */}
             <div className="flex gap-2 overflow-x-auto pb-2">
-              {["All", "Business", "Creative", "Modern", "Simple", "Professional"].map((c) => (
+              {[
+                "All",
+                "Business",
+                "Creative",
+                "Modern",
+                "Simple",
+                "Professional",
+              ].map((c) => (
                 <Button
                   key={c}
                   variant={category === c ? "default" : "outline"}
@@ -83,11 +197,11 @@ export default function TemplateSelectionPage() {
                   onClick={() => setCategory(c)}
                   className={
                     category === c
-                      ? "bg-indigo-600 hover:bg-indigo-700 text-white"
-                      : "border-gray-300"
+                      ? "bg-indigo-600 hover:bg-indigo-700 text-white transition-colors"
+                      : "border-gray-300 hover:bg-gray-50 transition-colors"
                   }
                 >
-                  <Filter className="mr-2 h-3 w-3" /> 
+                  <Filter className="mr-2 h-3 w-3" />
                   {c}
                 </Button>
               ))}
@@ -101,34 +215,54 @@ export default function TemplateSelectionPage() {
         <div className="flex items-center gap-2 text-gray-600">
           <LayoutTemplate className="h-5 w-5" />
           <span className="text-sm font-medium">
-            {filtered.length} template{filtered.length !== 1 ? 's' : ''} found
+            {filtered.length} template{filtered.length !== 1 ? "s" : ""}{" "}
+            available
+            {!isProUser && " (Free plan)"}
           </span>
         </div>
-        
+
         {selected && (
-          <Badge className="bg-green-100 text-green-800 border-green-200">
+          <Badge
+            className={
+              isSelectedTemplatePro && !isProUser
+                ? "bg-orange-100 text-orange-800 border-orange-200"
+                : "bg-green-100 text-green-800 border-green-200"
+            }
+          >
             <CheckCircle2 className="h-3 w-3 mr-1" />
-            Template selected
+            {isSelectedTemplatePro && !isProUser
+              ? "Pro Template Selected"
+              : "Template Selected"}
           </Badge>
         )}
       </div>
 
       {/* Templates Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
-        {filtered.map((t) => (
-          <TemplateCard
-            key={t.id}
-            template={t}
-            isSelected={selected === t.id}
-            onSelect={() => {
-              setSelected(t.id);
-              // Auto-navigate to editor when selected
-              setTimeout(() => {
-                router.push(`/editor?templateId=${t.id}`);
-              }, 300);
-            }}
-          />
-        ))}
+        {filtered.map((t) => {
+          const isProTemplate = !t.name.toLowerCase().includes("free");
+          const isLocked = isProTemplate && !isProUser;
+
+          return (
+            <TemplateCard
+              key={t.id}
+              template={t}
+              isSelected={selected === t.id}
+              isLocked={isLocked}
+              onSelect={() => {
+                if (isLocked) {
+                  alert("Upgrade to Pro to unlock this premium template! 🚀");
+                  return;
+                }
+                setSelected(t.id);
+                // Auto-navigate to editor when selected
+                setTimeout(() => {
+                  router.push(`/editor?templateId=${t.id}`);
+                }, 300);
+              }}
+            />
+          );
+        })}
       </div>
 
       {/* Empty State */}
@@ -136,40 +270,33 @@ export default function TemplateSelectionPage() {
         <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
           <LayoutTemplate className="h-12 w-12 text-gray-300 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">
-            No templates found
+            {isProUser ? "No templates found" : "No available templates"}
           </h3>
           <p className="text-gray-600 max-w-md mx-auto mb-6">
-            Try adjusting your search criteria or browse all templates.
+            {isProUser
+              ? "Try adjusting your search criteria or browse all templates."
+              : "Free users have access to basic templates only. Upgrade to Pro for more options!"}
           </p>
-          <Button
-            onClick={() => {
-              setQuery("");
-              setCategory("All");
-            }}
-            variant="outline"
-          >
-            Clear filters
-          </Button>
-        </div>
-      )}
-
-      {/* Selection Confirmation */}
-      {selected && (
-        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white border border-gray-200 rounded-lg shadow-lg px-6 py-4 z-10">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-600" />
-              <span className="font-medium">
-                {templates.find((x) => x.id === selected)?.name} selected
-              </span>
-            </div>
-            <Button 
-              onClick={handleContinue}
-              className="bg-indigo-600 hover:bg-indigo-700"
-              size="sm"
+          <div className="flex gap-3 justify-center">
+            <Button
+              onClick={() => {
+                setQuery("");
+                setCategory("All");
+              }}
+              variant="outline"
+              className="border-gray-300 hover:bg-gray-50 transition-colors"
             >
-              Continue to Editor
+              Clear filters
             </Button>
+            {!isProUser && (
+              <Button
+                onClick={() => router.push("/pricing")}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white transition-colors"
+              >
+                <Crown className="h-4 w-4 mr-2" />
+                Upgrade to Pro
+              </Button>
+            )}
           </div>
         </div>
       )}
