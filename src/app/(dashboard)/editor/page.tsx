@@ -528,7 +528,7 @@ export default function EditorPage() {
     if (!selectedTemplate) return;
     setLoadingSave(true);
     try {
-      const token = await getToken({ template: "supabase" });
+      const token = await getToken();
       console.log("token", token)
       const url = resumeIdForParams ? "/api/update-resume" : "/api/save-resume";
       const method = resumeIdForParams ? "PUT" : "POST";
