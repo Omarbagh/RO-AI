@@ -28,7 +28,7 @@ import {
   Sparkles,
   Calendar,
 } from "lucide-react";
-import { useUser } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { useAuth } from "@clerk/nextjs";
 import { templates } from "../editor/utils/templateMap";
@@ -335,6 +335,10 @@ export default function Dashboard() {
       <style>{printHideStyle}</style>
       <div className="w-full max-w-full overflow-x-hidden px-4 animate-fade-in">
         {/* Header Section */}
+                  <div className="flex justify-end mb-2 mt-2">
+                    <UserButton />
+                  </div>
+
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-indigo-700 bg-clip-text text-transparent">
