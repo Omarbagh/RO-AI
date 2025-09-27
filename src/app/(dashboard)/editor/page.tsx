@@ -464,45 +464,60 @@ export default function EditorPage() {
 
   // Save as draft function
   const saveDraft = async () => {
-    if (!selectedTemplate) {
-      alert("Please select a template first");
-      return;
-    }
+  if (!selectedTemplate) {
+    alert("Please select a template first");
+    return;
+  }
 
-    setSavingDraft(true);
-    try {
-      const url = resumeIdForParams ? "/api/update-resume" : "/api/save-resume";
-      const method = resumeIdForParams ? "PUT" : "POST";
+  setSavingDraft(true);
+  try {
+    const url = resumeIdForParams ? "/api/update-resume" : "/api/save-resume";
+    const method = resumeIdForParams ? "PUT" : "POST";
 
-      const res = await fetch(url, {
-        method: method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          templateId: selectedTemplate,
-          formData,
-          ...(resumeIdForParams && { id: resumeIdForParams }),
-        }),
-      });
+    const res = await fetch(url, {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        templateId: selectedTemplate,
+        formData,
+        ...(resumeIdForParams && { id: resumeIdForParams }),
+      }),
+    });
 
-      if (res.ok) {
-        const result = await res.json();
-        if (!resumeIdForParams) {
-          setResumeId(result.resumeId);
-          // Update URL with new resume ID
-          router.push(`/editor/${result.resumeId}`);
-        }
-        setSaveSuccess(true);
-        setTimeout(() => setSaveSuccess(false), 3000);
-      } else {
-        alert("Failed to save draft. Please try again.");
+    if (res.ok) {
+      const result = await res.json();
+      
+      // Handle both response formats
+      const updatedResumeId = result.resumeId || resumeIdForParams;
+      
+      if (!resumeIdForParams && updatedResumeId) {
+        setResumeId(updatedResumeId);
+        router.push(`/editor/${updatedResumeId}`);
       }
-    } catch (error) {
-      console.error("Save draft failed:", error);
-      alert("Failed to save draft. Please try again.");
-    } finally {
-      setSavingDraft(false);
+      
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3000);
+      
+      // Force a refresh of the resume data to ensure UI is updated
+      if (resumeIdForParams) {
+        // Refetch the resume to ensure we have the latest data
+        const refreshResponse = await fetch(`/api/get-resume?id=${resumeIdForParams}`);
+        if (refreshResponse.ok) {
+          const refreshedResume = await refreshResponse.json();
+          setExistingResume(refreshedResume);
+        }
+      }
+    } else {
+      const errorData = await res.json();
+      alert(`Failed to save draft: ${errorData.error || 'Please try again.'}`);
     }
-  };
+  } catch (error) {
+    console.error("Save draft failed:", error);
+    alert("Failed to save draft. Please check your connection and try again.");
+  } finally {
+    setSavingDraft(false);
+  }
+};
 
   const handleFinish = async () => {
     if (!selectedTemplate) return;

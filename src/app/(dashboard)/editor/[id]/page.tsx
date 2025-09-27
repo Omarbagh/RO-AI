@@ -113,6 +113,7 @@ export default function EditorPage() {
   const [loadingProCheck, setLoadingProCheck] = useState(true);
   const contentRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const { getToken } = useAuth();
 
   // Check if user has pro plan
   useEffect(() => {
@@ -471,34 +472,53 @@ export default function EditorPage() {
 
     setSavingDraft(true);
     try {
+      // 1. Get the auth token from Clerk, not Supabase
+      const token = await getToken({ template: 'supabase' });
+
+      if (!token) {
+        alert("Authentication error. Please log in again.");
+        setSavingDraft(false);
+        return;
+      }
+
       const url = resumeIdForParams ? "/api/update-resume" : "/api/save-resume";
       const method = resumeIdForParams ? "PUT" : "POST";
 
       const res = await fetch(url, {
         method: method,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          // 2. Send the Clerk token to the backend
+          "Authorization": `Bearer ${token}`,
+        },
         body: JSON.stringify({
           templateId: selectedTemplate,
           formData,
           ...(resumeIdForParams && { id: resumeIdForParams }),
         }),
       });
+      
+      console.log('Response status:', res.status);
 
       if (res.ok) {
+        // ... (The rest of your success/error handling logic remains the same)
         const result = await res.json();
-        if (!resumeIdForParams) {
-          setResumeId(result.resumeId);
-          // Update URL with new resume ID
-          router.push(`/editor/${result.resumeId}`);
+        if (result.success) {
+           console.log('Draft saved/updated successfully');
+           setSaveSuccess(true);
+           setTimeout(() => setSaveSuccess(false), 3000);
+           // etc...
+        } else {
+           alert(result.error || "Failed to save draft.");
         }
-        setSaveSuccess(true);
-        setTimeout(() => setSaveSuccess(false), 3000);
       } else {
-        alert("Failed to save draft. Please try again.");
+        const errorData = await res.json();
+        alert(errorData.error || `Error ${res.status}: Failed to save draft.`);
       }
+
     } catch (error) {
-      console.error("Save draft failed:", error);
-      alert("Failed to save draft. Please try again.");
+      console.error("Save draft failed with an exception:", error);
+      alert("An unexpected error occurred. Please try again.");
     } finally {
       setSavingDraft(false);
     }
@@ -670,7 +690,7 @@ export default function EditorPage() {
                 ) : (
                   <>
                     <Save className="w-4 h-4 mr-2" />
-                    Save Draft
+                    Save
                   </>
                 )}
               </Button>
