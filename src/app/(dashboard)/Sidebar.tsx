@@ -5,8 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   House,
-  CircleDollarSign,
-  Settings,
   FileUser,
   Menu,
   ChevronLeft,
@@ -14,12 +12,10 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { UserButton } from "@clerk/nextjs";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: House },
   { href: "/editor", label: "Editor", icon: FileUser },
-  { href: "/billing", label: "Billing", icon: CircleDollarSign },
   { href: "/profile", label: "Profile", icon: User }
 ];
 
