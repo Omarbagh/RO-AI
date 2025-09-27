@@ -1,26 +1,26 @@
 "use client";
 import { useState, useEffect, useMemo, useRef } from "react";
-import { useUser, SignInButton } from "@clerk/nextjs";
+import { useUser, useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   FileText,
   ArrowRight,
   Loader2,
   Wand2,
-  Sparkles,
-  Edit3,
   CheckCircle,
   Eye,
+  Save,
+  Crown,
+  Lock,
+  Zap
 } from "lucide-react";
 import { templates } from "../utils/templateMap";
-import { TemplateCard } from "../components/TemplateCard";
 import { AnimatedStepIndicator } from "../components/AnimatedStepIndicator";
 import { ColorPicker } from "../components/ColorPicker";
 import { CVData } from "@/types/cv";
 import templateFields from "../../../../../scripts/template-fields.json";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useReactToPrint } from "react-to-print";
 import { PersonalStep } from "../components/steps/PersonalStep";
 import { ProfileStep } from "../components/steps/ProfileStep";
@@ -33,6 +33,20 @@ import { useParams } from "next/navigation";
 const printHideStyle = `
 @media print {
   .no-print { display: none !important; }
+  
+  /* Watermark for free users */
+  .watermark {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 80px;
+    color: rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    z-index: 9999;
+    white-space: nowrap;
+    font-weight: bold;
+  }
 }
 `;
 
@@ -70,11 +84,12 @@ type TouchedType = {
 
 export default function EditorPage() {
   const router = useRouter();
-  const { isSignedIn } = useUser();
+  const { isSignedIn, user } = useUser();
+  const { has } = useAuth();
+  const searchParams = useSearchParams();
+  const templateIdFromQuery = searchParams.get("templateId");
   const params = useParams();
   const resumeIdForParams = params.id as string;
-  const [step, setStep] = useState(0);
-  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const [formData, setFormData] = useState<CVData>({
     personal: { name: "", title: "", email: "", phone: "", photoUrl: "" },
     profile: "",
@@ -87,13 +102,66 @@ export default function EditorPage() {
   const [resumeId, setResumeId] = useState<string | null>(null);
   const [existingResume, setExistingResume] = useState<Resume | null>(null);
   const [loadingResume, setLoadingResume] = useState(!!resumeIdForParams);
-  const [isPro, setIsPro] = useState(false);
+  const [isProUser, setIsProUser] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
+  const [savingDraft, setSavingDraft] = useState(false);
   const [showPrintNotification, setShowPrintNotification] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [hasValidTemplate, setHasValidTemplate] = useState(false);
+  const [aiUsageCount, setAiUsageCount] = useState(0);
+  const [loadingProCheck, setLoadingProCheck] = useState(true);
   const contentRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const { getToken } = useAuth();
+
+  // Check if user has pro plan
+  useEffect(() => {
+    const checkProStatus = async () => {
+      if (!user) {
+        setLoadingProCheck(false);
+        return;
+      }
+
+      try {
+        const hasProPlan = await has({ plan: 'pro' });
+        setIsProUser(hasProPlan);
+        
+        // Check AI usage for free users
+        if (!hasProPlan) {
+          const savedAiUsage = localStorage.getItem('ai_usage_count');
+          setAiUsageCount(parseInt(savedAiUsage || '0'));
+        }
+      } catch (error) {
+        console.error("Error checking pro status:", error);
+        setIsProUser(false);
+      } finally {
+        setLoadingProCheck(false);
+      }
+    };
+
+    checkProStatus();
+  }, [user, has]);
+
+  // Fix: Check for valid template/resume before redirecting
+  useEffect(() => {
+    // If we have a resume ID, we're editing an existing resume - don't redirect
+    if (resumeIdForParams) {
+      setHasValidTemplate(true);
+      return;
+    }
+
+    // If we have a template ID from query, it's valid
+    if (templateIdFromQuery) {
+      setHasValidTemplate(true);
+      return;
+    }
+
+    // If no valid template or resume ID, redirect to template selection
+    if (!templateIdFromQuery && !resumeIdForParams) {
+      router.replace("/select-template");
+    }
+  }, [templateIdFromQuery, resumeIdForParams, router]);
 
   useEffect(() => {
     if (resumeIdForParams) {
@@ -131,6 +199,27 @@ export default function EditorPage() {
     setSaveSuccess(false);
   }, [pathname]);
 
+  const [step, setStep] = useState(1);
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(
+    templateIdFromQuery,
+  );
+
+  // Handle AI feature usage for free users
+  const handleAiUsage = () => {
+    if (!isProUser) {
+      if (aiUsageCount >= 1) {
+        alert("Free users can only use AI features once. Upgrade to Pro for unlimited AI usage! 🚀");
+        return false;
+      }
+      setAiUsageCount(prev => {
+        const newCount = prev + 1;
+        localStorage.setItem('ai_usage_count', newCount.toString());
+        return newCount;
+      });
+    }
+    return true;
+  };
+
   const handlePrint = useReactToPrint({
     contentRef,
     documentTitle: formData.personal.name
@@ -140,6 +229,26 @@ export default function EditorPage() {
       setShowPrintNotification(true);
       setTimeout(() => setShowPrintNotification(false), 5000);
     },
+    pageStyle: isProUser ? `` : `
+      @page { 
+        margin: 0; 
+        size: auto;
+      }
+      body::after {
+        content: "CVHero Free Version";
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        font-size: 60px;
+        color: rgba(0, 0, 0, 0.1);
+        pointer-events: none;
+        z-index: 9999;
+        white-space: nowrap;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+      }
+    `,
   });
 
   useEffect(() => {
@@ -262,6 +371,7 @@ export default function EditorPage() {
     setFormData((d) => ({ ...d, personal: { ...d.personal, [field]: value } }));
     markTouched("personal." + field);
   };
+  
   const handlePhotoUpload = (file: File) => {
     if (file.size > 5 * 1024 * 1024) {
       alert("File size must be less than 5MB");
@@ -273,10 +383,12 @@ export default function EditorPage() {
     };
     reader.readAsDataURL(file);
   };
+  
   const updateProfile = (value: string) => {
     setFormData((d) => ({ ...d, profile: value }));
     markTouched("profile");
   };
+  
   const updateExperienceItem = (
     i: number,
     field: keyof CVData["experience"][0],
@@ -289,6 +401,7 @@ export default function EditorPage() {
     });
     markTouched("experience", i, field);
   };
+  
   const addExperience = () => {
     setFormData((d) => ({
       ...d,
@@ -298,6 +411,7 @@ export default function EditorPage() {
       ],
     }));
   };
+  
   const removeExperience = (i: number) => {
     if (formData.experience.length > 1) {
       setFormData((d) => ({
@@ -306,6 +420,7 @@ export default function EditorPage() {
       }));
     }
   };
+  
   const updateEducationItem = (
     i: number,
     field: keyof CVData["education"][0],
@@ -318,12 +433,14 @@ export default function EditorPage() {
     });
     markTouched("education", i, field);
   };
+  
   const addEducation = () => {
     setFormData((d) => ({
       ...d,
       education: [...d.education, { school: "", degree: "", year: "" }],
     }));
   };
+  
   const updateSkill = (i: number, value: string) => {
     setFormData((d) => {
       const skills = [...d.skills];
@@ -332,9 +449,11 @@ export default function EditorPage() {
     });
     markTouched("skills", i, "skill");
   };
+  
   const addSkill = () => {
     setFormData((d) => ({ ...d, skills: [...d.skills, ""] }));
   };
+  
   const removeSkill = (i: number) => {
     if (formData.skills.length > 0) {
       setFormData((d) => ({
@@ -344,16 +463,80 @@ export default function EditorPage() {
     }
   };
 
-  const handleFinish = async () => {
-    if (!selectedTemplate) return;
-    setLoadingSave(true);
+  // Save as draft function
+  const saveDraft = async () => {
+    if (!selectedTemplate) {
+      alert("Please select a template first");
+      return;
+    }
+
+    setSavingDraft(true);
     try {
+      // 1. Get the auth token from Clerk, not Supabase
+      const token = await getToken({ template: 'supabase' });
+
+      if (!token) {
+        alert("Authentication error. Please log in again.");
+        setSavingDraft(false);
+        return;
+      }
+
       const url = resumeIdForParams ? "/api/update-resume" : "/api/save-resume";
       const method = resumeIdForParams ? "PUT" : "POST";
 
       const res = await fetch(url, {
         method: method,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          // 2. Send the Clerk token to the backend
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          templateId: selectedTemplate,
+          formData,
+          ...(resumeIdForParams && { id: resumeIdForParams }),
+        }),
+      });
+      
+      console.log('Response status:', res.status);
+
+      if (res.ok) {
+        // ... (The rest of your success/error handling logic remains the same)
+        const result = await res.json();
+        if (result.success) {
+           console.log('Draft saved/updated successfully');
+           setSaveSuccess(true);
+           setTimeout(() => setSaveSuccess(false), 3000);
+           // etc...
+        } else {
+           alert(result.error || "Failed to save draft.");
+        }
+      } else {
+        const errorData = await res.json();
+        alert(errorData.error || `Error ${res.status}: Failed to save draft.`);
+      }
+
+    } catch (error) {
+      console.error("Save draft failed with an exception:", error);
+      alert("An unexpected error occurred. Please try again.");
+    } finally {
+      setSavingDraft(false);
+    }
+    router.push("/dashboard");
+  };
+
+  const handleFinish = async () => {
+    if (!selectedTemplate) return;
+    setLoadingSave(true);
+    try {
+      const token = await getToken();
+      console.log("token", token)
+      const url = resumeIdForParams ? "/api/update-resume" : "/api/save-resume";
+      const method = resumeIdForParams ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method: method,
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`, },
         body: JSON.stringify({
           templateId: selectedTemplate,
           formData,
@@ -367,21 +550,20 @@ export default function EditorPage() {
           setResumeId(result.resumeId);
           router.push(`/editor/${result.resumeId}`);
         }
-        const proRes = await fetch("/api/check-pro");
-        const { isPro } = await proRes.json();
-        setIsPro(isPro);
         setSaveSuccess(true);
       }
     } catch (error) {
       console.error("Save failed:", error);
+      alert("Failed to save. Please try again.");
     } finally {
       setLoadingSave(false);
     }
+
   };
 
   const currentStep = usedSteps[step];
 
-  if (loadingResume) {
+  if (loadingResume || loadingProCheck) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-indigo-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4F46E5]"></div>
@@ -389,99 +571,11 @@ export default function EditorPage() {
     );
   }
 
-  if (!isSignedIn) {
+  // Don't render anything if we're redirecting
+  if (!hasValidTemplate) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-        <div className="relative">
-          <div className="absolute -top-20 -left-20 w-40 h-40 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full opacity-20 animate-pulse"></div>
-          <div className="absolute -bottom-20 -right-20 w-32 h-32 bg-gradient-to-r from-pink-400 to-orange-400 rounded-full opacity-20 animate-pulse"></div>
-          <Card className="w-full max-w-md relative overflow-hidden shadow-2xl border-0">
-            <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
-            <CardHeader className="text-center pb-6 pt-8">
-              <div className="w-20 h-20 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
-                <Edit3 className="w-10 h-10 text-white" />
-              </div>
-              <CardTitle className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">
-                Welcome to CVHero
-              </CardTitle>
-              <p className="text-gray-600 text-lg">
-                Create stunning, professional resumes in minutes
-              </p>
-            </CardHeader>
-            <CardContent className="px-8 pb-8">
-              <div className="space-y-4 mb-6">
-                <div className="flex items-center gap-3 text-sm text-gray-600">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>30+ Professional Templates</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-600">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>ATS-Optimized Designs</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-600">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>Instant PDF Download</span>
-                </div>
-              </div>
-              <SignInButton>
-                <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-4 text-lg font-semibold shadow-xl">
-                  <Sparkles className="w-5 h-5 mr-2" />
-                  Start Creating Your Resume
-                </Button>
-              </SignInButton>
-              <p className="text-xs text-gray-500 text-center mt-4">
-                Free account • No credit card required
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
-  if (step === 0) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-        <div className="relative container mx-auto px-6 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {templates.map((template, index) => (
-              <TemplateCard
-                key={template.id}
-                template={template}
-                isSelected={selectedTemplate === template.id}
-                onSelect={() => setSelectedTemplate(template.id)}
-                isPro={isPro}
-                index={index}
-              />
-            ))}
-          </div>
-          <div className="text-center">
-            <Button
-              size="lg"
-              className={`px-16 py-6 text-xl font-bold rounded-2xl transition-all duration-500 transform ${
-                selectedTemplate
-                  ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-2xl hover:scale-105"
-                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
-              }`}
-              disabled={!selectedTemplate}
-              onClick={() => setStep(1)}
-            >
-              {selectedTemplate ? (
-                <>
-                  Continue to Editor
-                  <ArrowRight className="w-6 h-6 ml-3" />
-                </>
-              ) : (
-                "Select a Template to Continue"
-              )}
-            </Button>
-            {selectedTemplate && (
-              <p className="text-sm text-gray-600 mt-4">
-                You can change colors and customize everything in the next steps
-              </p>
-            )}
-          </div>
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-indigo-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4F46E5]"></div>
       </div>
     );
   }
@@ -497,10 +591,21 @@ export default function EditorPage() {
   const skillsErrors = getSkillsErrors();
   const profileError = getProfileError();
 
-  // --- SIDEBAR/FORM AREA met steps ---
+  if (step === 0) {
+    router.replace("/select-template");
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 font-sans">
       <style>{printHideStyle}</style>
+      
+      {/* Watermark for free users in print */}
+      {!isProUser && (
+        <div className="watermark no-print" style={{ display: 'none' }}>
+          CVHero Free Version
+        </div>
+      )}
+      
       <div className="flex flex-col lg:flex-row">
         {/* Sidebar */}
         <div className="w-full lg:w-2/5 bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-2xl flex flex-col min-h-screen">
@@ -537,7 +642,70 @@ export default function EditorPage() {
                 className="h-8 w-auto mx-auto"
                 style={{ maxWidth: 140 }}
               />
+              
+              {/* Pro Badge */}
+              {!isProUser && (
+                <div className="absolute right-0 top-1/2 -translate-y-1/2">
+                  <Badge className="bg-gradient-to-r from-gray-600 to-blue-600 text-white">
+                    <Zap className="h-3 w-3 mr-1" />
+                    Free Plan
+                  </Badge>
+                </div>
+              )}
             </div>
+
+            {/* Upgrade Banner for Free Users */}
+            {!isProUser && (
+              <div className="mb-4 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <Crown className="h-4 w-4 text-blue-600" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-blue-900">
+                      Upgrade to Pro for unlimited features!
+                    </p>
+                    <p className="text-xs text-blue-700">
+                      Remove watermarks, unlock AI features, and customize colors
+                    </p>
+                  </div>
+                  <Button 
+                    size="sm" 
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                    onClick={() => router.push("/pricing")}
+                  >
+                    Upgrade
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Save Draft Button */}
+            <div className="mb-4">
+              <Button
+                onClick={saveDraft}
+                disabled={savingDraft}
+                variant="outline"
+                className="w-full border-gray-300 text-gray-700 hover:bg-gray-50"
+              >
+                {savingDraft ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 mr-2" />
+                    Save
+                  </>
+                )}
+              </Button>
+              {saveSuccess && (
+                <div className="mt-2 text-green-600 text-sm text-center">
+                  <CheckCircle className="w-4 h-4 inline mr-1" />
+                  Draft saved successfully!
+                </div>
+              )}
+            </div>
+
             {/* Steps indicator en titel */}
             <div className="mb-5">
               <AnimatedStepIndicator
@@ -565,6 +733,14 @@ export default function EditorPage() {
                       Write a short professional summary that highlights your
                       experience, strengths, and goals.
                     </p>
+                    {!isProUser && aiUsageCount >= 1 && (
+                      <div className="mt-2 p-2 bg-orange-50 border border-orange-200 rounded-lg">
+                        <p className="text-xs text-orange-800">
+                          <Lock className="h-3 w-3 inline mr-1" />
+                          AI feature used ({aiUsageCount}/1). Upgrade for unlimited AI usage.
+                        </p>
+                      </div>
+                    )}
                   </>
                 )}
                 {currentStep === "Experience" && (
@@ -605,12 +781,14 @@ export default function EditorPage() {
                   <FinalPageStep
                     handlePrint={handlePrint}
                     showPrintNotification={showPrintNotification}
+                    isProUser={isProUser}
                   />
                 )}
               </div>
             </div>
-            {/* Kleurenkiezer */}
-            {currentStep !== "Final" && (
+
+            {/* Kleurenkiezer - Alleen voor Pro users */}
+            {currentStep !== "Final" && isProUser && (
               <div className="mb-4">
                 <ColorPicker
                   color={formData.settings?.accent || "#1E40AF"}
@@ -628,6 +806,19 @@ export default function EditorPage() {
                 />
               </div>
             )}
+
+            {/* Color info for free users */}
+            {currentStep !== "Final" && !isProUser && (
+              <div className="mb-4 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <Lock className="h-4 w-4 text-gray-500" />
+                  <p className="text-sm text-gray-700">
+                    Color customization is a <span className="font-semibold">Pro feature</span>
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Steps form */}
             <div className="flex-1 space-y-6 overflow-y-auto">
               {currentStep === "Personal" && (
@@ -648,6 +839,9 @@ export default function EditorPage() {
                   markTouched={markTouched}
                   error={profileError}
                   touched={touched}
+                  onAiGenerate={handleAiUsage}
+                  isProUser={isProUser}
+                  aiUsageCount={aiUsageCount}
                 />
               )}
               {currentStep === "Experience" &&
@@ -660,7 +854,11 @@ export default function EditorPage() {
                     markTouched={markTouched}
                     errors={experienceErrors}
                     touched={touched}
+                    onAiGenerate={handleAiUsage}
+                    isProUser={isProUser}
+                    aiUsageCount={aiUsageCount}
                   />
+
                 )}
               {currentStep === "Education" && fieldUsage["data.education"] && (
                 <EducationStep
@@ -684,27 +882,24 @@ export default function EditorPage() {
                 />
               )}
             </div>
+
             {/* Sticky Navigation buttons */}
             <div className="sticky bottom-0 bg-white/95 pt-6 pb-6 border-t border-gray-200 z-10">
               <div className="flex justify-end">
-                {/* Hide navigation entirely on the Final step */}
                 {step === usedSteps.length - 1 ? null : (
                   <Button
                     onClick={async () => {
-                      // If we're on the step before Final (Skills), save before moving on
                       if (step === usedSteps.length - 2) {
                         await handleFinish();
                       }
                       setStep((s) => s + 1);
                     }}
                     disabled={
-                      // Disable while saving on the Finish action, or if validation fails on other steps
                       (step === usedSteps.length - 2 &&
                         (loadingSave || formData.skills.length < 1)) ||
                       !validateStep(currentStep)
                     }
                     className={
-                      // Green “Finish Resume” on Skills step, blue “Continue” on all others
                       step === usedSteps.length - 2
                         ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white flex items-center gap-2 px-8 py-3"
                         : "bg-[#4F46E5] text-white flex items-center gap-2 px-6 py-3"
@@ -746,6 +941,11 @@ export default function EditorPage() {
                 </h3>
                 <p className="text-[#7883a1] text-base">
                   See the changes in real-time
+                  {!isProUser && (
+                    <span className="text-orange-600 ml-2">
+                      • Watermark will appear in download
+                    </span>
+                  )}
                 </p>
               </div>
               <button
@@ -753,7 +953,7 @@ export default function EditorPage() {
                 onClick={handlePrint}
               >
                 <Eye />
-                Download Preview
+                Download
               </button>
             </div>
             {/* Preview canvas */}
@@ -792,3 +992,14 @@ export default function EditorPage() {
     </div>
   );
 }
+
+// Helper component for Badge (add this if not already imported)
+const Badge = ({ children, className }: { children: React.ReactNode; className?: string }) => (
+  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${className}`}>
+    {children}
+  </span>
+);
+
+// Add Zap icon import at the top with other icons
+// Update the lucide-react import to include Zap:
+// import { ..., Zap } from "lucide-react";

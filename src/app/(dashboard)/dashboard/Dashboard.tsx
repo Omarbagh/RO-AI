@@ -28,7 +28,7 @@ import {
   Sparkles,
   Calendar,
 } from "lucide-react";
-import { useUser } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { createClient } from "@supabase/supabase-js";
 import { useAuth } from "@clerk/nextjs";
 import { templates } from "../editor/utils/templateMap";
@@ -42,6 +42,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useRouter } from "next/navigation";
 
 type Resume = {
   id: string;
@@ -158,6 +159,7 @@ const formatDate = (dateString: string) => {
 };
 
 export default function Dashboard() {
+  const router = useRouter();
   const { user, isLoaded } = useUser();
   const { getToken } = useAuth();
   const [resumes, setResumes] = useState<Resume[]>([]);
@@ -182,6 +184,11 @@ export default function Dashboard() {
       }
     `,
   });
+
+  // Handle edit resume - navigate to editor with resume ID
+  const handleEditResume = (resume: Resume) => {
+    router.push(`/editor/${resume.id}`);
+  };
 
   // Get top 2 resumes for the preview cards
   const topResumes = useMemo(() => {
@@ -335,6 +342,10 @@ export default function Dashboard() {
       <style>{printHideStyle}</style>
       <div className="w-full max-w-full overflow-x-hidden px-4 animate-fade-in">
         {/* Header Section */}
+        <div className="flex justify-end mb-2 mt-2">
+          <UserButton />
+        </div>
+
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-indigo-700 bg-clip-text text-transparent">
@@ -365,7 +376,8 @@ export default function Dashboard() {
               {topResumes.map((resume, index) => (
                 <div
                   key={resume.id}
-                  className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow"
+                  className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={() => handleEditResume(resume)}
                 >
                   <div className="flex justify-between items-start mb-3">
                     <div>
@@ -516,7 +528,7 @@ export default function Dashboard() {
                             >
                               <ResumeCard
                                 resume={resume}
-                                onEdit={() => {}}
+                                onEdit={handleEditResume}
                                 onPreview={setPreviewResume}
                                 onDelete={deleteResume}
                               />
@@ -538,7 +550,7 @@ export default function Dashboard() {
                       >
                         <ResumeCard
                           resume={resume}
-                          onEdit={() => {}}
+                          onEdit={handleEditResume}
                           onPreview={setPreviewResume}
                           onDelete={deleteResume}
                         />
@@ -698,12 +710,21 @@ export default function Dashboard() {
               <div className="text-sm text-muted-foreground">
                 Template: {previewResume?.template_id || "Standard"}
               </div>
-              <Button
-                onClick={handlePrint}
-                className="gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors"
-              >
-                <Download className="size-4" /> Download PDF
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => handleEditResume(previewResume!)}
+                  variant="outline"
+                  className="gap-2"
+                >
+                  <FileText className="size-4" /> Edit Resume
+                </Button>
+                <Button
+                  onClick={handlePrint}
+                  className="gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors"
+                >
+                  <Download className="size-4" /> Download PDF
+                </Button>
+              </div>
             </div>
             <div className="flex-1 overflow-auto py-4">
               <div ref={contentRef} className="w-full flex justify-center">

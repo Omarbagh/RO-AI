@@ -11,6 +11,9 @@ type ProfileStepProps = {
   markTouched: (key: string) => void;
   error: string | undefined;
   touched: TouchedType;
+  onAiGenerate: () => boolean;
+  isProUser: boolean;
+  aiUsageCount: number;
 };
 
 export function ProfileStep({
@@ -19,6 +22,9 @@ export function ProfileStep({
   markTouched,
   error,
   touched,
+  onAiGenerate,
+  isProUser,
+  aiUsageCount,
 }: ProfileStepProps) {
   return (
     <div>
@@ -29,7 +35,10 @@ export function ProfileStep({
         <p className="text-red-500 text-base leading-none">*</p>
       </div>
       <SummaryAIField
-        onFill={(generatedText) => updateProfile(generatedText)}
+        onFill={updateProfile}                    // critical forwarding
+        onAiGenerate={onAiGenerate}
+        isProUser={isProUser}
+        aiUsageCount={aiUsageCount}
       />
       <Textarea
         value={formData.profile}

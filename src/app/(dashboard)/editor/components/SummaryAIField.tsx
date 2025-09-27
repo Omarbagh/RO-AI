@@ -1,10 +1,14 @@
+// components/SummaryAIField.tsx
 import { useState, useRef, useEffect } from "react";
 
 interface SummaryAIFieldProps {
   onFill: (text: string) => void;
+  onAiGenerate: () => boolean;
+  isProUser: boolean;
+  aiUsageCount: number;
 }
 
-export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
+export function SummaryAIField({ onFill, onAiGenerate, isProUser, aiUsageCount }: SummaryAIFieldProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [language, setLanguage] = useState("English");
@@ -32,24 +36,79 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
       ? customLanguage.trim()
       : language;
 
+  function sanitizeAIText(text: string) {
+    let t = text.trim();
+
+    // strip surrounding straight or smart quotes
+    const pairs: [string, string][] = [
+      ['"', '"'],
+      ["'", "'"],
+      ["“", "”"],
+      ["‘", "’"],
+    ];
+    for (const [l, r] of pairs) {
+      if (t.startsWith(l) && t.endsWith(r)) {
+        t = t.slice(1, -1).trim();
+        break;
+      }
+    }
+    return t;
+  }
+
+  function wordRange() {
+    switch (length) {
+      case "Short":
+        return "about 40–60 words";
+      case "Medium":
+        return "about 70–90 words";
+      case "Long":
+        return "about 100–130 words";
+      default:
+        return "about 70–90 words";
+    }
+  }
+
   const handleGenerate = async () => {
     setError(null);
+    
+    // Check if user can use AI feature
+    if (!isProUser && aiUsageCount >= 1) {
+      setError("Free users can only use AI features once. Upgrade to Pro for unlimited AI usage! 🚀");
+      return;
+    }
+
     if (!currentLanguage) return setError("Please select or enter a language.");
     if (!about.trim())
       return setError(
-        "Please describe briefly what the summary should be about.",
+        "Please describe briefly what the profile should include.",
       );
 
     try {
       setLoading(true);
-      const promptText = `Write a ${tone.toLowerCase()} one-paragraph CV summary of ${length.toLowerCase()} length based on this information: ${about.trim()}. Please respond in ${currentLanguage}. Do not use bullet points or line breaks.`;
+
+      // Track AI usage for free users
+      if (!isProUser) {
+        const canProceed = onAiGenerate();
+        if (!canProceed) {
+          setLoading(false);
+          return;
+        }
+      }
+
+      const promptText = [
+        `Write a concise, engaging professional profile summary for a resume in ${currentLanguage}.`,
+        `Use a ${tone.toLowerCase()} tone.`,
+        `Aim for ${wordRange()}.`,
+        `Do not use bullet points or line breaks.`,
+        `Base it on the following details: ${about.trim()}`,
+      ].join(" ");
 
       const res = await fetch("/api/ai-generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           prompt: promptText,
-          context: "You are a professional international CV writer.",
+          context: "You are a professional international resume writer.",
         }),
       });
 
@@ -59,26 +118,20 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
       }
 
       let text = await res.text();
-      if (
-        (text.startsWith('"') && text.endsWith('"')) ||
-        (text.startsWith("'") && text.endsWith("'"))
-      ) {
-        text = text.slice(1, -1);
-      }
+      text = sanitizeAIText(text);
 
       onFill(text);
       setOpen(false);
+
+      // reset form
       setAbout("");
       setCustomLanguage("");
       setLanguage("English");
       setTone("Professional");
       setLength("Medium");
     } catch (e: unknown) {
-      if (e instanceof Error) {
-        setError(e.message);
-      } else {
-        setError("Unknown error.");
-      }
+      if (e instanceof Error) setError(e.message);
+      else setError("Unknown error.");
     } finally {
       setLoading(false);
     }
@@ -88,24 +141,29 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
     setAbout((prev) => (prev ? prev + "\n\n" : "") + preset);
   };
 
+  // Check if AI button should be disabled for free users
+  const isAiDisabled = !isProUser && aiUsageCount >= 1;
+
   return (
     <div className="inline-flex">
       <button
         type="button"
         onClick={() => setOpen(true)}
-        disabled={loading}
-        style={{ letterSpacing: "0.03em", cursor: "pointer" }}
-        className="group relative inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-4 text-sm font-semibold
-                  bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white shadow-md
-                  hover:via-indigo-400 hover:to-indigo-500
-                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500
-                  disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200"
+        disabled={loading || isAiDisabled}
+        style={{ letterSpacing: "0.03em" }}
+        className={`relative inline-flex items-center gap-2 rounded-full px-5 py-2 mb-4 text-sm font-semibold
+                    ${isAiDisabled 
+                      ? "bg-gray-400 text-gray-200 cursor-not-allowed" 
+                      : "bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white shadow-lg hover:via-indigo-400 hover:to-indigo-500"
+                    }
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500
+                    disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200`}
       >
         {/* AI icon */}
-        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20">
+        <span className={`flex items-center justify-center w-6 h-6 rounded-full ${isAiDisabled ? "bg-gray-300" : "bg-white/20"}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 text-white"
+            className={`h-4 w-4 ${isAiDisabled ? "text-gray-400" : "text-white"}`}
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -117,10 +175,28 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
         </span>
 
         {/* Button text */}
-        {loading ? "AI is thinking..." : "AI Assist – Generate Description"}
+        {loading ? "AI is thinking..." : 
+         isAiDisabled ? "AI Limit Reached - Upgrade to Pro" : 
+         "AI Assist – Generate Description"}
 
-        {/* Subtle gloss effect */}
-        <span className="absolute inset-0 rounded-full bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        {/* Subtle gloss effect - only for enabled state */}
+        {!isAiDisabled && (
+          <span className="absolute inset-0 rounded-full bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        )}
+
+        {/* Lock icon for disabled state */}
+        {isAiDisabled && (
+          <svg 
+            className="h-4 w-4 ml-1" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2"
+          >
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+        )}
       </button>
 
       {open && (
@@ -137,7 +213,7 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
             onClick={() => setOpen(false)}
           />
 
-          {/* Modal container */}
+          {/* Modal */}
           <div
             ref={dialogRef}
             className="absolute inset-0 flex items-start justify-center p-4 mt-20"
@@ -160,6 +236,18 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                       Provide language, tone and key details. We&apos;ll craft a
                       single professional paragraph (no bullet points).
                     </p>
+                    
+                    {/* Usage info for free users */}
+                    {!isProUser && (
+                      <div className="mt-2 p-2 bg-blue-50 border border-blue-200 rounded-lg">
+                        <p className="text-xs text-blue-800">
+                          {aiUsageCount === 0 
+                            ? "Free users get 1 AI generation. Upgrade to Pro for unlimited usage." 
+                            : `You've used ${aiUsageCount}/1 AI generations. Upgrade to Pro for unlimited usage.`
+                          }
+                        </p>
+                      </div>
+                    )}
                   </div>
                   <button
                     type="button"
@@ -185,27 +273,27 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
 
               {/* Body */}
               <div className="p-6 space-y-6">
-                {/* Grid: language + tone + length */}
+                {/* Grid: Language + Tone + Length */}
                 <div className="grid gap-4 sm:grid-cols-3">
+                  {/* Language */}
                   <div className="sm:col-span-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Language
                     </label>
-                    <div className="flex gap-2">
-                      <select
-                        className="w-full rounded-2xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm"
-                        value={language}
-                        onChange={(e) => setLanguage(e.target.value)}
-                      >
-                        <option value="English">English</option>
-                        <option value="Dutch">Dutch / Nederlands</option>
-                        <option value="Deutsch">Deutsch</option>
-                        <option value="French">French / Français</option>
-                        <option value="Spanish">Spanish / Español</option>
-                        <option value="Italian">Italiano</option>
-                        <option value="Custom">Other…</option>
-                      </select>
-                    </div>
+                    <select
+                      className="w-full rounded-2xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                      value={language}
+                      onChange={(e) => setLanguage(e.target.value)}
+                    >
+                      <option value="English">English</option>
+                      <option value="Dutch">Dutch / Nederlands</option>
+                      <option value="Deutsch">Deutsch</option>
+                      <option value="French">French / Français</option>
+                      <option value="Spanish">Spanish / Español</option>
+                      <option value="Italian">Italiano</option>
+                      <option value="Custom">Other…</option>
+                    </select>
+
                     {language === "Custom" && (
                       <input
                         type="text"
@@ -217,6 +305,7 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                     )}
                   </div>
 
+                  {/* Tone */}
                   <div className="sm:col-span-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Tone
@@ -231,9 +320,11 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                       <option>Friendly</option>
                       <option>Concise</option>
                       <option>Impactful</option>
+                      <option>Confident</option>
                     </select>
                   </div>
 
+                  {/* Length */}
                   <div className="sm:col-span-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Length
@@ -254,7 +345,7 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                 <div>
                   <div className="flex items-center justify-between">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      What should the description include?
+                      What should the profile include?
                     </label>
                     <span
                       className={`text-xs ${charsLeft < 0 ? "text-red-600" : "text-gray-500"}`}
@@ -263,7 +354,11 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                     </span>
                   </div>
                   <textarea
-                    className={`w-full min-h-[140px] rounded-2xl border ${charsLeft < 0 ? "border-red-300 focus:border-red-500 focus:ring-red-500" : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"} text-sm px-3 py-2`}
+                    className={`w-full min-h-[140px] rounded-2xl border ${
+                      charsLeft < 0
+                        ? "border-red-300 focus:border-red-500 focus:ring-red-500"
+                        : "border-gray-300 focus:border-indigo-500 focus:ring-indigo-500"
+                    } text-sm px-3 py-2`}
                     placeholder="Add relevant details: experience, sector, achievements (with metrics), skills, tech stack, certifications, languages, career goals, and target role."
                     value={about}
                     onChange={(e) =>
@@ -271,7 +366,7 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                     }
                   />
                   <p className="mt-1 text-[11px] text-gray-500">
-                    Tip: concrete facts (years, tools, KPIs) make the summary
+                    Tip: concrete facts (years, tools, KPIs) make the profile
                     stronger.
                   </p>
 
@@ -361,7 +456,7 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                   <button
                     type="button"
                     onClick={handleGenerate}
-                    disabled={loading || !about.trim()}
+                    disabled={loading || !about.trim() || (!isProUser && aiUsageCount >= 1)}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-indigo-600 text-white font-semibold shadow-sm hover:bg-indigo-700 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                   >
                     {loading && (

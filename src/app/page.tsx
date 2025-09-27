@@ -96,7 +96,7 @@ const sampleResumeData = {
     "Node.js",
     "Python",
     "AWS",
-    "Python", 
+    "Python",
     "Docker",
     "MongoDB",
     "PostgreSQL",
@@ -110,7 +110,7 @@ const sampleResumeData = {
 // Template Preview Component that uses the actual template component
 function TemplatePreview({ template }: { template: any }) {
   const TemplateComponent = template.comp;
- 
+
   if (!TemplateComponent) {
     return (
       <div className="bg-white p-8 rounded-lg shadow-lg">
@@ -206,8 +206,8 @@ export default function Index() {
   // Move template filtering logic to useEffect
   useEffect(() => {
     // Filter templates to show only bold template and two random ones
-    const boldTemplates = templates.filter(
-      (template) => template.name.toLowerCase().includes("bold impact")
+    const boldTemplates = templates.filter((template) =>
+      template.name.toLowerCase().includes("bold impact"),
     );
 
     const finalTemplates = [...boldTemplates];
@@ -215,12 +215,14 @@ export default function Index() {
     // If we don't have enough templates, add random ones
     if (finalTemplates.length < 3) {
       const remainingTemplates = templates.filter(
-        (template) => !finalTemplates.includes(template)
+        (template) => !finalTemplates.includes(template),
       );
-      
+
       // Add random templates until we have 3
       while (finalTemplates.length < 3 && remainingTemplates.length > 0) {
-        const randomIndex = Math.floor(Math.random() * remainingTemplates.length);
+        const randomIndex = Math.floor(
+          Math.random() * remainingTemplates.length,
+        );
         const randomTemplate = remainingTemplates[randomIndex];
         finalTemplates.push(randomTemplate);
         // Remove the selected template from remaining templates
@@ -332,7 +334,6 @@ export default function Index() {
             </div>
 
             {/* Social proof */}
-             
           </div>
 
           {/* Real Dashboard Preview */}
@@ -576,7 +577,8 @@ export default function Index() {
             How It Works
           </h2>
           <p className="mt-4 text-muted-foreground">
-            Choose a template, enter your details and let AI optimize it. Download and apply with confidence!
+            Choose a template, enter your details and let AI optimize it.
+            Download and apply with confidence!
           </p>
         </div>
         <div className="relative mt-12">
@@ -584,46 +586,46 @@ export default function Index() {
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
-              icon: Palette,
-              title: "Pick Your Template",
-              desc: "Select one of our professionally designed resume templates.",
+                icon: Palette,
+                title: "Pick Your Template",
+                desc: "Select one of our professionally designed resume templates.",
               },
               {
-              icon: User,
-              title: "Add Your Details",
-              desc: "Fill in your personal information, experience, skills and achievements.",
+                icon: User,
+                title: "Add Your Details",
+                desc: "Fill in your personal information, experience, skills and achievements.",
               },
               {
-              icon: Sparkles,
-              title: "AI Optimization",
-              desc: "Let AI enhance your resume for maximum impact.",
+                icon: Sparkles,
+                title: "AI Optimization",
+                desc: "Let AI enhance your resume for maximum impact.",
               },
               {
-              icon: DownloadCloud,
-              title: "Download & Apply",
-              desc: "Export your resume instantly and start applying.",
+                icon: DownloadCloud,
+                title: "Download & Apply",
+                desc: "Export your resume instantly and start applying.",
               },
             ].map(({ icon: Icon, title, desc }, i) => (
               <div
-              key={title}
-              className="relative rounded-2xl bg-gradient-to-br from-[#4F46E5]/20 via-transparent to-indigo-400/20 p-[1px] transition-shadow hover:shadow-xl"
+                key={title}
+                className="relative rounded-2xl bg-gradient-to-br from-[#4F46E5]/20 via-transparent to-indigo-400/20 p-[1px] transition-shadow hover:shadow-xl"
               >
-              <div className="rounded-[15px] border border-border bg-card p-6">
-                <div className="flex items-center gap-3">
-                <div className="relative">
-                  <div className="absolute inset-0 rounded-full bg-[#4F46E5]/20 blur-sm" />
-                  <div className="relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#4F46E5]/10 text-[#4F46E5] ring-1 ring-[#4F46E5]/30">
-                  <Icon className="h-5 w-5" />
+                <div className="rounded-[15px] border border-border bg-card p-6">
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
+                      <div className="absolute inset-0 rounded-full bg-[#4F46E5]/20 blur-sm" />
+                      <div className="relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#4F46E5]/10 text-[#4F46E5] ring-1 ring-[#4F46E5]/30">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                    </div>
+                    <span className="text-xs font-semibold text-muted-foreground">
+                      Step {i + 1}
+                    </span>
                   </div>
+                  <h3 className="mt-4 text-lg font-semibold">{title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{desc}</p>
                 </div>
-                <span className="text-xs font-semibold text-muted-foreground">
-                  Step {i + 1}
-                </span>
-                </div>
-                <h3 className="mt-4 text-lg font-semibold">{title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{desc}</p>
-              </div>
-              <div className="hidden lg:block absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-[#4F46E5]/40" />
+                <div className="hidden lg:block absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-[#4F46E5]/40" />
               </div>
             ))}
           </div>
@@ -656,13 +658,13 @@ export default function Index() {
           </h2>
           <p className="mt-4 text-muted-foreground">
             Effortlessly create professional resumes with AI-driven content
-            suggestions, customizable templates and
-            one-click downloads. Stand out with tailored achievements, modern
-            design, and seamless editing, all in one place.
+            suggestions, customizable templates and one-click downloads. Stand
+            out with tailored achievements, modern design, and seamless editing,
+            all in one place.
           </p>
         </div>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[
+          {[
             {
               icon: FileCheck2,
               title: "Dashboard Overview",
@@ -694,37 +696,37 @@ export default function Index() {
               desc: "Generate tailored cover letters for every job application.",
               comingSoon: true,
             },
-            ].map(({ icon: Icon, title, desc, comingSoon }, i) => (
+          ].map(({ icon: Icon, title, desc, comingSoon }, i) => (
             <div
               key={title}
               className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#4F46E5]/20 via-transparent to-indigo-400/20 p-[1px] transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
             >
               <div className="relative rounded-[15px] border border-border bg-card p-6">
-              <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-[#4F46E5]/10 text-[#4F46E5]">
-                <Icon className="h-5 w-5" />
-              </div>
-              <h3 className="text-lg font-semibold">{title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{desc}</p>
-              {comingSoon && (
-                <span className="absolute right-4 top-4 rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-semibold text-yellow-700 border border-yellow-300">
-                Coming Soon
-                </span>
-              )}
-              {i === 1 && !comingSoon && (
-                <span className="absolute right-4 top-4 rounded-full bg-[#4F46E5]/10 px-2 py-0.5 text-[10px] font-semibold text-[#4F46E5]">
-                New
-                </span>
-              )}
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-md bg-[#4F46E5]/10 text-[#4F46E5]">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h3 className="text-lg font-semibold">{title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{desc}</p>
+                {comingSoon && (
+                  <span className="absolute right-4 top-4 rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-semibold text-yellow-700 border border-yellow-300">
+                    Coming Soon
+                  </span>
+                )}
+                {i === 1 && !comingSoon && (
+                  <span className="absolute right-4 top-4 rounded-full bg-[#4F46E5]/10 px-2 py-0.5 text-[10px] font-semibold text-[#4F46E5]">
+                    New
+                  </span>
+                )}
               </div>
               <div
-              className="pointer-events-none absolute -inset-16 -z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-40"
-              style={{
-                background:
-                "radial-gradient(600px circle at var(--x,50%) var(--y,50%), hsl(var(--primary)/.35), transparent 40%)",
-              }}
+                className="pointer-events-none absolute -inset-16 -z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-40"
+                style={{
+                  background:
+                    "radial-gradient(600px circle at var(--x,50%) var(--y,50%), hsl(var(--primary)/.35), transparent 40%)",
+                }}
               />
             </div>
-            ))}
+          ))}
         </div>
       </section>
 
@@ -763,14 +765,14 @@ export default function Index() {
               <Shield className="h-8 w-8 text-[#4F46E5] mx-auto mb-4" />
               <h4 className="font-semibold">No Risk</h4>
               <p className="text-sm text-muted-foreground mt-2">
-          Cancel anytime, no hidden fees
+                Cancel anytime, no hidden fees
               </p>
             </div>
             <div className="rounded-lg bg-gradient-to-br from-[#4F46E5]/5 to-indigo-400/5 p-6 text-center">
               <DownloadCloud className="h-8 w-8 text-[#4F46E5] mx-auto mb-4" />
               <h4 className="font-semibold">Instant Access</h4>
               <p className="text-sm text-muted-foreground mt-2">
-          Get started immediately after signup
+                Get started immediately after signup
               </p>
             </div>
           </div>
