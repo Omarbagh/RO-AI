@@ -145,7 +145,9 @@ export default function TemplateSelectionPage() {
                 planId="cplan_334J23pEpXcBH3uvZ6K3Sn9RlyZ"
                 planPeriod="month"
                 checkoutProps={{
-                  appearance: {},
+                  appearance: {
+                    
+                  },
                 }}
                 onSubscriptionComplete={() => {
                   console.log("Subscription completed!");
