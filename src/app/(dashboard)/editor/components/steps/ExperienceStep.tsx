@@ -30,6 +30,9 @@ type ExperienceStepProps = {
   markTouched: (key: string, idx?: number, subKey?: string) => void;
   errors: Array<Partial<Record<keyof ExperienceItem, string | undefined>>>;
   touched: { experience?: ExperienceTouched };
+  onAiGenerate: () => boolean; // Add this prop
+  isProUser: boolean; // Add this prop
+  aiUsageCount: number; // Add this prop
 };
 
 export function ExperienceStep({
@@ -40,8 +43,14 @@ export function ExperienceStep({
   markTouched,
   errors,
   touched,
+  onAiGenerate, 
+  isProUser, 
+  aiUsageCount, 
 }: ExperienceStepProps) {
+
+  
   return (
+    
     <div>
       {experience.map((exp, i) => (
         <Card
@@ -169,6 +178,9 @@ export function ExperienceStep({
                   onFill={(generatedText) =>
                     updateExperienceItem(i, "description", generatedText)
                   }
+                  onAiGenerate={onAiGenerate}
+                  isProUser={isProUser}
+                  aiUsageCount={aiUsageCount}
                 />
                 <Textarea
                   value={exp.description}

@@ -830,7 +830,11 @@ export default function EditorPage() {
                     markTouched={markTouched}
                     errors={experienceErrors}
                     touched={touched}
+                    onAiGenerate={handleAiUsage}
+                    isProUser={isProUser}
+                    aiUsageCount={aiUsageCount}
                   />
+
                 )}
               {currentStep === "Education" && fieldUsage["data.education"] && (
                 <EducationStep

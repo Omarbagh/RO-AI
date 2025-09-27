@@ -1,10 +1,14 @@
+// components/SummaryAIField.tsx
 import { useState, useRef, useEffect } from "react";
 
 interface SummaryAIFieldProps {
   onFill: (text: string) => void;
+  onAiGenerate: () => boolean; 
+  isProUser: boolean; 
+  aiUsageCount: number; 
 }
 
-export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
+export function SummaryAIField({ onFill, onAiGenerate, isProUser, aiUsageCount }: SummaryAIFieldProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [language, setLanguage] = useState("English");
@@ -34,6 +38,13 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
 
   const handleGenerate = async () => {
     setError(null);
+    
+    // Check if user can generate (free users limited to 1 use)
+    if (!onAiGenerate()) {
+      setError("Free users can only generate one AI summary. Upgrade to Pro for unlimited usage.");
+      return;
+    }
+    
     if (!currentLanguage) return setError("Please select or enter a language.");
     if (!about.trim())
       return setError(
@@ -88,13 +99,16 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
     setAbout((prev) => (prev ? prev + "\n\n" : "") + preset);
   };
 
+  // Check if user can generate more AI content
+  const canGenerateMore = isProUser || aiUsageCount === 0;
+
   return (
     <div className="inline-flex">
       <button
         type="button"
         onClick={() => setOpen(true)}
-        disabled={loading}
-        style={{ letterSpacing: "0.03em", cursor: "pointer" }}
+        disabled={loading || !canGenerateMore}
+        style={{ letterSpacing: "0.03em", cursor: canGenerateMore ? "pointer" : "not-allowed" }}
         className="group relative inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-4 text-sm font-semibold
                   bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white shadow-md
                   hover:via-indigo-400 hover:to-indigo-500
@@ -117,7 +131,16 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
         </span>
 
         {/* Button text */}
-        {loading ? "AI is thinking..." : "AI Assist – Generate Description"}
+        {loading ? "AI is thinking..." : 
+         !canGenerateMore ? "AI Assist (Limit Reached)" : 
+         "AI Assist – Generate Description"}
+
+        {/* Usage counter for free users */}
+        {!isProUser && (
+          <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full px-1.5 py-0.5 min-w-[20px] text-center">
+            {aiUsageCount}/1
+          </span>
+        )}
 
         {/* Subtle gloss effect */}
         <span className="absolute inset-0 rounded-full bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
@@ -159,6 +182,11 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                     >
                       Provide language, tone and key details. We&apos;ll craft a
                       single professional paragraph (no bullet points).
+                      {!isProUser && (
+                        <span className="block mt-1 text-orange-600 font-medium">
+                          Free users: {1 - aiUsageCount} generation{1 - aiUsageCount === 1 ? '' : 's'} remaining
+                        </span>
+                      )}
                     </p>
                   </div>
                   <button
@@ -185,6 +213,20 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
 
               {/* Body */}
               <div className="p-6 space-y-6">
+                {/* Usage limit warning */}
+                {!canGenerateMore && (
+                  <div className="bg-orange-50 border border-orange-200 rounded-2xl p-4">
+                    <div className="flex items-center gap-2">
+                      <svg className="h-5 w-5 text-orange-600" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                      </svg>
+                      <span className="text-orange-800 font-medium">
+                        Free usage limit reached. Upgrade to Pro for unlimited AI generations.
+                      </span>
+                    </div>
+                  </div>
+                )}
+
                 {/* Grid: language + tone + length */}
                 <div className="grid gap-4 sm:grid-cols-3">
                   <div className="sm:col-span-1">
@@ -196,6 +238,7 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                         className="w-full rounded-2xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                         value={language}
                         onChange={(e) => setLanguage(e.target.value)}
+                        disabled={!canGenerateMore}
                       >
                         <option value="English">English</option>
                         <option value="Dutch">Dutch / Nederlands</option>
@@ -213,6 +256,7 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                         className="mt-2 w-full rounded-2xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                         value={customLanguage}
                         onChange={(e) => setCustomLanguage(e.target.value)}
+                        disabled={!canGenerateMore}
                       />
                     )}
                   </div>
@@ -225,6 +269,7 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                       className="w-full rounded-2xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                       value={tone}
                       onChange={(e) => setTone(e.target.value)}
+                      disabled={!canGenerateMore}
                     >
                       <option>Professional</option>
                       <option>Executive</option>
@@ -242,6 +287,7 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                       className="w-full rounded-2xl border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 text-sm"
                       value={length}
                       onChange={(e) => setLength(e.target.value)}
+                      disabled={!canGenerateMore}
                     >
                       <option>Short</option>
                       <option>Medium</option>
@@ -269,6 +315,7 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                     onChange={(e) =>
                       setAbout(e.target.value.slice(0, MAX_CHARS))
                     }
+                    disabled={!canGenerateMore}
                   />
                   <p className="mt-1 text-[11px] text-gray-500">
                     Tip: concrete facts (years, tools, KPIs) make the summary
@@ -288,6 +335,7 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                         onClick={() => applyPreset(p)}
                         className="text-xs px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200"
                         title="Click to insert example"
+                        disabled={!canGenerateMore}
                       >
                         + Insert example
                       </button>
@@ -361,7 +409,7 @@ export function SummaryAIField({ onFill }: SummaryAIFieldProps) {
                   <button
                     type="button"
                     onClick={handleGenerate}
-                    disabled={loading || !about.trim()}
+                    disabled={loading || !about.trim() || !canGenerateMore}
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-indigo-600 text-white font-semibold shadow-sm hover:bg-indigo-700 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                   >
                     {loading && (
