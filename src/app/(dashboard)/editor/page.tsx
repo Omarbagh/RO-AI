@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useMemo, useRef } from "react";
-import { useUser } from "@clerk/nextjs";
+import { useUser, useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,6 +11,9 @@ import {
   CheckCircle,
   Eye,
   Save,
+  Crown,
+  Lock,
+  Zap
 } from "lucide-react";
 import { templates } from "./utils/templateMap";
 import { AnimatedStepIndicator } from "./components/AnimatedStepIndicator";
@@ -30,6 +33,20 @@ import { useParams } from "next/navigation";
 const printHideStyle = `
 @media print {
   .no-print { display: none !important; }
+  
+  /* Watermark for free users */
+  .watermark {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 80px;
+    color: rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    z-index: 9999;
+    white-space: nowrap;
+    font-weight: bold;
+  }
 }
 `;
 
@@ -67,7 +84,8 @@ type TouchedType = {
 
 export default function EditorPage() {
   const router = useRouter();
-  const { isSignedIn } = useUser();
+  const { isSignedIn, user } = useUser();
+  const { has } = useAuth();
   const searchParams = useSearchParams();
   const templateIdFromQuery = searchParams.get("templateId");
   const params = useParams();
@@ -84,15 +102,45 @@ export default function EditorPage() {
   const [resumeId, setResumeId] = useState<string | null>(null);
   const [existingResume, setExistingResume] = useState<Resume | null>(null);
   const [loadingResume, setLoadingResume] = useState(!!resumeIdForParams);
-  const [isPro, setIsPro] = useState(false);
+  const [isProUser, setIsProUser] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
   const [savingDraft, setSavingDraft] = useState(false);
   const [showPrintNotification, setShowPrintNotification] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [hasValidTemplate, setHasValidTemplate] = useState(false);
+  const [aiUsageCount, setAiUsageCount] = useState(0);
+  const [loadingProCheck, setLoadingProCheck] = useState(true);
   const contentRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+
+  // Check if user has pro plan
+  useEffect(() => {
+    const checkProStatus = async () => {
+      if (!user) {
+        setLoadingProCheck(false);
+        return;
+      }
+
+      try {
+        const hasProPlan = await has({ plan: 'pro' });
+        setIsProUser(hasProPlan);
+        
+        // Check AI usage for free users
+        if (!hasProPlan) {
+          const savedAiUsage = localStorage.getItem('ai_usage_count');
+          setAiUsageCount(parseInt(savedAiUsage || '0'));
+        }
+      } catch (error) {
+        console.error("Error checking pro status:", error);
+        setIsProUser(false);
+      } finally {
+        setLoadingProCheck(false);
+      }
+    };
+
+    checkProStatus();
+  }, [user, has]);
 
   // Fix: Check for valid template/resume before redirecting
   useEffect(() => {
@@ -155,6 +203,22 @@ export default function EditorPage() {
     templateIdFromQuery,
   );
 
+  // Handle AI feature usage for free users
+  const handleAiUsage = () => {
+    if (!isProUser) {
+      if (aiUsageCount >= 1) {
+        alert("Free users can only use AI features once. Upgrade to Pro for unlimited AI usage! 🚀");
+        return false;
+      }
+      setAiUsageCount(prev => {
+        const newCount = prev + 1;
+        localStorage.setItem('ai_usage_count', newCount.toString());
+        return newCount;
+      });
+    }
+    return true;
+  };
+
   const handlePrint = useReactToPrint({
     contentRef,
     documentTitle: formData.personal.name
@@ -164,6 +228,26 @@ export default function EditorPage() {
       setShowPrintNotification(true);
       setTimeout(() => setShowPrintNotification(false), 5000);
     },
+    pageStyle: isProUser ? `` : `
+      @page { 
+        margin: 0; 
+        size: auto;
+      }
+      body::after {
+        content: "CVHero Free Version";
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+        font-size: 60px;
+        color: rgba(0, 0, 0, 0.1);
+        pointer-events: none;
+        z-index: 9999;
+        white-space: nowrap;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+      }
+    `,
   });
 
   useEffect(() => {
@@ -286,6 +370,7 @@ export default function EditorPage() {
     setFormData((d) => ({ ...d, personal: { ...d.personal, [field]: value } }));
     markTouched("personal." + field);
   };
+  
   const handlePhotoUpload = (file: File) => {
     if (file.size > 5 * 1024 * 1024) {
       alert("File size must be less than 5MB");
@@ -297,10 +382,12 @@ export default function EditorPage() {
     };
     reader.readAsDataURL(file);
   };
+  
   const updateProfile = (value: string) => {
     setFormData((d) => ({ ...d, profile: value }));
     markTouched("profile");
   };
+  
   const updateExperienceItem = (
     i: number,
     field: keyof CVData["experience"][0],
@@ -313,6 +400,7 @@ export default function EditorPage() {
     });
     markTouched("experience", i, field);
   };
+  
   const addExperience = () => {
     setFormData((d) => ({
       ...d,
@@ -322,6 +410,7 @@ export default function EditorPage() {
       ],
     }));
   };
+  
   const removeExperience = (i: number) => {
     if (formData.experience.length > 1) {
       setFormData((d) => ({
@@ -330,6 +419,7 @@ export default function EditorPage() {
       }));
     }
   };
+  
   const updateEducationItem = (
     i: number,
     field: keyof CVData["education"][0],
@@ -342,12 +432,14 @@ export default function EditorPage() {
     });
     markTouched("education", i, field);
   };
+  
   const addEducation = () => {
     setFormData((d) => ({
       ...d,
       education: [...d.education, { school: "", degree: "", year: "" }],
     }));
   };
+  
   const updateSkill = (i: number, value: string) => {
     setFormData((d) => {
       const skills = [...d.skills];
@@ -356,9 +448,11 @@ export default function EditorPage() {
     });
     markTouched("skills", i, "skill");
   };
+  
   const addSkill = () => {
     setFormData((d) => ({ ...d, skills: [...d.skills, ""] }));
   };
+  
   const removeSkill = (i: number) => {
     if (formData.skills.length > 0) {
       setFormData((d) => ({
@@ -433,9 +527,6 @@ export default function EditorPage() {
           setResumeId(result.resumeId);
           router.push(`/editor/${result.resumeId}`);
         }
-        const proRes = await fetch("/api/check-pro");
-        const { isPro } = await proRes.json();
-        setIsPro(isPro);
         setSaveSuccess(true);
       }
     } catch (error) {
@@ -448,7 +539,7 @@ export default function EditorPage() {
 
   const currentStep = usedSteps[step];
 
-  if (loadingResume) {
+  if (loadingResume || loadingProCheck) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-indigo-50">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4F46E5]"></div>
@@ -483,6 +574,14 @@ export default function EditorPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 font-sans">
       <style>{printHideStyle}</style>
+      
+      {/* Watermark for free users in print */}
+      {!isProUser && (
+        <div className="watermark no-print" style={{ display: 'none' }}>
+          CVHero Free Version
+        </div>
+      )}
+      
       <div className="flex flex-col lg:flex-row">
         {/* Sidebar */}
         <div className="w-full lg:w-2/5 bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-2xl flex flex-col min-h-screen">
@@ -519,7 +618,41 @@ export default function EditorPage() {
                 className="h-8 w-auto mx-auto"
                 style={{ maxWidth: 140 }}
               />
+              
+              {/* Pro Badge */}
+              {!isProUser && (
+                <div className="absolute right-0 top-1/2 -translate-y-1/2">
+                  <Badge className="bg-gradient-to-r from-gray-600 to-blue-600 text-white">
+                    <Zap className="h-3 w-3 mr-1" />
+                    Free Plan
+                  </Badge>
+                </div>
+              )}
             </div>
+
+            {/* Upgrade Banner for Free Users */}
+            {!isProUser && (
+              <div className="mb-4 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <Crown className="h-4 w-4 text-blue-600" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-blue-900">
+                      Upgrade to Pro for unlimited features!
+                    </p>
+                    <p className="text-xs text-blue-700">
+                      Remove watermarks, unlock AI features, and customize colors
+                    </p>
+                  </div>
+                  <Button 
+                    size="sm" 
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
+                    onClick={() => router.push("/pricing")}
+                  >
+                    Upgrade
+                  </Button>
+                </div>
+              </div>
+            )}
 
             {/* Save Draft Button */}
             <div className="mb-4">
@@ -576,6 +709,14 @@ export default function EditorPage() {
                       Write a short professional summary that highlights your
                       experience, strengths, and goals.
                     </p>
+                    {!isProUser && aiUsageCount >= 1 && (
+                      <div className="mt-2 p-2 bg-orange-50 border border-orange-200 rounded-lg">
+                        <p className="text-xs text-orange-800">
+                          <Lock className="h-3 w-3 inline mr-1" />
+                          AI feature used ({aiUsageCount}/1). Upgrade for unlimited AI usage.
+                        </p>
+                      </div>
+                    )}
                   </>
                 )}
                 {currentStep === "Experience" && (
@@ -616,13 +757,14 @@ export default function EditorPage() {
                   <FinalPageStep
                     handlePrint={handlePrint}
                     showPrintNotification={showPrintNotification}
+                    isProUser={isProUser}
                   />
                 )}
               </div>
             </div>
 
-            {/* Kleurenkiezer */}
-            {currentStep !== "Final" && (
+            {/* Kleurenkiezer - Alleen voor Pro users */}
+            {currentStep !== "Final" && isProUser && (
               <div className="mb-4">
                 <ColorPicker
                   color={formData.settings?.accent || "#1E40AF"}
@@ -638,6 +780,18 @@ export default function EditorPage() {
                   isOpen={showColorPicker}
                   onToggle={() => setShowColorPicker(!showColorPicker)}
                 />
+              </div>
+            )}
+
+            {/* Color info for free users */}
+            {currentStep !== "Final" && !isProUser && (
+              <div className="mb-4 p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <Lock className="h-4 w-4 text-gray-500" />
+                  <p className="text-sm text-gray-700">
+                    Color customization is a <span className="font-semibold">Pro feature</span>
+                  </p>
+                </div>
               </div>
             )}
 
@@ -661,6 +815,9 @@ export default function EditorPage() {
                   markTouched={markTouched}
                   error={profileError}
                   touched={touched}
+                  onAiGenerate={handleAiUsage}
+                  isProUser={isProUser}
+                  aiUsageCount={aiUsageCount}
                 />
               )}
               {currentStep === "Experience" &&
@@ -756,6 +913,11 @@ export default function EditorPage() {
                 </h3>
                 <p className="text-[#7883a1] text-base">
                   See the changes in real-time
+                  {!isProUser && (
+                    <span className="text-orange-600 ml-2">
+                      • Watermark will appear in download
+                    </span>
+                  )}
                 </p>
               </div>
               <button
@@ -763,7 +925,7 @@ export default function EditorPage() {
                 onClick={handlePrint}
               >
                 <Eye />
-                Download Preview
+                Download
               </button>
             </div>
             {/* Preview canvas */}
@@ -802,3 +964,14 @@ export default function EditorPage() {
     </div>
   );
 }
+
+// Helper component for Badge (add this if not already imported)
+const Badge = ({ children, className }: { children: React.ReactNode; className?: string }) => (
+  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${className}`}>
+    {children}
+  </span>
+);
+
+// Add Zap icon import at the top with other icons
+// Update the lucide-react import to include Zap:
+// import { ..., Zap } from "lucide-react";
