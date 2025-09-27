@@ -476,6 +476,10 @@ export default function EditorPage() {
   const skillsErrors = getSkillsErrors();
   const profileError = getProfileError();
 
+  if (step === 0) {
+    router.replace("/select-template");
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 font-sans">
       <style>{printHideStyle}</style>

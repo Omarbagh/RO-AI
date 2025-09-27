@@ -465,6 +465,10 @@ export default function EditorPage() {
     );
   }
 
+  if (step === 0) {
+    router.replace("/select-template");
+  }
+
   const TemplateComponent =
     selectedTemplate != null
       ? templates.find((t) => t.id === selectedTemplate)?.comp
