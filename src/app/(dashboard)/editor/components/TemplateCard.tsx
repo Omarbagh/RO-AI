@@ -84,10 +84,6 @@ export function TemplateCard({
           </div>
           
           <div className="flex items-center justify-between">
-            <div className="text-xs text-gray-500">
-              {template.pages || 1} page{template.pages !== 1 ? 's' : ''}
-            </div>
-            
             <div className="flex items-center gap-2">
               <Dialog>
                 <DialogTrigger asChild>
