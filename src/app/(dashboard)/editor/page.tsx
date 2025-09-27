@@ -522,6 +522,7 @@ export default function EditorPage() {
     } finally {
       setSavingDraft(false);
     }
+    router.push("/dashboard");
   };
 
   const handleFinish = async () => {

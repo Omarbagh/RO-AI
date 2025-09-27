@@ -522,13 +522,15 @@ export default function EditorPage() {
     } finally {
       setSavingDraft(false);
     }
+    router.push("/dashboard");
   };
 
   const handleFinish = async () => {
     if (!selectedTemplate) return;
     setLoadingSave(true);
     try {
-      const token = await getToken({ template: "supabase" });
+      const token = await getToken();
+      console.log("token", token)
       const url = resumeIdForParams ? "/api/update-resume" : "/api/save-resume";
       const method = resumeIdForParams ? "PUT" : "POST";
 
@@ -556,6 +558,7 @@ export default function EditorPage() {
     } finally {
       setLoadingSave(false);
     }
+
   };
 
   const currentStep = usedSteps[step];
