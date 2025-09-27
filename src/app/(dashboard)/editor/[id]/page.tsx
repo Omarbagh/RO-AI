@@ -1,26 +1,23 @@
 "use client";
 import { useState, useEffect, useMemo, useRef } from "react";
-import { useUser, SignInButton } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   FileText,
   ArrowRight,
   Loader2,
   Wand2,
-  Sparkles,
-  Edit3,
   CheckCircle,
   Eye,
+  Save,
 } from "lucide-react";
 import { templates } from "../utils/templateMap";
-import { TemplateCard } from "../components/TemplateCard";
 import { AnimatedStepIndicator } from "../components/AnimatedStepIndicator";
 import { ColorPicker } from "../components/ColorPicker";
 import { CVData } from "@/types/cv";
 import templateFields from "../../../../../scripts/template-fields.json";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useReactToPrint } from "react-to-print";
 import { PersonalStep } from "../components/steps/PersonalStep";
 import { ProfileStep } from "../components/steps/ProfileStep";
@@ -71,10 +68,10 @@ type TouchedType = {
 export default function EditorPage() {
   const router = useRouter();
   const { isSignedIn } = useUser();
+  const searchParams = useSearchParams();
+  const templateIdFromQuery = searchParams.get("templateId");
   const params = useParams();
   const resumeIdForParams = params.id as string;
-  const [step, setStep] = useState(0);
-  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const [formData, setFormData] = useState<CVData>({
     personal: { name: "", title: "", email: "", phone: "", photoUrl: "" },
     profile: "",
@@ -90,10 +87,32 @@ export default function EditorPage() {
   const [isPro, setIsPro] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
+  const [savingDraft, setSavingDraft] = useState(false);
   const [showPrintNotification, setShowPrintNotification] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [hasValidTemplate, setHasValidTemplate] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+
+  // Fix: Check for valid template/resume before redirecting
+  useEffect(() => {
+    // If we have a resume ID, we're editing an existing resume - don't redirect
+    if (resumeIdForParams) {
+      setHasValidTemplate(true);
+      return;
+    }
+    
+    // If we have a template ID from query, it's valid
+    if (templateIdFromQuery) {
+      setHasValidTemplate(true);
+      return;
+    }
+    
+    // If no valid template or resume ID, redirect to template selection
+    if (!templateIdFromQuery && !resumeIdForParams) {
+      router.replace("/select-template");
+    }
+  }, [templateIdFromQuery, resumeIdForParams, router]);
 
   useEffect(() => {
     if (resumeIdForParams) {
@@ -130,6 +149,11 @@ export default function EditorPage() {
   useEffect(() => {
     setSaveSuccess(false);
   }, [pathname]);
+
+  const [step, setStep] = useState(1);
+  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(
+    templateIdFromQuery,
+  );
 
   const handlePrint = useReactToPrint({
     contentRef,
@@ -344,6 +368,48 @@ export default function EditorPage() {
     }
   };
 
+  // Save as draft function
+  const saveDraft = async () => {
+    if (!selectedTemplate) {
+      alert("Please select a template first");
+      return;
+    }
+
+    setSavingDraft(true);
+    try {
+      const url = resumeIdForParams ? "/api/update-resume" : "/api/save-resume";
+      const method = resumeIdForParams ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          templateId: selectedTemplate,
+          formData,
+          ...(resumeIdForParams && { id: resumeIdForParams }),
+        }),
+      });
+
+      if (res.ok) {
+        const result = await res.json();
+        if (!resumeIdForParams) {
+          setResumeId(result.resumeId);
+          // Update URL with new resume ID
+          router.push(`/editor/${result.resumeId}`);
+        }
+        setSaveSuccess(true);
+        setTimeout(() => setSaveSuccess(false), 3000);
+      } else {
+        alert("Failed to save draft. Please try again.");
+      }
+    } catch (error) {
+      console.error("Save draft failed:", error);
+      alert("Failed to save draft. Please try again.");
+    } finally {
+      setSavingDraft(false);
+    }
+  };
+
   const handleFinish = async () => {
     if (!selectedTemplate) return;
     setLoadingSave(true);
@@ -374,6 +440,7 @@ export default function EditorPage() {
       }
     } catch (error) {
       console.error("Save failed:", error);
+      alert("Failed to save. Please try again.");
     } finally {
       setLoadingSave(false);
     }
@@ -389,99 +456,11 @@ export default function EditorPage() {
     );
   }
 
-  if (!isSignedIn) {
+  // Don't render anything if we're redirecting
+  if (!hasValidTemplate) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-        <div className="relative">
-          <div className="absolute -top-20 -left-20 w-40 h-40 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full opacity-20 animate-pulse"></div>
-          <div className="absolute -bottom-20 -right-20 w-32 h-32 bg-gradient-to-r from-pink-400 to-orange-400 rounded-full opacity-20 animate-pulse"></div>
-          <Card className="w-full max-w-md relative overflow-hidden shadow-2xl border-0">
-            <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
-            <CardHeader className="text-center pb-6 pt-8">
-              <div className="w-20 h-20 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl">
-                <Edit3 className="w-10 h-10 text-white" />
-              </div>
-              <CardTitle className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">
-                Welcome to CVHero
-              </CardTitle>
-              <p className="text-gray-600 text-lg">
-                Create stunning, professional resumes in minutes
-              </p>
-            </CardHeader>
-            <CardContent className="px-8 pb-8">
-              <div className="space-y-4 mb-6">
-                <div className="flex items-center gap-3 text-sm text-gray-600">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>30+ Professional Templates</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-600">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>ATS-Optimized Designs</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-600">
-                  <CheckCircle className="w-5 h-5 text-green-500" />
-                  <span>Instant PDF Download</span>
-                </div>
-              </div>
-              <SignInButton>
-                <Button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-4 text-lg font-semibold shadow-xl">
-                  <Sparkles className="w-5 h-5 mr-2" />
-                  Start Creating Your Resume
-                </Button>
-              </SignInButton>
-              <p className="text-xs text-gray-500 text-center mt-4">
-                Free account • No credit card required
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
-  if (step === 0) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-        <div className="relative container mx-auto px-6 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {templates.map((template, index) => (
-              <TemplateCard
-                key={template.id}
-                template={template}
-                isSelected={selectedTemplate === template.id}
-                onSelect={() => setSelectedTemplate(template.id)}
-                isPro={isPro}
-                index={index}
-              />
-            ))}
-          </div>
-          <div className="text-center">
-            <Button
-              size="lg"
-              className={`px-16 py-6 text-xl font-bold rounded-2xl transition-all duration-500 transform ${
-                selectedTemplate
-                  ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-2xl hover:scale-105"
-                  : "bg-gray-200 text-gray-400 cursor-not-allowed"
-              }`}
-              disabled={!selectedTemplate}
-              onClick={() => setStep(1)}
-            >
-              {selectedTemplate ? (
-                <>
-                  Continue to Editor
-                  <ArrowRight className="w-6 h-6 ml-3" />
-                </>
-              ) : (
-                "Select a Template to Continue"
-              )}
-            </Button>
-            {selectedTemplate && (
-              <p className="text-sm text-gray-600 mt-4">
-                You can change colors and customize everything in the next steps
-              </p>
-            )}
-          </div>
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-indigo-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4F46E5]"></div>
       </div>
     );
   }
@@ -497,7 +476,6 @@ export default function EditorPage() {
   const skillsErrors = getSkillsErrors();
   const profileError = getProfileError();
 
-  // --- SIDEBAR/FORM AREA met steps ---
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 font-sans">
       <style>{printHideStyle}</style>
@@ -538,6 +516,35 @@ export default function EditorPage() {
                 style={{ maxWidth: 140 }}
               />
             </div>
+            
+            {/* Save Draft Button */}
+            <div className="mb-4">
+              <Button
+                onClick={saveDraft}
+                disabled={savingDraft}
+                variant="outline"
+                className="w-full border-gray-300 text-gray-700 hover:bg-gray-50"
+              >
+                {savingDraft ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 mr-2" />
+                    Save Draft
+                  </>
+                )}
+              </Button>
+              {saveSuccess && (
+                <div className="mt-2 text-green-600 text-sm text-center">
+                  <CheckCircle className="w-4 h-4 inline mr-1" />
+                  Draft saved successfully!
+                </div>
+              )}
+            </div>
+
             {/* Steps indicator en titel */}
             <div className="mb-5">
               <AnimatedStepIndicator
@@ -609,6 +616,7 @@ export default function EditorPage() {
                 )}
               </div>
             </div>
+            
             {/* Kleurenkiezer */}
             {currentStep !== "Final" && (
               <div className="mb-4">
@@ -628,6 +636,7 @@ export default function EditorPage() {
                 />
               </div>
             )}
+            
             {/* Steps form */}
             <div className="flex-1 space-y-6 overflow-y-auto">
               {currentStep === "Personal" && (
@@ -684,27 +693,24 @@ export default function EditorPage() {
                 />
               )}
             </div>
+            
             {/* Sticky Navigation buttons */}
             <div className="sticky bottom-0 bg-white/95 pt-6 pb-6 border-t border-gray-200 z-10">
               <div className="flex justify-end">
-                {/* Hide navigation entirely on the Final step */}
                 {step === usedSteps.length - 1 ? null : (
                   <Button
                     onClick={async () => {
-                      // If we're on the step before Final (Skills), save before moving on
                       if (step === usedSteps.length - 2) {
                         await handleFinish();
                       }
                       setStep((s) => s + 1);
                     }}
                     disabled={
-                      // Disable while saving on the Finish action, or if validation fails on other steps
                       (step === usedSteps.length - 2 &&
                         (loadingSave || formData.skills.length < 1)) ||
                       !validateStep(currentStep)
                     }
                     className={
-                      // Green “Finish Resume” on Skills step, blue “Continue” on all others
                       step === usedSteps.length - 2
                         ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white flex items-center gap-2 px-8 py-3"
                         : "bg-[#4F46E5] text-white flex items-center gap-2 px-6 py-3"
