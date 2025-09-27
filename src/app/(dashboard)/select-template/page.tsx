@@ -12,9 +12,10 @@ import {
   LayoutTemplate,
   Search,
   ArrowLeft,
+  Sparkles,
 } from "lucide-react";
-
 import { templates } from "../editor/utils/templateMap";
+import Link from "next/link";
 
 export default function TemplateSelectionPage() {
   const router = useRouter();
@@ -41,98 +42,137 @@ export default function TemplateSelectionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-slate-50 to-slate-100">
-      {/* Main */}
-      <main className="container mx-auto px-4 py-10">
-        {/* Intro */}
-        <section className="mb-10">
-          <div className="mx-auto max-w-3xl text-center">
-            <Badge className="mb-3 bg-gradient-to-r from-brand to-indigo-600 text-white border-0">
-              New: Improved selection experience
-            </Badge>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
-              Choose a template
-            </h1>
-            <p className="mt-3 text-slate-600">
-              A clean and modern UI to quickly find the best template for your
-              resume.
-            </p>
-          </div>
+    <div className="w-full max-w-full overflow-x-hidden px-4 animate-fade-in">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-indigo-700 bg-clip-text text-transparent">
+            Choose a Template
+          </h1>
+          <p className="text-muted-foreground mt-1 flex items-center gap-1">
+            <Sparkles className="h-4 w-4 text-indigo-500" />
+            Select the perfect template for your resume
+          </p>
+        </div>
+      </div>
 
-          {/* Filters */}
-          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+      {/* Filters Section */}
+      <div className="mb-8">
+        <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {/* Search */}
-            <div className="col-span-2 flex items-center gap-3 rounded-xl border bg-white p-2 shadow-sm">
-              <Search className="ml-2 h-5 w-5 text-slate-400" />
-              <Input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search by name, category..."
-                className="border-0 shadow-none focus-visible:ring-0"
-              />
+            <div className="lg:col-span-2">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search templates by name, category, or description..."
+                  className="pl-10 border-gray-300 focus:border-indigo-500"
+                />
+              </div>
             </div>
-            {/* Category filter */}
-            <div className="flex items-center gap-2 overflow-x-auto">
-              {["All", "Business", "Creative", "Tech", "Simple"].map((c) => (
+            
+            {/* Category Filter */}
+            <div className="flex gap-2 overflow-x-auto pb-2">
+              {["All", "Business", "Creative", "Modern", "Simple", "Professional"].map((c) => (
                 <Button
                   key={c}
                   variant={category === c ? "default" : "outline"}
+                  size="sm"
                   onClick={() => setCategory(c)}
                   className={
                     category === c
-                      ? "bg-gradient-to-r from-brand to-indigo-600 text-white border-0"
-                      : ""
+                      ? "bg-indigo-600 hover:bg-indigo-700 text-white"
+                      : "border-gray-300"
                   }
                 >
-                  <Filter className="mr-2 h-4 w-4" /> {c}
+                  <Filter className="mr-2 h-3 w-3" /> 
+                  {c}
                 </Button>
               ))}
             </div>
           </div>
-        </section>
-
-        {/* Templates */}
-        <section>
-          <div className="mb-6 flex items-center justify-between">
-            <div className="flex items-center gap-2 text-slate-600">
-              <LayoutTemplate />
-              <span className="text-sm">{filtered.length} templates</span>
-            </div>
-          </div>
-
-          {/* Template grid */}
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((t) => (
-              <TemplateCard
-                key={t.id}
-                template={t}
-                isSelected={selected === t.id}
-                onSelect={() => {
-                  setSelected(t.id);
-                  handleContinue(); // Automatically continue to editor when selected
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Selected indicator (optional) */}
-          {selected && (
-            <div className="mt-8 flex flex-col items-center gap-4">
-              <Button className="bg-gradient-to-r from-brand to-indigo-600 text-white">
-                <CheckCircle2 className="mr-2" /> Selected:{" "}
-                {templates.find((x) => x.id === selected)?.name}
-              </Button>
-            </div>
-          )}
-        </section>
-      </main>
-
-      {/* Footer */}
-      <footer className="mt-12 border-t bg-white/60">
-        <div className="container mx-auto px-4 py-6 text-center text-sm text-slate-500">
-          © {new Date().getFullYear()} CVHero. Modern and clean.
         </div>
-      </footer>
+      </div>
+
+      {/* Results Count */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2 text-gray-600">
+          <LayoutTemplate className="h-5 w-5" />
+          <span className="text-sm font-medium">
+            {filtered.length} template{filtered.length !== 1 ? 's' : ''} found
+          </span>
+        </div>
+        
+        {selected && (
+          <Badge className="bg-green-100 text-green-800 border-green-200">
+            <CheckCircle2 className="h-3 w-3 mr-1" />
+            Template selected
+          </Badge>
+        )}
+      </div>
+
+      {/* Templates Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+        {filtered.map((t) => (
+          <TemplateCard
+            key={t.id}
+            template={t}
+            isSelected={selected === t.id}
+            onSelect={() => {
+              setSelected(t.id);
+              // Auto-navigate to editor when selected
+              setTimeout(() => {
+                router.push(`/editor?templateId=${t.id}`);
+              }, 300);
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Empty State */}
+      {filtered.length === 0 && (
+        <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
+          <LayoutTemplate className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            No templates found
+          </h3>
+          <p className="text-gray-600 max-w-md mx-auto mb-6">
+            Try adjusting your search criteria or browse all templates.
+          </p>
+          <Button
+            onClick={() => {
+              setQuery("");
+              setCategory("All");
+            }}
+            variant="outline"
+          >
+            Clear filters
+          </Button>
+        </div>
+      )}
+
+      {/* Selection Confirmation */}
+      {selected && (
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white border border-gray-200 rounded-lg shadow-lg px-6 py-4 z-10">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="h-5 w-5 text-green-600" />
+              <span className="font-medium">
+                {templates.find((x) => x.id === selected)?.name} selected
+              </span>
+            </div>
+            <Button 
+              onClick={handleContinue}
+              className="bg-indigo-600 hover:bg-indigo-700"
+              size="sm"
+            >
+              Continue to Editor
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -23,7 +23,6 @@ import { ArchitectTemplate } from "@/components/templates/architectTemplate";
 import { AcademicTemplate } from "@/components/templates/AcademicTemplate";
 import { MarketingTemplate } from "@/components/templates/MarketingTemplate";
 import { InfluencerTemplate } from "@/components/templates/InfluencerTemplate";
-import { SalesTemplate } from "@/components/templates/SalesTemplate";
 import { ConsultingTemplate } from "@/components/templates/ConsultingTemplate";
 import { FashionTemplate } from "@/components/templates/FashionTemplate";
 import { FinanceTemplate } from "@/components/templates/FinanceTemplate";
@@ -119,16 +118,6 @@ export const allTemplates: TemplateInfo[] = [
     preview: "Medical-themed with color coding",
     component: MedicalTemplate,
     fileName: "MedicalTemplate.tsx",
-  },
-  {
-    id: "sales",
-    name: "Sales Professional",
-    description: "Results-focused design for sales roles",
-    category: "professional",
-    color: "from-green-600 to-blue-600",
-    preview: "Achievement-focused sales layout",
-    component: SalesTemplate,
-    fileName: "SalesTemplate.tsx",
   },
 
   // Creative Templates (11-20)
