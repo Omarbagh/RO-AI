@@ -528,12 +528,13 @@ export default function EditorPage() {
     if (!selectedTemplate) return;
     setLoadingSave(true);
     try {
+      const token = await getToken({ template: "supabase" });
       const url = resumeIdForParams ? "/api/update-resume" : "/api/save-resume";
       const method = resumeIdForParams ? "PUT" : "POST";
 
       const res = await fetch(url, {
         method: method,
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`, },
         body: JSON.stringify({
           templateId: selectedTemplate,
           formData,

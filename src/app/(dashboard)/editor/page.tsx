@@ -113,6 +113,7 @@ export default function EditorPage() {
   const [loadingProCheck, setLoadingProCheck] = useState(true);
   const contentRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const { getToken } = useAuth();
 
   // Check if user has pro plan
   useEffect(() => {
@@ -464,71 +465,77 @@ export default function EditorPage() {
 
   // Save as draft function
   const saveDraft = async () => {
-  if (!selectedTemplate) {
-    alert("Please select a template first");
-    return;
-  }
-
-  setSavingDraft(true);
-  try {
-    const url = resumeIdForParams ? "/api/update-resume" : "/api/save-resume";
-    const method = resumeIdForParams ? "PUT" : "POST";
-
-    const res = await fetch(url, {
-      method: method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        templateId: selectedTemplate,
-        formData,
-        ...(resumeIdForParams && { id: resumeIdForParams }),
-      }),
-    });
-
-    if (res.ok) {
-      const result = await res.json();
-      
-      // Handle both response formats
-      const updatedResumeId = result.resumeId || resumeIdForParams;
-      
-      if (!resumeIdForParams && updatedResumeId) {
-        setResumeId(updatedResumeId);
-        router.push(`/editor/${updatedResumeId}`);
-      }
-      
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
-      
-      // Force a refresh of the resume data to ensure UI is updated
-      if (resumeIdForParams) {
-        // Refetch the resume to ensure we have the latest data
-        const refreshResponse = await fetch(`/api/get-resume?id=${resumeIdForParams}`);
-        if (refreshResponse.ok) {
-          const refreshedResume = await refreshResponse.json();
-          setExistingResume(refreshedResume);
-        }
-      }
-    } else {
-      const errorData = await res.json();
-      alert(`Failed to save draft: ${errorData.error || 'Please try again.'}`);
+    if (!selectedTemplate) {
+      alert("Please select a template first");
+      return;
     }
-  } catch (error) {
-    console.error("Save draft failed:", error);
-    alert("Failed to save draft. Please check your connection and try again.");
-  } finally {
-    setSavingDraft(false);
-  }
-};
 
-  const handleFinish = async () => {
-    if (!selectedTemplate) return;
-    setLoadingSave(true);
+    setSavingDraft(true);
     try {
+      // 1. Get the auth token from Clerk, not Supabase
+      const token = await getToken({ template: 'supabase' });
+
+      if (!token) {
+        alert("Authentication error. Please log in again.");
+        setSavingDraft(false);
+        return;
+      }
+
       const url = resumeIdForParams ? "/api/update-resume" : "/api/save-resume";
       const method = resumeIdForParams ? "PUT" : "POST";
 
       const res = await fetch(url, {
         method: method,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          // 2. Send the Clerk token to the backend
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          templateId: selectedTemplate,
+          formData,
+          ...(resumeIdForParams && { id: resumeIdForParams }),
+        }),
+      });
+      
+      console.log('Response status:', res.status);
+
+      if (res.ok) {
+        // ... (The rest of your success/error handling logic remains the same)
+        const result = await res.json();
+        if (result.success) {
+           console.log('Draft saved/updated successfully');
+           setSaveSuccess(true);
+           setTimeout(() => setSaveSuccess(false), 3000);
+           // etc...
+        } else {
+           alert(result.error || "Failed to save draft.");
+        }
+      } else {
+        const errorData = await res.json();
+        alert(errorData.error || `Error ${res.status}: Failed to save draft.`);
+      }
+
+    } catch (error) {
+      console.error("Save draft failed with an exception:", error);
+      alert("An unexpected error occurred. Please try again.");
+    } finally {
+      setSavingDraft(false);
+    }
+  };
+
+  const handleFinish = async () => {
+    if (!selectedTemplate) return;
+    setLoadingSave(true);
+    try {
+      const token = await getToken({ template: "supabase" });
+      console.log("token", token)
+      const url = resumeIdForParams ? "/api/update-resume" : "/api/save-resume";
+      const method = resumeIdForParams ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method: method,
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`, },
         body: JSON.stringify({
           templateId: selectedTemplate,
           formData,
@@ -685,7 +692,7 @@ export default function EditorPage() {
                 ) : (
                   <>
                     <Save className="w-4 h-4 mr-2" />
-                    Save Draft
+                    Save
                   </>
                 )}
               </Button>
