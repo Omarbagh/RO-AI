@@ -947,13 +947,6 @@ function EditorContent() {
                   )}
                 </p>
               </div>
-              <button
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#5142ea] hover:bg-gray-800 text-white font-medium shadow transition-all text-sm"
-                onClick={handlePrint}
-              >
-                <Eye />
-                Download
-              </button>
             </div>
             {/* Preview canvas */}
             <div
