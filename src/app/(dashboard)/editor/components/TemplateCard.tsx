@@ -162,29 +162,29 @@ export function TemplateCard({
                     <div className="bg-white rounded-lg shadow-lg mx-auto max-w-4xl">
                       {TemplateComponent ? (
                         <div className="scale-90 origin-top">
-                          {/* Render the actual template component with sample data */}
                           <TemplateComponent
                             data={{
                               personal: {
                                 name: "John Doe",
+                                title: "Software Engineer",
                                 email: "john.doe@example.com",
                                 phone: "+1 (555) 123-4567",
-                                location: "New York, NY",
+                                address: "New York, NY"
                               },
-                              summary:
-                                "Experienced professional with a proven track record of success...",
+                              profile: "Experienced professional with a proven track record of success...", 
                               experience: [
                                 {
                                   company: "Tech Company",
-                                  position: "Senior Developer",
+                                  job: "Senior Developer", 
                                   period: "2020 - Present",
+                                  description: "Led development of innovative solutions..."
                                 },
                               ],
                               education: [
                                 {
-                                  institution: "University of Technology",
+                                  school: "University of Technology", 
                                   degree: "Bachelor of Science",
-                                  period: "2016 - 2020",
+                                  year: "2016 - 2020", 
                                 },
                               ],
                               skills: [
@@ -193,6 +193,9 @@ export function TemplateCard({
                                 "Node.js",
                                 "TypeScript",
                               ],
+                              settings: {
+                                accent: "#4F46E5"
+                              }
                             }}
                           />
                         </div>
