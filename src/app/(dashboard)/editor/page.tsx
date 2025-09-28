@@ -667,33 +667,35 @@ function EditorContent() {
               )}
             </div>
 
-            {/* Save Draft Button */}
-            <div className="mb-4">
-              <Button
-                onClick={saveDraft}
-                disabled={savingDraft}
-                variant="outline"
-                className="w-full border-gray-300 text-gray-700 hover:bg-gray-50"
-              >
-                {savingDraft ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <Save className="w-4 h-4 mr-2" />
-                    Save
-                  </>
+            {/* Save Draft Button - alleen tonen bij bewerken van bestaande resume */}
+            {resumeIdForParams && (
+              <div className="mb-4">
+                <Button
+                  onClick={saveDraft}
+                  disabled={savingDraft}
+                  variant="outline"
+                  className="w-full border-gray-300 text-gray-700 hover:bg-gray-50"
+                >
+                  {savingDraft ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-4 h-4 mr-2" />
+                      Save Draft
+                    </>
+                  )}
+                </Button>
+                {saveSuccess && (
+                  <div className="mt-2 text-green-600 text-sm text-center">
+                    <CheckCircle className="w-4 h-4 inline mr-1" />
+                    Draft saved successfully!
+                  </div>
                 )}
-              </Button>
-              {saveSuccess && (
-                <div className="mt-2 text-green-600 text-sm text-center">
-                  <CheckCircle className="w-4 h-4 inline mr-1" />
-                  Draft saved successfully!
-                </div>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* Steps indicator en titel */}
             <div className="mb-5">
