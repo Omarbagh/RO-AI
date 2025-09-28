@@ -780,8 +780,6 @@ export default function EditorPage() {
                 {currentStep === "Final" && (
                   <FinalPageStep
                     handlePrint={handlePrint}
-                    showPrintNotification={showPrintNotification}
-                    isProUser={isProUser}
                   />
                 )}
               </div>
