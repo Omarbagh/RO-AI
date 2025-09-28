@@ -1,5 +1,3 @@
-"use client";
-
 import TypewriterTexts from "@/components/TypewriterTexts";
 import { Button } from "@/components/ui/button";
 import {
