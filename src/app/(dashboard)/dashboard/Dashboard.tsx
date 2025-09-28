@@ -745,55 +745,58 @@ export default function Dashboard() {
 
         {/* Resume Preview Dialog */}
         <Dialog
-        open={!!previewResume}
-        onOpenChange={(o) => !o && setPreviewResume(null)}
-      >
-        <DialogContent className="max-w-4xl w-full h-[90vh] flex flex-col backdrop-blur-sm">
-          <DialogHeader className="flex-shrink-0 pb-4 border-b">
-            <DialogTitle className="text-indigo-600 flex items-center gap-2">
-              <Eye className="h-5 w-5" />
-              {previewResume?.data?.personal?.name || "Resume Preview"}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="flex items-center justify-between py-4 w-full flex-shrink-0 no-print border-b">
-            <div className="text-sm text-muted-foreground">
-              Template: {previewResume?.template_id || "Standard"}
+          open={!!previewResume}
+          onOpenChange={(o) => !o && setPreviewResume(null)}
+        >
+          <DialogContent className="max-w-4xl w-full h-[90vh] flex flex-col backdrop-blur-sm">
+            <DialogHeader className="flex-shrink-0 pb-4 border-b">
+              <DialogTitle className="text-indigo-600 flex items-center gap-2">
+                <Eye className="h-5 w-5" />
+                {previewResume?.data?.personal?.name || "Resume Preview"}
+              </DialogTitle>
+            </DialogHeader>
+            <div className="flex items-center justify-between py-4 w-full flex-shrink-0 no-print border-b">
+              <div className="text-sm text-muted-foreground">
+                Template: {previewResume?.template_id || "Standard"}
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => handleEditResume(previewResume!)}
+                  variant="outline"
+                  className="gap-2"
+                >
+                  <FileText className="size-4" /> Edit Resume
+                </Button>
+                <Button
+                  onClick={handlePrint}
+                  className="gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors"
+                >
+                  <Download className="size-4" /> Download PDF
+                </Button>
+              </div>
             </div>
-            <div className="flex gap-2">
-              <Button
-                onClick={() => handleEditResume(previewResume!)}
-                variant="outline"
-                className="gap-2"
+            <div className="flex-1 overflow-auto py-4">
+              <div
+                ref={contentRef}
+                className="w-full flex justify-center relative"
               >
-                <FileText className="size-4" /> Edit Resume
-              </Button>
-              <Button
-                onClick={handlePrint}
-                className="gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors"
-              >
-                <Download className="size-4" /> Download PDF
-              </Button>
+                {!isProUser && (
+                  <div className="watermark select-none">FREE PLAN</div>
+                )}
+                {TemplateComp ? (
+                  <div className="w-[210mm] shadow-lg rounded bg-white relative z-10">
+                    <TemplateComp data={previewResume!.data} />
+                  </div>
+                ) : (
+                  <div className="text-center py-12 text-gray-500">
+                    <FileText className="h-12 w-12 mx-auto mb-4" />
+                    <p>Template not available for preview</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="flex-1 overflow-auto py-4">
-            <div ref={contentRef} className="w-full flex justify-center relative">
-              {!isProUser && (
-                <div className="watermark select-none">FREE PLAN</div>
-              )}
-              {TemplateComp ? (
-                <div className="w-[210mm] shadow-lg rounded bg-white relative z-10">
-                  <TemplateComp data={previewResume!.data} />
-                </div>
-              ) : (
-                <div className="text-center py-12 text-gray-500">
-                  <FileText className="h-12 w-12 mx-auto mb-4" />
-                  <p>Template not available for preview</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
       </div>
     </>
   );

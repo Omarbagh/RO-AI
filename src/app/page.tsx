@@ -180,7 +180,11 @@ function TemplatePreviewModal({
             </p>
           </div>
           <div className="flex gap-2 w-full sm:w-auto">
-            <Button variant="outline" onClick={onClose} className="flex-1 sm:flex-none">
+            <Button
+              variant="outline"
+              onClick={onClose}
+              className="flex-1 sm:flex-none"
+            >
               Close
             </Button>
             <SignUpButton>
@@ -220,7 +224,7 @@ function MobileNavigation() {
       {/* Mobile Menu Overlay */}
       {isOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div 
+          <div
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setIsOpen(false)}
           />
@@ -344,7 +348,6 @@ export default function Index() {
       <header className="fixed top-0 left-0 right-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-
             <div className="flex items-center gap-3">
               <MobileNavigation />
             </div>
@@ -357,13 +360,13 @@ export default function Index() {
         {/* Background decorations - Mobile optimized */}
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
           <div className="bg-dot-grid absolute inset-0 opacity-[0.15] sm:opacity-[0.35]" />
-          
+
           {/* Main gradient - smaller and less intense on mobile */}
           <div className="absolute -top-20 sm:-top-40 left-1/2 h-[300px] w-[400px] sm:h-[600px] sm:w-[900px] -translate-x-1/2 rounded-full bg-gradient-to-r from-indigo-600/20 via-primary/20 to-fuchsia-500/20 sm:from-indigo-600/30 sm:via-primary/30 sm:to-fuchsia-500/30 blur-xl sm:blur-3xl" />
-          
+
           {/* Bottom left blob - smaller on mobile */}
           <div className="absolute bottom-0 left-10 sm:left-1/4 h-32 w-32 sm:h-56 sm:w-56 rounded-full bg-primary/5 sm:bg-primary/10 blur-xl sm:blur-2xl" />
-          
+
           {/* Top right blob - smaller and less intense on mobile */}
           <div className="absolute -right-8 top-8 sm:-right-10 sm:top-10 h-40 w-40 sm:h-72 sm:w-72 rounded-full bg-indigo-400/10 sm:bg-indigo-400/20 blur-xl sm:blur-3xl" />
         </div>
@@ -419,7 +422,12 @@ export default function Index() {
                   Get Started Today
                 </Button>
               </SignUpButton>
-              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto"
+              >
                 <a href="#templates">View Templates</a>
               </Button>
             </div>
@@ -495,7 +503,9 @@ export default function Index() {
                     </div>
                     <div className="ml-3">
                       <p className="text-xs text-gray-600">Total Resumes</p>
-                      <p className="text-base sm:text-lg font-bold text-gray-900">3</p>
+                      <p className="text-base sm:text-lg font-bold text-gray-900">
+                        3
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -506,7 +516,9 @@ export default function Index() {
                     </div>
                     <div className="ml-3">
                       <p className="text-xs text-gray-600">Last Activity</p>
-                      <p className="text-base sm:text-lg font-bold text-gray-900">Today</p>
+                      <p className="text-base sm:text-lg font-bold text-gray-900">
+                        Today
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -517,7 +529,9 @@ export default function Index() {
                     </div>
                     <div className="ml-3">
                       <p className="text-xs text-gray-600">Recent Actions</p>
-                      <p className="text-base sm:text-lg font-bold text-gray-900">5</p>
+                      <p className="text-base sm:text-lg font-bold text-gray-900">
+                        5
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -545,7 +559,11 @@ export default function Index() {
           </div>
 
           {/* Premium Templates Section */}
-          <section id="templates" ref={templatesRef as any} className="mt-12 sm:mt-16 md:mt-20">
+          <section
+            id="templates"
+            ref={templatesRef as any}
+            className="mt-12 sm:mt-16 md:mt-20"
+          >
             <div className="text-center mb-8 sm:mb-12">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                 Featured Templates
@@ -712,8 +730,12 @@ export default function Index() {
                       Step {i + 1}
                     </span>
                   </div>
-                  <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-semibold">{title}</h3>
-                  <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted-foreground">{desc}</p>
+                  <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-semibold">
+                    {title}
+                  </h3>
+                  <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted-foreground">
+                    {desc}
+                  </p>
                 </div>
                 <div className="hidden lg:block absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-[#4F46E5]/40" />
               </div>
@@ -797,7 +819,9 @@ export default function Index() {
                   <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
                 <h3 className="text-base sm:text-lg font-semibold">{title}</h3>
-                <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted-foreground">{desc}</p>
+                <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted-foreground">
+                  {desc}
+                </p>
                 {comingSoon && (
                   <span className="absolute right-3 top-3 rounded-full bg-yellow-100 px-2 py-0.5 text-[10px] font-semibold text-yellow-700 border border-yellow-300">
                     Coming Soon
@@ -862,7 +886,9 @@ export default function Index() {
             </div>
             <div className="rounded-lg bg-gradient-to-br from-[#4F46E5]/5 to-indigo-400/5 p-4 sm:p-6 text-center">
               <DownloadCloud className="h-6 w-6 sm:h-8 sm:w-8 text-[#4F46E5] mx-auto mb-3 sm:mb-4" />
-              <h4 className="font-semibold text-sm sm:text-base">Instant Access</h4>
+              <h4 className="font-semibold text-sm sm:text-base">
+                Instant Access
+              </h4>
               <p className="text-xs sm:text-sm text-muted-foreground mt-1 sm:mt-2">
                 Get started immediately after signup
               </p>
@@ -985,7 +1011,8 @@ export default function Index() {
 
         /* Improve touch targets on mobile */
         @media (max-width: 640px) {
-          button, a {
+          button,
+          a {
             min-height: 44px;
             min-width: 44px;
           }

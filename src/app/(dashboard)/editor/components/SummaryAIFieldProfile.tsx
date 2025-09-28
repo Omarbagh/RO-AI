@@ -4,10 +4,15 @@ interface SummaryAIFieldProps {
   onFill: (text: string) => void;
   onAiGenerate: () => boolean;
   isProUser: boolean;
-  aiUsageCount: number; 
+  aiUsageCount: number;
 }
 
-export function SummaryAIField({ onFill, onAiGenerate, isProUser, aiUsageCount }: SummaryAIFieldProps) {
+export function SummaryAIField({
+  onFill,
+  onAiGenerate,
+  isProUser,
+  aiUsageCount,
+}: SummaryAIFieldProps) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -71,10 +76,12 @@ export function SummaryAIField({ onFill, onAiGenerate, isProUser, aiUsageCount }
 
   const handleGenerate = async () => {
     setError(null);
-    
+
     // Check if user can use AI feature
     if (!isProUser && aiUsageCount >= 1) {
-      setError("Free users can only use AI features once. Upgrade to Pro for unlimited AI usage! 🚀");
+      setError(
+        "Free users can only use AI features once. Upgrade to Pro for unlimited AI usage! 🚀",
+      );
       return;
     }
 
@@ -153,15 +160,18 @@ export function SummaryAIField({ onFill, onAiGenerate, isProUser, aiUsageCount }
         disabled={loading || isAiDisabled}
         style={{ letterSpacing: "0.03em" }}
         className={`relative inline-flex items-center gap-2 rounded-full px-5 py-2 mb-4 text-sm font-semibold
-                    ${isAiDisabled 
-                      ? "bg-gray-400 text-gray-200 cursor-not-allowed" 
-                      : "bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white shadow-lg hover:via-indigo-400 hover:to-indigo-500"
+                    ${
+                      isAiDisabled
+                        ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                        : "bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white shadow-lg hover:via-indigo-400 hover:to-indigo-500"
                     }
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500
                     disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200`}
       >
         {/* AI icon */}
-        <span className={`flex items-center justify-center w-6 h-6 rounded-full ${isAiDisabled ? "bg-gray-300" : "bg-white/20"}`}>
+        <span
+          className={`flex items-center justify-center w-6 h-6 rounded-full ${isAiDisabled ? "bg-gray-300" : "bg-white/20"}`}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className={`h-4 w-4 ${isAiDisabled ? "text-gray-400" : "text-white"}`}
@@ -176,9 +186,11 @@ export function SummaryAIField({ onFill, onAiGenerate, isProUser, aiUsageCount }
         </span>
 
         {/* Button text */}
-        {loading ? "AI is thinking..." : 
-         isAiDisabled ? "AI Limit Reached - Upgrade to Pro" : 
-         "AI Assist – Generate Profile Summary"}
+        {loading
+          ? "AI is thinking..."
+          : isAiDisabled
+            ? "AI Limit Reached - Upgrade to Pro"
+            : "AI Assist – Generate Profile Summary"}
 
         {/* Subtle gloss effect - only for enabled state */}
         {!isAiDisabled && (
@@ -187,11 +199,11 @@ export function SummaryAIField({ onFill, onAiGenerate, isProUser, aiUsageCount }
 
         {/* Lock icon for disabled state */}
         {isAiDisabled && (
-          <svg 
-            className="h-4 w-4 ml-1" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor" 
+          <svg
+            className="h-4 w-4 ml-1"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
             strokeWidth="2"
           >
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
@@ -237,15 +249,14 @@ export function SummaryAIField({ onFill, onAiGenerate, isProUser, aiUsageCount }
                       Provide language, tone and key details. We&apos;ll craft a
                       single professional paragraph (no bullet points).
                     </p>
-                    
+
                     {/* Usage info for free users */}
                     {!isProUser && (
                       <div className="mt-2 p-2 bg-blue-50 border border-blue-200 rounded-lg">
                         <p className="text-xs text-blue-800">
-                          {aiUsageCount === 0 
-                            ? "Free users get 1 AI generation. Upgrade to Pro for unlimited usage." 
-                            : `You've used ${aiUsageCount}/1 AI generations. Upgrade to Pro for unlimited usage.`
-                          }
+                          {aiUsageCount === 0
+                            ? "Free users get 1 AI generation. Upgrade to Pro for unlimited usage."
+                            : `You've used ${aiUsageCount}/1 AI generations. Upgrade to Pro for unlimited usage.`}
                         </p>
                       </div>
                     )}
@@ -457,7 +468,11 @@ export function SummaryAIField({ onFill, onAiGenerate, isProUser, aiUsageCount }
                   <button
                     type="button"
                     onClick={handleGenerate}
-                    disabled={loading || !about.trim() || (!isProUser && aiUsageCount >= 1)}
+                    disabled={
+                      loading ||
+                      !about.trim() ||
+                      (!isProUser && aiUsageCount >= 1)
+                    }
                     className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-indigo-600 text-white font-semibold shadow-sm hover:bg-indigo-700 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                   >
                     {loading && (

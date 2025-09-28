@@ -35,7 +35,7 @@ export function ProfileStep({
         <p className="text-red-500 text-base leading-none">*</p>
       </div>
       <SummaryAIField
-        onFill={updateProfile}                    // critical forwarding
+        onFill={updateProfile} // critical forwarding
         onAiGenerate={onAiGenerate}
         isProUser={isProUser}
         aiUsageCount={aiUsageCount}

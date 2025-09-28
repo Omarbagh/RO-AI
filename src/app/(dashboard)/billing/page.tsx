@@ -4,7 +4,10 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserButton, useUser, SignedIn } from "@clerk/nextjs";
-import { SubscriptionDetailsButton, CheckoutButton } from "@clerk/nextjs/experimental";
+import {
+  SubscriptionDetailsButton,
+  CheckoutButton,
+} from "@clerk/nextjs/experimental";
 import {
   CreditCard,
   Shield,
@@ -91,11 +94,27 @@ export default function BillingPage() {
   ];
 
   const billingInfo = [
-    { label: "Plan Status", value: isProUser ? "Active" : "Free Plan", valueColor: isProUser ? "text-green-600" : "text-gray-600" },
+    {
+      label: "Plan Status",
+      value: isProUser ? "Active" : "Free Plan",
+      valueColor: isProUser ? "text-green-600" : "text-gray-600",
+    },
     { label: "Billing Cycle", value: "Monthly", valueColor: "text-gray-700" },
-    { label: "Next Billing Date", value: isProUser ? "Next month" : "N/A", valueColor: "text-gray-700" },
-    { label: "Payment Method", value: isProUser ? "Credit Card" : "Not applicable", valueColor: "text-gray-700" },
-    { label: "Subscription Since", value: isProUser ? "Recently" : "N/A", valueColor: "text-gray-700" },
+    {
+      label: "Next Billing Date",
+      value: isProUser ? "Next month" : "N/A",
+      valueColor: "text-gray-700",
+    },
+    {
+      label: "Payment Method",
+      value: isProUser ? "Credit Card" : "Not applicable",
+      valueColor: "text-gray-700",
+    },
+    {
+      label: "Subscription Since",
+      value: isProUser ? "Recently" : "N/A",
+      valueColor: "text-gray-700",
+    },
   ];
 
   if (loading) {
@@ -116,7 +135,6 @@ export default function BillingPage() {
 
   return (
     <div className="w-full max-w-full overflow-x-hidden px-4 animate-fade-in">
-
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-indigo-700 bg-clip-text text-transparent">
@@ -200,7 +218,7 @@ export default function BillingPage() {
                       planPeriod="month"
                       newSubscriptionRedirectUrl="/dashboard"
                       onSubscriptionComplete={() => {
-                        console.log('Subscription completed!');
+                        console.log("Subscription completed!");
                         setIsProUser(true);
                       }}
                     >
@@ -246,7 +264,9 @@ export default function BillingPage() {
                         <TableCell className="font-medium text-gray-700 py-4">
                           {info.label}
                         </TableCell>
-                        <TableCell className={`text-right py-4 font-semibold ${info.valueColor}`}>
+                        <TableCell
+                          className={`text-right py-4 font-semibold ${info.valueColor}`}
+                        >
                           {info.value}
                         </TableCell>
                       </TableRow>

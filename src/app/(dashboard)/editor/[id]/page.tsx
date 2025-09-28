@@ -13,7 +13,7 @@ import {
   Save,
   Crown,
   Lock,
-  Zap
+  Zap,
 } from "lucide-react";
 import { templates } from "../utils/templateMap";
 import { AnimatedStepIndicator } from "../components/AnimatedStepIndicator";
@@ -125,13 +125,13 @@ function EditorContent() {
       }
 
       try {
-        const hasProPlan = await has({ plan: 'pro' });
+        const hasProPlan = await has({ plan: "pro" });
         setIsProUser(hasProPlan);
-        
+
         // Check AI usage for free users
         if (!hasProPlan) {
-          const savedAiUsage = localStorage.getItem('ai_usage_count');
-          setAiUsageCount(parseInt(savedAiUsage || '0'));
+          const savedAiUsage = localStorage.getItem("ai_usage_count");
+          setAiUsageCount(parseInt(savedAiUsage || "0"));
         }
       } catch (error) {
         console.error("Error checking pro status:", error);
@@ -209,12 +209,14 @@ function EditorContent() {
   const handleAiUsage = () => {
     if (!isProUser) {
       if (aiUsageCount >= 1) {
-        alert("Free users can only use AI features once. Upgrade to Pro for unlimited AI usage! 🚀");
+        alert(
+          "Free users can only use AI features once. Upgrade to Pro for unlimited AI usage! 🚀",
+        );
         return false;
       }
-      setAiUsageCount(prev => {
+      setAiUsageCount((prev) => {
         const newCount = prev + 1;
-        localStorage.setItem('ai_usage_count', newCount.toString());
+        localStorage.setItem("ai_usage_count", newCount.toString());
         return newCount;
       });
     }
@@ -230,7 +232,9 @@ function EditorContent() {
       setShowPrintNotification(true);
       setTimeout(() => setShowPrintNotification(false), 5000);
     },
-    pageStyle: isProUser ? `` : `
+    pageStyle: isProUser
+      ? ``
+      : `
       @page { 
         margin: 0; 
         size: auto;
@@ -372,7 +376,7 @@ function EditorContent() {
     setFormData((d) => ({ ...d, personal: { ...d.personal, [field]: value } }));
     markTouched("personal." + field);
   };
-  
+
   const handlePhotoUpload = (file: File) => {
     if (file.size > 5 * 1024 * 1024) {
       alert("File size must be less than 5MB");
@@ -384,12 +388,12 @@ function EditorContent() {
     };
     reader.readAsDataURL(file);
   };
-  
+
   const updateProfile = (value: string) => {
     setFormData((d) => ({ ...d, profile: value }));
     markTouched("profile");
   };
-  
+
   const updateExperienceItem = (
     i: number,
     field: keyof CVData["experience"][0],
@@ -402,7 +406,7 @@ function EditorContent() {
     });
     markTouched("experience", i, field);
   };
-  
+
   const addExperience = () => {
     setFormData((d) => ({
       ...d,
@@ -412,7 +416,7 @@ function EditorContent() {
       ],
     }));
   };
-  
+
   const removeExperience = (i: number) => {
     if (formData.experience.length > 1) {
       setFormData((d) => ({
@@ -421,7 +425,7 @@ function EditorContent() {
       }));
     }
   };
-  
+
   const updateEducationItem = (
     i: number,
     field: keyof CVData["education"][0],
@@ -434,14 +438,14 @@ function EditorContent() {
     });
     markTouched("education", i, field);
   };
-  
+
   const addEducation = () => {
     setFormData((d) => ({
       ...d,
       education: [...d.education, { school: "", degree: "", year: "" }],
     }));
   };
-  
+
   const updateSkill = (i: number, value: string) => {
     setFormData((d) => {
       const skills = [...d.skills];
@@ -450,11 +454,11 @@ function EditorContent() {
     });
     markTouched("skills", i, "skill");
   };
-  
+
   const addSkill = () => {
     setFormData((d) => ({ ...d, skills: [...d.skills, ""] }));
   };
-  
+
   const removeSkill = (i: number) => {
     if (formData.skills.length > 0) {
       setFormData((d) => ({
@@ -474,7 +478,7 @@ function EditorContent() {
     setSavingDraft(true);
     try {
       // 1. Get the auth token from Clerk, not Supabase
-      const token = await getToken({ template: 'supabase' });
+      const token = await getToken({ template: "supabase" });
 
       if (!token) {
         alert("Authentication error. Please log in again.");
@@ -490,7 +494,7 @@ function EditorContent() {
         headers: {
           "Content-Type": "application/json",
           // 2. Send the Clerk token to the backend
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           templateId: selectedTemplate,
@@ -498,25 +502,24 @@ function EditorContent() {
           ...(resumeIdForParams && { id: resumeIdForParams }),
         }),
       });
-      
-      console.log('Response status:', res.status);
+
+      console.log("Response status:", res.status);
 
       if (res.ok) {
         // ... (The rest of your success/error handling logic remains the same)
         const result = await res.json();
         if (result.success) {
-           console.log('Draft saved/updated successfully');
-           setSaveSuccess(true);
-           setTimeout(() => setSaveSuccess(false), 3000);
-           // etc...
+          console.log("Draft saved/updated successfully");
+          setSaveSuccess(true);
+          setTimeout(() => setSaveSuccess(false), 3000);
+          // etc...
         } else {
-           alert(result.error || "Failed to save draft.");
+          alert(result.error || "Failed to save draft.");
         }
       } else {
         const errorData = await res.json();
         alert(errorData.error || `Error ${res.status}: Failed to save draft.`);
       }
-
     } catch (error) {
       console.error("Save draft failed with an exception:", error);
       alert("An unexpected error occurred. Please try again.");
@@ -531,13 +534,16 @@ function EditorContent() {
     setLoadingSave(true);
     try {
       const token = await getToken();
-      console.log("token", token)
+      console.log("token", token);
       const url = resumeIdForParams ? "/api/update-resume" : "/api/save-resume";
       const method = resumeIdForParams ? "PUT" : "POST";
 
       const res = await fetch(url, {
         method: method,
-        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`, },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           templateId: selectedTemplate,
           formData,
@@ -558,7 +564,6 @@ function EditorContent() {
     } finally {
       setLoadingSave(false);
     }
-
   };
 
   const currentStep = usedSteps[step];
@@ -598,14 +603,14 @@ function EditorContent() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 font-sans">
       <style>{printHideStyle}</style>
-      
+
       {/* Watermark for free users in print */}
       {!isProUser && (
-        <div className="watermark no-print" style={{ display: 'none' }}>
+        <div className="watermark no-print" style={{ display: "none" }}>
           CVHero Free Version
         </div>
       )}
-      
+
       <div className="flex flex-col lg:flex-row">
         {/* Sidebar */}
         <div className="w-full lg:w-2/5 bg-white/95 backdrop-blur-sm border-r border-gray-200 shadow-2xl flex flex-col min-h-screen">
@@ -642,7 +647,7 @@ function EditorContent() {
                 className="h-8 w-auto mx-auto"
                 style={{ maxWidth: 140 }}
               />
-              
+
               {/* Pro Badge */}
               {!isProUser && (
                 <div className="absolute right-0 top-1/2 -translate-y-1/2">
@@ -664,11 +669,12 @@ function EditorContent() {
                       Upgrade to Pro for unlimited features!
                     </p>
                     <p className="text-xs text-blue-700">
-                      Remove watermarks, unlock AI features, and customize colors
+                      Remove watermarks, unlock AI features, and customize
+                      colors
                     </p>
                   </div>
-                  <Button 
-                    size="sm" 
+                  <Button
+                    size="sm"
                     className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
                     onClick={() => router.push("/pricing")}
                   >
@@ -737,7 +743,8 @@ function EditorContent() {
                       <div className="mt-2 p-2 bg-orange-50 border border-orange-200 rounded-lg">
                         <p className="text-xs text-orange-800">
                           <Lock className="h-3 w-3 inline mr-1" />
-                          AI feature used ({aiUsageCount}/1). Upgrade for unlimited AI usage.
+                          AI feature used ({aiUsageCount}/1). Upgrade for
+                          unlimited AI usage.
                         </p>
                       </div>
                     )}
@@ -778,9 +785,7 @@ function EditorContent() {
                   </>
                 )}
                 {currentStep === "Final" && (
-                  <FinalPageStep
-                    handlePrint={handlePrint}
-                  />
+                  <FinalPageStep handlePrint={handlePrint} />
                 )}
               </div>
             </div>
@@ -811,7 +816,8 @@ function EditorContent() {
                 <div className="flex items-center gap-2">
                   <Lock className="h-4 w-4 text-gray-500" />
                   <p className="text-sm text-gray-700">
-                    Color customization is a <span className="font-semibold">Pro feature</span>
+                    Color customization is a{" "}
+                    <span className="font-semibold">Pro feature</span>
                   </p>
                 </div>
               </div>
@@ -856,7 +862,6 @@ function EditorContent() {
                     isProUser={isProUser}
                     aiUsageCount={aiUsageCount}
                   />
-
                 )}
               {currentStep === "Education" && fieldUsage["data.education"] && (
                 <EducationStep
@@ -954,10 +959,33 @@ function EditorContent() {
               ref={contentRef}
             >
               {TemplateComponent ? (
-                <div className="p-0 sm:p-4">
+                <div className="p-0 sm:p-4 relative">
                   <div className="flex justify-center items-start">
-                    <div className="w-full max-w-[600px]">
+                    <div className="w-full max-w-[600px] relative">
                       <TemplateComponent data={formData} />
+                      {/* Watermark for free users - shown in both preview and print */}
+                      {!isProUser && (
+                        <div className="absolute inset-0 pointer-events-none z-50 print:block hidden">
+                          <div
+                            className="watermark-print"
+                            style={{
+                              position: "absolute",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, -50%) rotate(-45deg)",
+                              fontSize: "80px",
+                              color: "rgba(0, 0, 0, 0.1)",
+                              pointerEvents: "none",
+                              zIndex: 9999,
+                              whiteSpace: "nowrap",
+                              fontWeight: "bold",
+                              fontFamily: "Arial, sans-serif",
+                            }}
+                          >
+                            CVHero Free Version
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -985,19 +1013,29 @@ function EditorContent() {
 }
 
 // Helper component for Badge (add this if not already imported)
-const Badge = ({ children, className }: { children: React.ReactNode; className?: string }) => (
-  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${className}`}>
+const Badge = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <span
+    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${className}`}
+  >
     {children}
   </span>
 );
 
 export default function EditorPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
-        <p>Loading editor...</p>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <p>Loading editor...</p>
+        </div>
+      }
+    >
       <EditorContent />
     </Suspense>
   );

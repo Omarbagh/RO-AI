@@ -28,7 +28,7 @@ export async function PUT(request: NextRequest) {
             Authorization: `Bearer ${token}`,
           },
         },
-      }
+      },
     );
 
     const { data, error } = await supabase
@@ -48,10 +48,13 @@ export async function PUT(request: NextRequest) {
         { status: 500 },
       );
     }
-    
+
     // **Important: Check if any rows were actually updated**
     if (!data || data.length === 0) {
-        return NextResponse.json({ error: "Resume not found or you don't have permission to edit it." }, { status: 404 });
+      return NextResponse.json(
+        { error: "Resume not found or you don't have permission to edit it." },
+        { status: 404 },
+      );
     }
 
     return NextResponse.json({ success: true, resume: data });

@@ -43,14 +43,11 @@ export function ExperienceStep({
   markTouched,
   errors,
   touched,
-  onAiGenerate, 
-  isProUser, 
-  aiUsageCount, 
+  onAiGenerate,
+  isProUser,
+  aiUsageCount,
 }: ExperienceStepProps) {
-
-  
   return (
-    
     <div>
       {experience.map((exp, i) => (
         <Card

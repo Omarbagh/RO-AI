@@ -169,22 +169,24 @@ export function TemplateCard({
                                 title: "Software Engineer",
                                 email: "john.doe@example.com",
                                 phone: "+1 (555) 123-4567",
-                                address: "New York, NY"
+                                address: "New York, NY",
                               },
-                              profile: "Experienced professional with a proven track record of success...", 
+                              profile:
+                                "Experienced professional with a proven track record of success...",
                               experience: [
                                 {
                                   company: "Tech Company",
-                                  job: "Senior Developer", 
+                                  job: "Senior Developer",
                                   period: "2020 - Present",
-                                  description: "Led development of innovative solutions..."
+                                  description:
+                                    "Led development of innovative solutions...",
                                 },
                               ],
                               education: [
                                 {
-                                  school: "University of Technology", 
+                                  school: "University of Technology",
                                   degree: "Bachelor of Science",
-                                  year: "2016 - 2020", 
+                                  year: "2016 - 2020",
                                 },
                               ],
                               skills: [
@@ -194,8 +196,8 @@ export function TemplateCard({
                                 "TypeScript",
                               ],
                               settings: {
-                                accent: "#4F46E5"
-                              }
+                                accent: "#4F46E5",
+                              },
                             }}
                           />
                         </div>
