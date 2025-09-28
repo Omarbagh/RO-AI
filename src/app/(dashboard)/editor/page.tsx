@@ -857,7 +857,7 @@ function EditorContent() {
             </div>
 
             {/* Sticky Navigation buttons */}
-            <div className="sticky bottom-0 bg-white/95 pt-6 pb-6 border-t border-gray-200 z-10">
+            <div className="sticky bottom-0 bg-white/95 pt-6 pb-6 border-t border-gray-200 z-10 mt-auto">
               <div className="flex justify-end">
                 {step === usedSteps.length - 1 ? null : (
                   <Button
