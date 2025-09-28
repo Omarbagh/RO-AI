@@ -29,6 +29,7 @@ import { EducationStep } from "./components/steps/EducationStep";
 import { SkillsStep } from "./components/steps/SkillsStep";
 import FinalPageStep from "./components/steps/FinalPageStep";
 import { useParams } from "next/navigation";
+import { Suspense } from "react";
 
 const printHideStyle = `
 @media print {
@@ -82,7 +83,7 @@ type TouchedType = {
   [key: string]: boolean | { [idx: number]: { [subKey: string]: boolean } };
 };
 
-export default function EditorPage() {
+function EditorContent() {
   const router = useRouter();
   const { isSignedIn, user } = useUser();
   const { has } = useAuth();
@@ -1005,6 +1006,14 @@ const Badge = ({ children, className }: { children: React.ReactNode; className?:
   </span>
 );
 
-// Add Zap icon import at the top with other icons
-// Update the lucide-react import to include Zap:
-// import { ..., Zap } from "lucide-react";
+export default function EditorPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading editor...</p>
+      </div>
+    }>
+      <EditorContent />
+    </Suspense>
+  );
+}
