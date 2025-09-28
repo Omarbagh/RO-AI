@@ -649,12 +649,6 @@ function EditorContent() {
                   </span>
                 </>
               )}
-              <img
-                src="/logo.png"
-                alt="Logo"
-                className="h-8 w-auto mx-auto"
-                style={{ maxWidth: 140 }}
-              />
 
               {/* Pro Badge */}
               {!isProUser && (
