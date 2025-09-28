@@ -667,31 +667,6 @@ function EditorContent() {
               )}
             </div>
 
-            {/* Upgrade Banner for Free Users */}
-            {!isProUser && (
-              <div className="mb-4 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <Crown className="h-4 w-4 text-blue-600" />
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-blue-900">
-                      Upgrade to Pro for unlimited features!
-                    </p>
-                    <p className="text-xs text-blue-700">
-                      Remove watermarks, unlock AI features, and customize
-                      colors
-                    </p>
-                  </div>
-                  <Button
-                    size="sm"
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs"
-                    onClick={() => router.push("/pricing")}
-                  >
-                    Upgrade
-                  </Button>
-                </div>
-              </div>
-            )}
-
             {/* Save Draft Button */}
             <div className="mb-4">
               <Button
