@@ -1021,3 +1021,17 @@ export default function Index() {
     </div>
   );
 }
+
+export const metadata = {
+  title: "CVHero – Maak in minuten een professioneel CV",
+  description:
+    "Met CVHero bouw je gratis en snel een modern CV met AI en prachtige templates.",
+  openGraph: {
+    title: "CVHero",
+    description: "Bouw in minuten een professioneel CV",
+    url: "https://cv-hero.nl",
+    siteName: "CVHero",
+    locale: "nl_NL",
+    type: "website",
+  },
+};
