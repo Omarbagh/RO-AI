@@ -26,6 +26,20 @@ import { PricingTable, SignUpButton } from "@clerk/nextjs";
 import LandingFooter from "@/components/LandingFooter";
 import { templates } from "./(dashboard)/editor/utils/templateMap";
 
+export const metadata = {
+  title: "CVHero – Maak in minuten een professioneel CV",
+  description:
+    "Met CVHero bouw je gratis en snel een modern CV met AI en prachtige templates.",
+  openGraph: {
+    title: "CVHero",
+    description: "Bouw in minuten een professioneel CV",
+    url: "https://cv-hero.nl",
+    siteName: "CVHero",
+    locale: "nl_NL",
+    type: "website",
+  },
+};
+
 function useReveal() {
   const ref = useRef<HTMLElement | null>(null);
   useEffect(() => {
@@ -1021,17 +1035,3 @@ export default function Index() {
     </div>
   );
 }
-
-export const metadata = {
-  title: "CVHero – Maak in minuten een professioneel CV",
-  description:
-    "Met CVHero bouw je gratis en snel een modern CV met AI en prachtige templates.",
-  openGraph: {
-    title: "CVHero",
-    description: "Bouw in minuten een professioneel CV",
-    url: "https://cv-hero.nl",
-    siteName: "CVHero",
-    locale: "nl_NL",
-    type: "website",
-  },
-};
