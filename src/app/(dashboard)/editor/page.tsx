@@ -224,6 +224,7 @@ function EditorContent() {
   };
 
   const handlePrint = useReactToPrint({
+      contentRef,
       pageStyle: `
         @page { 
           margin: 0; 
