@@ -142,7 +142,7 @@ export default function TemplateSelectionPage() {
             </div>
             <SignedIn>
               <CheckoutButton
-                planId="cplan_334J23pEpXcBH3uvZ6K3Sn9RlyZ"
+                planId="cplan_33KrYL1vc8raNSjq4rFIRGhUCZ7"
                 planPeriod="month"
                 checkoutProps={{
                   appearance: {
