@@ -161,12 +161,43 @@ const formatDate = (dateString: string) => {
 export default function Dashboard() {
   const router = useRouter();
   const { user, isLoaded } = useUser();
-  const { getToken } = useAuth();
+  const { getToken, has } = useAuth();
+
   const [resumes, setResumes] = useState<Resume[]>([]);
   const [loading, setLoading] = useState(true);
   const [previewResume, setPreviewResume] = useState<Resume | null>(null);
   const [activity, setActivity] = useState<ActivityItem[]>([]);
+  const [isProUser, setIsProUser] = useState(false);
+  const [loadingProCheck, setLoadingProCheck] = useState(true);
+  const [aiUsageCount, setAiUsageCount] = useState(0);
+
   const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const checkProStatus = async () => {
+      if (!user) {
+        setLoadingProCheck(false);
+        return;
+      }
+
+      try {
+        const hasProPlan = await has({ plan: "pro" });
+        setIsProUser(hasProPlan);
+
+        if (!hasProPlan) {
+          const savedAiUsage = localStorage.getItem("ai_usage_count");
+          setAiUsageCount(parseInt(savedAiUsage || "0"));
+        }
+      } catch (error) {
+        console.error("Error checking pro status:", error);
+        setIsProUser(false);
+      } finally {
+        setLoadingProCheck(false);
+      }
+    };
+
+    checkProStatus();
+  }, [user, has]);
 
   const handlePrint = useReactToPrint({
     contentRef,
@@ -181,6 +212,24 @@ export default function Dashboard() {
       body { 
         -webkit-print-color-adjust: exact; 
         print-color-adjust: exact;
+      }
+      ${
+        !isProUser
+          ? `
+          .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 80px;
+            color: rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+            z-index: 9999;
+            white-space: nowrap;
+            font-weight: bold;
+          }
+        `
+          : ""
       }
     `,
   });
@@ -696,52 +745,55 @@ export default function Dashboard() {
 
         {/* Resume Preview Dialog */}
         <Dialog
-          open={!!previewResume}
-          onOpenChange={(o) => !o && setPreviewResume(null)}
-        >
-          <DialogContent className="max-w-4xl w-full h-[90vh] flex flex-col backdrop-blur-sm">
-            <DialogHeader className="flex-shrink-0 pb-4 border-b">
-              <DialogTitle className="text-indigo-600 flex items-center gap-2">
-                <Eye className="h-5 w-5" />
-                {previewResume?.data?.personal?.name || "Resume Preview"}
-              </DialogTitle>
-            </DialogHeader>
-            <div className="flex items-center justify-between py-4 w-full flex-shrink-0 no-print border-b">
-              <div className="text-sm text-muted-foreground">
-                Template: {previewResume?.template_id || "Standard"}
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  onClick={() => handleEditResume(previewResume!)}
-                  variant="outline"
-                  className="gap-2"
-                >
-                  <FileText className="size-4" /> Edit Resume
-                </Button>
-                <Button
-                  onClick={handlePrint}
-                  className="gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors"
-                >
-                  <Download className="size-4" /> Download PDF
-                </Button>
-              </div>
+        open={!!previewResume}
+        onOpenChange={(o) => !o && setPreviewResume(null)}
+      >
+        <DialogContent className="max-w-4xl w-full h-[90vh] flex flex-col backdrop-blur-sm">
+          <DialogHeader className="flex-shrink-0 pb-4 border-b">
+            <DialogTitle className="text-indigo-600 flex items-center gap-2">
+              <Eye className="h-5 w-5" />
+              {previewResume?.data?.personal?.name || "Resume Preview"}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="flex items-center justify-between py-4 w-full flex-shrink-0 no-print border-b">
+            <div className="text-sm text-muted-foreground">
+              Template: {previewResume?.template_id || "Standard"}
             </div>
-            <div className="flex-1 overflow-auto py-4">
-              <div ref={contentRef} className="w-full flex justify-center">
-                {TemplateComp ? (
-                  <div className="w-[210mm] shadow-lg rounded">
-                    <TemplateComp data={previewResume!.data} />
-                  </div>
-                ) : (
-                  <div className="text-center py-12 text-gray-500">
-                    <FileText className="h-12 w-12 mx-auto mb-4" />
-                    <p>Template not available for preview</p>
-                  </div>
-                )}
-              </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => handleEditResume(previewResume!)}
+                variant="outline"
+                className="gap-2"
+              >
+                <FileText className="size-4" /> Edit Resume
+              </Button>
+              <Button
+                onClick={handlePrint}
+                className="gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors"
+              >
+                <Download className="size-4" /> Download PDF
+              </Button>
             </div>
-          </DialogContent>
-        </Dialog>
+          </div>
+          <div className="flex-1 overflow-auto py-4">
+            <div ref={contentRef} className="w-full flex justify-center relative">
+              {!isProUser && (
+                <div className="watermark select-none">FREE PLAN</div>
+              )}
+              {TemplateComp ? (
+                <div className="w-[210mm] shadow-lg rounded bg-white relative z-10">
+                  <TemplateComp data={previewResume!.data} />
+                </div>
+              ) : (
+                <div className="text-center py-12 text-gray-500">
+                  <FileText className="h-12 w-12 mx-auto mb-4" />
+                  <p>Template not available for preview</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
       </div>
     </>
   );

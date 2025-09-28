@@ -234,19 +234,27 @@ export default function EditorPage() {
         margin: 0; 
         size: auto;
       }
-      body::after {
-        content: "CVHero Free Version";
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) rotate(-45deg);
-        font-size: 60px;
-        color: rgba(0, 0, 0, 0.1);
-        pointer-events: none;
-        z-index: 9999;
-        white-space: nowrap;
-        font-weight: bold;
-        font-family: Arial, sans-serif;
+      body { 
+        -webkit-print-color-adjust: exact; 
+        print-color-adjust: exact;
+      }
+      ${
+        !isProUser
+          ? `
+          .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 80px;
+            color: rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+            z-index: 9999;
+            white-space: nowrap;
+            font-weight: bold;
+          }
+        `
+          : ""
       }
     `,
   });
