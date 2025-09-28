@@ -557,7 +557,6 @@ function EditorContent() {
         const result = await res.json();
         if (!resumeIdForParams) {
           setResumeId(result.resumeId);
-          router.push(`/editor/${result.resumeId}`);
         }
         setSaveSuccess(true);
       }
