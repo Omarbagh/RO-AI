@@ -4,12 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "npm run build:css && next build",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "build:resume-css": "tailwindcss -c tailwind-resume.config.js -i ./src/styles/resume-base.css -o ./lib/resume-styles.css --minify",
-    "dev:resume-css": "tailwindcss -c tailwind-resume.config.js -i ./src/styles/resume-base.css -o ./lib/resume-styles.css --watch",
-    "build:css": "tailwindcss -i ./src/app/globals.css -o ./public/tailwind.css --minify"
+    "lint": "next lint"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.24.0",
