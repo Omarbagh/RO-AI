@@ -224,45 +224,35 @@ function EditorContent() {
   };
 
   const handlePrint = useReactToPrint({
-    contentRef,
-    documentTitle: formData.personal.name
-      ? `${formData.personal.name}-CV`
-      : "Resume",
-    onAfterPrint: () => {
-      setShowPrintNotification(true);
-      setTimeout(() => setShowPrintNotification(false), 5000);
-    },
-    pageStyle: isProUser
-      ? ``
-      : `
-      @page { 
-        margin: 0; 
-        size: auto;
-      }
-      body { 
-        -webkit-print-color-adjust: exact; 
-        print-color-adjust: exact;
-      }
-      ${
-        !isProUser
-          ? `
-          .watermark {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 80px;
-            color: rgba(0, 0, 0, 0.1);
-            pointer-events: none;
-            z-index: 9999;
-            white-space: nowrap;
-            font-weight: bold;
-          }
-        `
-          : ""
-      }
-    `,
-  });
+      pageStyle: `
+        @page { 
+          margin: 0; 
+          size: auto;
+        }
+        body { 
+          -webkit-print-color-adjust: exact; 
+          print-color-adjust: exact;
+        }
+        ${
+          !isProUser
+            ? `
+            .watermark {
+              position: fixed;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%) rotate(-45deg);
+              font-size: 80px;
+              color: rgba(0, 0, 0, 0.1);
+              pointer-events: none;
+              z-index: 9999;
+              white-space: nowrap;
+              font-weight: bold;
+            }
+          `
+            : ""
+        }
+      `,
+    });
 
   useEffect(() => {
     document.documentElement.style.setProperty(
