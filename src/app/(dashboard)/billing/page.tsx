@@ -185,7 +185,7 @@ export default function BillingPage() {
                 </div>
                 <div className="text-right">
                   <p className="text-2xl font-bold text-gray-900">
-                    {isProUser ? "$8.99" : "$0"}
+                    {isProUser ? "$9.99" : "$0"}
                   </p>
                   <p className="text-sm text-muted-foreground">per month</p>
                 </div>
@@ -224,7 +224,7 @@ export default function BillingPage() {
                     >
                       <Button className="w-full gap-2 bg-indigo-600 hover:bg-indigo-700 text-white">
                         <Zap className="h-4 w-4" />
-                        Upgrade to Pro - $8.99/month
+                        Upgrade to Pro - $9.99/month
                       </Button>
                     </CheckoutButton>
                   )}
