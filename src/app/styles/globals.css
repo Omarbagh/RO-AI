@@ -14,31 +14,31 @@
  */
 
 :root {
-  /* --- Editorial Ink raw palette (light) --- */
-  --ei-bg: #fbfaf8;
+  /* --- Linear/Notion-leaning cool-neutral palette (light) --- */
+  --ei-bg: #fbfbfc;
   --ei-surface: #ffffff;
-  --ei-surface-2: #f4f2ed;
-  --ei-ink: #15172b;
-  --ei-ink-soft: #23221f;
-  --ei-text: #1a1a22;
-  --ei-text-body: #3b3a42;
-  --ei-text-muted: #6b6a77;
-  --ei-text-subtle: #9a98a2;
-  --ei-text-disabled: #b4b1a9;
+  --ei-surface-2: #f4f4f7;
+  --ei-ink: #191a22;
+  --ei-ink-soft: #23242e;
+  --ei-text: #1c1d26;
+  --ei-text-body: #3a3b46;
+  --ei-text-muted: #696a78;
+  --ei-text-subtle: #9a9ba7;
+  --ei-text-disabled: #b7b8c2;
   --ei-accent: #2f6bff;
-  --ei-accent-hover: #245ae0;
-  --ei-accent-soft: #ebf0ff;
-  --ei-accent-soft-border: #d8e2ff;
+  --ei-accent-hover: #2559e6;
+  --ei-accent-soft: #eaf0ff;
+  --ei-accent-soft-border: #d6e2ff;
   --ei-success: #1e9e6a;
-  --ei-success-soft: #e6f4ee;
+  --ei-success-soft: #e7f5ee;
   --ei-warning: #d98a1e;
-  --ei-warning-soft: #fbf0de;
-  --ei-danger: #dc4b3e;
-  --ei-danger-soft: #fbeae8;
-  --ei-danger-soft-border: #f5d2ce;
-  --ei-border: #e8e5dd;
-  --ei-border-strong: #ddd9cf;
-  --ei-border-subtle: #f0eee9;
+  --ei-warning-soft: #fbf1de;
+  --ei-danger: #e0524a;
+  --ei-danger-soft: #fdeceb;
+  --ei-danger-soft-border: #f6d4d1;
+  --ei-border: #ebebf1;
+  --ei-border-strong: #e0e0e8;
+  --ei-border-subtle: #f1f1f6;
 
   /* --- shadcn semantic mapping --- */
   --background: var(--ei-bg);

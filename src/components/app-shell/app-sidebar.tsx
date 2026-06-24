@@ -27,7 +27,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Mijn cv's", href: "/dashboard", icon: FileText, badge: "4" },
   { label: "Templates", href: "/templates", icon: LayoutTemplate },
-  { label: "Cover letters", href: "/dashboard", icon: Mail },
+  { label: "Cover letters", href: "/cover-letters", icon: Mail },
   { label: "Instellingen", href: "/settings", icon: Settings },
 ];
 
