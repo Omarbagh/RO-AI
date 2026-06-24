@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CVhero
 
-## Getting Started
+AI-driven, production-grade CV builder. A complete rebuild on a modern, fully
+typed, serverless-friendly stack.
 
-First, run the development server:
+> **Status:** rebuild in progress. The data/backend foundation is in place; the
+> UI is implemented against the approved Claude Design (see _Design source_).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Tech stack
+
+| Concern    | Choice                                                        |
+| ---------- | ------------------------------------------------------------- |
+| Framework  | Next.js (App Router) + TypeScript (strict)                    |
+| Styling    | Tailwind CSS + shadcn/ui                                      |
+| Backend    | Supabase — Auth, Postgres, Storage, **Row Level Security**    |
+| AI         | Anthropic Claude API (streaming + structured output)         |
+| PDF export | `@react-pdf/renderer` (serverless, ATS-safe, selectable text)|
+| Payments   | **Mollie** (iDEAL/SEPA for the NL/EU market)                 |
+| Drag/drop  | `@dnd-kit` (section reordering)                               |
+| Deployment | Vercel                                                        |
+
+### Architectural principles
+
+- **Data ≠ presentation.** A single canonical CV schema
+  (`src/lib/resume/schema.ts`, Zod-validated) is the contract shared by the
+  editor, the render engine, the PDF exporter, and the AI endpoints. Templates
+  are pure presentation over that data, so switching templates never loses data.
+- **Secrets stay server-side.** Anything without the `NEXT_PUBLIC_` prefix is
+  server-only. All Claude calls go through server routes — never the client.
+- **RLS everywhere.** Every table has Row Level Security; users can only ever
+  read/write their own rows. Privileged writes (webhooks, usage metering) use a
+  separate service-role client (`src/lib/supabase/admin.ts`).
+- **Plan-based rate limiting.** AI usage is metered in `ai_usage` and gated by
+  the per-tier limits in `src/lib/billing/plans.ts`.
+
+## Project layout (foundation)
+
+```
+supabase/migrations/0001_init.sql   # schema + RLS + triggers
+src/lib/resume/schema.ts            # canonical CV data model (Zod)
+src/lib/resume/factory.ts           # empty-resume / empty-item factories
+src/lib/supabase/{server,client,admin,middleware,types}.ts
+src/lib/billing/plans.ts            # tiers + quota limits
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Getting started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Install**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   npm install
+   ```
 
-## Learn More
+2. **Environment** — copy and fill in:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   cp .env.example .env.local
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   | Variable                        | Where to get it / notes                       |
+   | ------------------------------- | --------------------------------------------- |
+   | `NEXT_PUBLIC_APP_URL`           | App base URL (`http://localhost:3000` in dev) |
+   | `NEXT_PUBLIC_SUPABASE_URL`      | Supabase → Project Settings → API             |
+   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase → Project Settings → API             |
+   | `SUPABASE_SERVICE_ROLE_KEY`     | Supabase → Project Settings → API (**secret**)|
+   | `ANTHROPIC_API_KEY`             | console.anthropic.com (**server-only**)       |
+   | `ANTHROPIC_MODEL`               | e.g. `claude-opus-4-8`                         |
+   | `MOLLIE_API_KEY`                | Mollie dashboard (`test_…` in dev)            |
+   | `MOLLIE_PRO_PRICE_EUR`          | Pro recurring price, e.g. `9.99`              |
+   | `MOLLIE_PRO_INTERVAL`           | e.g. `1 month`                                |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Database** — apply the migration to your Supabase project, either with the
+   Supabase CLI:
 
-## Deploy on Vercel
+   ```bash
+   supabase db push
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   …or by pasting `supabase/migrations/0001_init.sql` into the Supabase SQL
+   editor. This creates `profiles`, `resumes`, `resume_content`,
+   `subscriptions`, `ai_usage`, enables RLS, and installs the new-user trigger.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. **Run**
+
+   ```bash
+   npm run dev
+   ```
+
+## Design source
+
+UI/UX is implemented exactly from the approved Claude Design project
+(`Export, Settings & States.dc.html` and siblings). Reading it requires design
+authorization — run `/design-login` in the Claude Code session that builds the
+UI.
+
+## Scripts
+
+| Script           | Purpose                       |
+| ---------------- | ----------------------------- |
+| `npm run dev`    | Local dev server (Turbopack)  |
+| `npm run build`  | Production build              |
+| `npm run start`  | Run the production build      |
+| `npm run lint`   | ESLint                        |
