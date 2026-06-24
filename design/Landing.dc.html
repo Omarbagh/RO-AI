@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#FBFAF8;font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;color:#1A1A22}
+  .lp-btn{transition:all .16s cubic-bezier(.4,0,.2,1);cursor:pointer;border:none;font-family:inherit}
+  .lp-btn:active{transform:translateY(1px)}
+  .lp-card{transition:transform .2s,box-shadow .2s}
+  .lp-card:hover{transform:translateY(-3px);box-shadow:0 18px 48px -16px rgba(20,20,30,.22)}
+  a{color:inherit;text-decoration:none}
+</style>
+</helmet>
+
+<div style="background:#FBFAF8">
+
+  <!-- ===== NAV ===== -->
+  <div style="position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);background:rgba(251,250,248,.82);border-bottom:1px solid #EDEAE3">
+    <div style="max-width:1140px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:28px;height:28px;border-radius:8px;background:#15172B;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:15px;font-family:Newsreader">C</div>
+        <span style="font-weight:600;font-size:16px;letter-spacing:-0.01em">CVhero</span>
+      </div>
+      <div style="flex:1;display:flex;justify-content:center;gap:30px">
+        <span style="font-size:14px;color:#6B6A77;cursor:pointer">Functies</span>
+        <span style="font-size:14px;color:#6B6A77;cursor:pointer">Templates</span>
+        <span style="font-size:14px;color:#6B6A77;cursor:pointer">Prijzen</span>
+        <span style="font-size:14px;color:#6B6A77;cursor:pointer">FAQ</span>
+      </div>
+      <span style="font-size:14px;font-weight:500;color:#1A1A22;cursor:pointer;padding:8px 12px">Inloggen</span>
+      <button class="lp-btn" style="background:#15172B;color:#fff;font-size:14px;font-weight:600;padding:9px 16px;border-radius:9px">Gratis beginnen</button>
+    </div>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <div style="max-width:1140px;margin:0 auto;padding:72px 32px 56px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center">
+    <div>
+      <div style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #E8E5DD;border-radius:999px;padding:6px 13px;font-size:12.5px;color:#3b3a42;margin-bottom:26px;box-shadow:0 1px 2px rgba(20,20,30,.04)">
+        <span style="color:#2F6BFF">✦</span> AI-gedreven · ATS-geoptimaliseerd
+      </div>
+      <h1 style="font-family:Newsreader;font-size:62px;line-height:1.02;font-weight:500;letter-spacing:-0.025em">Een cv dat <span style="font-style:italic;color:#2F6BFF">overtuigt</span> — in minuten.</h1>
+      <p style="font-size:18px;line-height:1.55;color:#6B6A77;margin-top:22px;max-width:460px">CVhero schrijft mee, optimaliseert voor ATS-systemen en houdt alles strak. Jij houdt de regie — wij doen het zware werk.</p>
+      <div style="display:flex;gap:12px;margin-top:32px;align-items:center">
+        <button class="lp-btn" style="background:#2F6BFF;color:#fff;font-size:16px;font-weight:600;padding:14px 24px;border-radius:11px;box-shadow:0 4px 16px -4px rgba(47,107,255,.5)">Maak gratis je cv →</button>
+        <button class="lp-btn" style="background:#fff;color:#1A1A22;font-size:16px;font-weight:600;padding:14px 22px;border-radius:11px;border:1px solid #DDD9CF">Bekijk templates</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:28px">
+        <div style="display:flex">
+          <div style="width:32px;height:32px;border-radius:50%;background:#EBF0FF;border:2px solid #FBFAF8;color:#2F6BFF;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;font-family:Newsreader">JD</div>
+          <div style="width:32px;height:32px;border-radius:50%;background:#E6F4EE;border:2px solid #FBFAF8;color:#1E9E6A;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;font-family:Newsreader;margin-left:-9px">MV</div>
+          <div style="width:32px;height:32px;border-radius:50%;background:#FBF0DE;border:2px solid #FBFAF8;color:#D98A1E;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;font-family:Newsreader;margin-left:-9px">SK</div>
+          <div style="width:32px;height:32px;border-radius:50%;background:#15172B;border:2px solid #FBFAF8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;margin-left:-9px">+</div>
+        </div>
+        <div style="font-size:13px;color:#6B6A77;line-height:1.4">⭐ 4,9/5 · <strong style="color:#1A1A22">36.000+</strong> cv's gemaakt</div>
+      </div>
+    </div>
+
+    <!-- hero resume visual -->
+    <div style="position:relative">
+      <div style="position:absolute;right:-20px;top:-30px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#2F6BFF22,transparent 70%);z-index:0"></div>
+      <div style="position:relative;z-index:1;background:#fff;border-radius:12px;box-shadow:0 24px 70px -20px rgba(20,20,30,.32);overflow:hidden;transform:rotate(1.2deg)">
+        <div style="background:#15172B;color:#fff;padding:24px 28px 20px">
+          <div style="font-family:Newsreader;font-size:24px;font-weight:500">Sanne Bakker</div>
+          <div style="font-size:12px;color:#9DB6FF;margin-top:2px">Senior Product Marketeer</div>
+        </div>
+        <div style="padding:22px 28px 26px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#2F6BFF;text-transform:uppercase;margin-bottom:7px">Profiel</div>
+          <div style="height:8px;background:#F0EEE9;border-radius:4px;margin-bottom:6px"></div>
+          <div style="height:8px;background:#F0EEE9;border-radius:4px;width:85%;margin-bottom:18px"></div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;color:#2F6BFF;text-transform:uppercase;margin-bottom:9px">Werkervaring</div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px"><div style="height:9px;width:120px;background:#15172B22;border-radius:4px"></div><div style="height:9px;width:50px;background:#F0EEE9;border-radius:4px"></div></div>
+          <div style="height:7px;background:#F0EEE9;border-radius:4px;margin-bottom:5px"></div>
+          <div style="height:7px;background:#F0EEE9;border-radius:4px;width:90%;margin-bottom:16px"></div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap"><span style="height:18px;width:64px;background:#F4F2ED;border-radius:5px;display:inline-block"></span><span style="height:18px;width:50px;background:#F4F2ED;border-radius:5px;display:inline-block"></span><span style="height:18px;width:72px;background:#F4F2ED;border-radius:5px;display:inline-block"></span></div>
+        </div>
+      </div>
+      <!-- floating ATS chip -->
+      <div style="position:absolute;bottom:24px;left:-26px;z-index:2;background:#fff;border:1px solid #E8E5DD;border-radius:12px;padding:12px 14px;box-shadow:0 12px 32px -10px rgba(20,20,30,.22);display:flex;align-items:center;gap:11px">
+        <div style="position:relative;width:38px;height:38px"><svg width="38" height="38" viewBox="0 0 38 38"><circle cx="19" cy="19" r="15" fill="none" stroke="#EEF1F8" stroke-width="4"></circle><circle cx="19" cy="19" r="15" fill="none" stroke="#1E9E6A" stroke-width="4" stroke-linecap="round" stroke-dasharray="94" stroke-dashoffset="8" transform="rotate(-90 19 19)"></circle></svg><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">92</div></div>
+        <div><div style="font-size:12px;font-weight:600">ATS-score</div><div style="font-size:11px;color:#1E9E6A">Sterk ✓</div></div>
+      </div>
+      <!-- floating AI chip -->
+      <div style="position:absolute;top:34px;right:-20px;z-index:2;background:#15172B;border-radius:11px;padding:10px 13px;box-shadow:0 12px 32px -10px rgba(20,20,30,.3);display:flex;align-items:center;gap:9px">
+        <span style="color:#5C86FF;font-size:13px">✦</span><span style="font-size:12px;color:#fff;font-weight:500">AI verbeterde 3 zinnen</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SOCIAL PROOF ===== -->
+  <div style="border-top:1px solid #EDEAE3;border-bottom:1px solid #EDEAE3;background:#fff">
+    <div style="max-width:1140px;margin:0 auto;padding:26px 32px;display:flex;align-items:center;gap:40px;flex-wrap:wrap;justify-content:center">
+      <span style="font-size:12px;color:#9A98A2;font-family:JetBrains Mono">VERTROUWD DOOR PROFESSIONALS BIJ</span>
+      <div style="display:flex;gap:36px;align-items:center;opacity:.55;flex-wrap:wrap">
+        <span style="font-weight:700;font-size:17px;letter-spacing:-0.02em">Mollie</span>
+        <span style="font-weight:700;font-size:17px;letter-spacing:-0.02em;font-family:Newsreader">Adyen</span>
+        <span style="font-weight:800;font-size:17px;letter-spacing:-0.04em">bol.</span>
+        <span style="font-weight:600;font-size:17px;letter-spacing:0.04em">PICNIC</span>
+        <span style="font-weight:700;font-size:17px;letter-spacing:-0.02em">Coolblue</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FEATURES ===== -->
+  <div style="max-width:1140px;margin:0 auto;padding:84px 32px 40px">
+    <div style="text-align:center;max-width:600px;margin:0 auto 48px">
+      <div style="font-family:JetBrains Mono;font-size:12px;color:#2F6BFF;letter-spacing:0.08em;margin-bottom:12px">ALLES WAT JE NODIG HEBT</div>
+      <h2 style="font-family:Newsreader;font-size:42px;font-weight:500;letter-spacing:-0.02em;line-height:1.1">Sneller schrijven, slimmer solliciteren</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <div class="lp-card" style="background:#fff;border:1px solid #E8E5DD;border-radius:16px;padding:24px;box-shadow:0 1px 3px rgba(20,20,30,.05)">
+        <div style="width:42px;height:42px;border-radius:11px;background:#EBF0FF;display:flex;align-items:center;justify-content:center;color:#2F6BFF;font-size:19px;margin-bottom:16px">✦</div>
+        <h3 style="font-size:18px;font-weight:600;margin-bottom:7px">AI-tekstassistent</h3>
+        <p style="font-size:14px;line-height:1.55;color:#6B6A77">Herschrijf zwakke zinnen tot krachtige, resultaatgerichte bullets — in jouw toon.</p>
+      </div>
+      <div class="lp-card" style="background:#fff;border:1px solid #E8E5DD;border-radius:16px;padding:24px;box-shadow:0 1px 3px rgba(20,20,30,.05)">
+        <div style="width:42px;height:42px;border-radius:11px;background:#E6F4EE;display:flex;align-items:center;justify-content:center;color:#1E9E6A;font-size:18px;margin-bottom:16px">◎</div>
+        <h3 style="font-size:18px;font-weight:600;margin-bottom:7px">Live ATS-score</h3>
+        <p style="font-size:14px;line-height:1.55;color:#6B6A77">Zie direct hoe goed je cv door geautomatiseerde filters komt, en hoe je scoort.</p>
+      </div>
+      <div class="lp-card" style="background:#fff;border:1px solid #E8E5DD;border-radius:16px;padding:24px;box-shadow:0 1px 3px rgba(20,20,30,.05)">
+        <div style="width:42px;height:42px;border-radius:11px;background:#FBF0DE;display:flex;align-items:center;justify-content:center;color:#D98A1E;font-size:18px;margin-bottom:16px">⊹</div>
+        <h3 style="font-size:18px;font-weight:600;margin-bottom:7px">Tailor naar vacature</h3>
+        <p style="font-size:14px;line-height:1.55;color:#6B6A77">Plak een vacature en CVhero stemt je cv automatisch af op de juiste trefwoorden.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SPLIT FEATURE (editor showcase) ===== -->
+  <div style="max-width:1140px;margin:0 auto;padding:48px 32px">
+    <div style="background:#15172B;border-radius:24px;padding:52px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;overflow:hidden;position:relative">
+      <div style="position:absolute;right:-80px;bottom:-80px;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,#2F6BFF33,transparent 70%)"></div>
+      <div style="position:relative;z-index:1">
+        <div style="font-family:JetBrains Mono;font-size:12px;color:#5C86FF;letter-spacing:0.08em;margin-bottom:14px">DE EDITOR</div>
+        <h2 style="font-family:Newsreader;font-size:38px;font-weight:500;color:#fff;letter-spacing:-0.02em;line-height:1.1">Schrijf links, zie rechts</h2>
+        <p style="font-size:16px;line-height:1.6;color:#B8BACB;margin-top:18px">Een split-view editor met live preview. Wat je typt verschijnt direct op je cv — geen verrassingen bij het exporteren.</p>
+        <div style="display:flex;flex-direction:column;gap:13px;margin-top:26px">
+          <div style="display:flex;align-items:center;gap:11px;font-size:14.5px;color:#E8E8F0"><span style="color:#5C86FF">✓</span> Realtime preview op elke wijziging</div>
+          <div style="display:flex;align-items:center;gap:11px;font-size:14.5px;color:#E8E8F0"><span style="color:#5C86FF">✓</span> Wissel template zonder data te verliezen</div>
+          <div style="display:flex;align-items:center;gap:11px;font-size:14.5px;color:#E8E8F0"><span style="color:#5C86FF">✓</span> Inline AI-suggesties terwijl je typt</div>
+        </div>
+      </div>
+      <div style="position:relative;z-index:1;background:#fff;border-radius:12px;padding:14px;box-shadow:0 24px 60px -16px rgba(0,0,0,.5)">
+        <div style="display:flex;gap:10px">
+          <div style="flex:1">
+            <div style="height:8px;width:56px;background:#EBF0FF;border-radius:4px;margin-bottom:10px"></div>
+            <div style="height:34px;background:#F4F2ED;border:1px solid #E8E5DD;border-radius:7px;margin-bottom:8px"></div>
+            <div style="height:34px;background:#fff;border:1.5px solid #2F6BFF;border-radius:7px;margin-bottom:8px;box-shadow:0 0 0 3px rgba(47,107,255,.14)"></div>
+            <div style="height:56px;background:#F6F8FF;border:1px solid #D8E2FF;border-radius:7px"></div>
+          </div>
+          <div style="flex:1;background:#15172B;border-radius:8px;padding:12px">
+            <div style="height:7px;width:60px;background:#5C86FF;border-radius:4px;margin-bottom:8px"></div>
+            <div style="height:6px;background:#ffffff22;border-radius:3px;margin-bottom:5px"></div>
+            <div style="height:6px;background:#ffffff22;border-radius:3px;width:80%;margin-bottom:12px"></div>
+            <div style="height:6px;width:50px;background:#5C86FF;border-radius:3px;margin-bottom:8px"></div>
+            <div style="height:6px;background:#ffffff18;border-radius:3px;margin-bottom:5px"></div>
+            <div style="height:6px;background:#ffffff18;border-radius:3px;width:70%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TEMPLATE SHOWCASE ===== -->
+  <div style="max-width:1140px;margin:0 auto;padding:64px 32px 40px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px">
+      <div>
+        <div style="font-family:JetBrains Mono;font-size:12px;color:#2F6BFF;letter-spacing:0.08em;margin-bottom:12px">TEMPLATES</div>
+        <h2 style="font-family:Newsreader;font-size:42px;font-weight:500;letter-spacing:-0.02em;line-height:1.1">Professioneel, op elk niveau</h2>
+      </div>
+      <span style="font-size:14px;font-weight:600;color:#2F6BFF;cursor:pointer;white-space:nowrap">Bekijk alle 28 →</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+      <!-- t1 Modern -->
+      <div class="lp-card" style="background:#fff;border:1px solid #E8E5DD;border-radius:13px;overflow:hidden;box-shadow:0 1px 3px rgba(20,20,30,.05);cursor:pointer">
+        <div style="aspect-ratio:3/4;background:#fff;padding:14px">
+          <div style="background:#15172B;border-radius:3px;height:42px;margin:-14px -14px 10px;padding:10px 14px"><div style="height:8px;width:70px;background:#fff;border-radius:3px;margin-bottom:4px"></div><div style="height:5px;width:50px;background:#9DB6FF;border-radius:3px"></div></div>
+          <div style="height:5px;width:40px;background:#2F6BFF;border-radius:2px;margin-bottom:6px"></div>
+          <div style="height:5px;background:#EFEDE7;border-radius:2px;margin-bottom:4px"></div><div style="height:5px;background:#EFEDE7;border-radius:2px;width:85%;margin-bottom:12px"></div>
+          <div style="height:5px;width:50px;background:#2F6BFF;border-radius:2px;margin-bottom:6px"></div>
+          <div style="height:5px;background:#EFEDE7;border-radius:2px;margin-bottom:4px"></div><div style="height:5px;background:#EFEDE7;border-radius:2px;width:75%"></div>
+        </div>
+        <div style="padding:12px 14px;border-top:1px solid #F0EEE9;display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600">Modern</span><span style="font-size:11px;color:#2F6BFF;font-weight:600;background:#EBF0FF;padding:3px 7px;border-radius:5px">Populair</span></div>
+      </div>
+      <!-- t2 Classic -->
+      <div class="lp-card" style="background:#fff;border:1px solid #E8E5DD;border-radius:13px;overflow:hidden;box-shadow:0 1px 3px rgba(20,20,30,.05);cursor:pointer">
+        <div style="aspect-ratio:3/4;background:#fff;padding:14px;text-align:center">
+          <div style="height:9px;width:90px;background:#1A1A22;border-radius:3px;margin:4px auto 4px"></div>
+          <div style="height:5px;width:60px;background:#9A98A2;border-radius:2px;margin:0 auto 10px"></div>
+          <div style="height:1px;background:#DDD9CF;margin-bottom:10px"></div>
+          <div style="height:5px;background:#EFEDE7;border-radius:2px;margin-bottom:4px"></div><div style="height:5px;background:#EFEDE7;border-radius:2px;margin-bottom:4px"></div><div style="height:5px;background:#EFEDE7;border-radius:2px;width:80%;margin:0 auto 12px"></div>
+          <div style="height:5px;width:50px;background:#1A1A22;border-radius:2px;margin:0 auto 6px"></div>
+          <div style="height:5px;background:#EFEDE7;border-radius:2px;margin-bottom:4px"></div><div style="height:5px;background:#EFEDE7;border-radius:2px;width:70%;margin:0 auto"></div>
+        </div>
+        <div style="padding:12px 14px;border-top:1px solid #F0EEE9"><span style="font-size:13px;font-weight:600">Classic</span></div>
+      </div>
+      <!-- t3 Sidebar -->
+      <div class="lp-card" style="background:#fff;border:1px solid #E8E5DD;border-radius:13px;overflow:hidden;box-shadow:0 1px 3px rgba(20,20,30,.05);cursor:pointer">
+        <div style="aspect-ratio:3/4;background:#fff;display:flex">
+          <div style="width:38%;background:#15172B;padding:12px 10px"><div style="width:26px;height:26px;border-radius:50%;background:#5C86FF;margin:0 auto 10px"></div><div style="height:4px;background:#ffffff33;border-radius:2px;margin-bottom:4px"></div><div style="height:4px;background:#ffffff33;border-radius:2px;width:70%;margin-bottom:12px"></div><div style="height:4px;background:#5C86FF;border-radius:2px;width:50%;margin-bottom:5px"></div><div style="height:4px;background:#ffffff22;border-radius:2px;margin-bottom:3px"></div><div style="height:4px;background:#ffffff22;border-radius:2px;width:80%"></div></div>
+          <div style="flex:1;padding:12px 12px"><div style="height:5px;width:50px;background:#2F6BFF;border-radius:2px;margin-bottom:7px"></div><div style="height:4px;background:#EFEDE7;border-radius:2px;margin-bottom:3px"></div><div style="height:4px;background:#EFEDE7;border-radius:2px;width:85%;margin-bottom:12px"></div><div style="height:5px;width:50px;background:#2F6BFF;border-radius:2px;margin-bottom:7px"></div><div style="height:4px;background:#EFEDE7;border-radius:2px;margin-bottom:3px"></div><div style="height:4px;background:#EFEDE7;border-radius:2px;width:70%"></div></div>
+        </div>
+        <div style="padding:12px 14px;border-top:1px solid #F0EEE9"><span style="font-size:13px;font-weight:600">Sidebar</span></div>
+      </div>
+      <!-- t4 Minimal -->
+      <div class="lp-card" style="background:#fff;border:1px solid #E8E5DD;border-radius:13px;overflow:hidden;box-shadow:0 1px 3px rgba(20,20,30,.05);cursor:pointer">
+        <div style="aspect-ratio:3/4;background:#fff;padding:16px">
+          <div style="height:10px;width:80px;background:#1A1A22;border-radius:3px;margin-bottom:3px"></div>
+          <div style="height:5px;width:55px;background:#9A98A2;border-radius:2px;margin-bottom:16px"></div>
+          <div style="height:4px;width:42px;background:#1A1A22;border-radius:2px;margin-bottom:7px;letter-spacing:1px"></div>
+          <div style="height:4px;background:#EFEDE7;border-radius:2px;margin-bottom:4px"></div><div style="height:4px;background:#EFEDE7;border-radius:2px;width:90%;margin-bottom:14px"></div>
+          <div style="height:4px;width:42px;background:#1A1A22;border-radius:2px;margin-bottom:7px"></div>
+          <div style="height:4px;background:#EFEDE7;border-radius:2px;margin-bottom:4px"></div><div style="height:4px;background:#EFEDE7;border-radius:2px;width:75%"></div>
+        </div>
+        <div style="padding:12px 14px;border-top:1px solid #F0EEE9"><span style="font-size:13px;font-weight:600">Minimalist</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PRICING ===== -->
+  <div style="max-width:1140px;margin:0 auto;padding:72px 32px 40px">
+    <div style="text-align:center;max-width:560px;margin:0 auto 44px">
+      <div style="font-family:JetBrains Mono;font-size:12px;color:#2F6BFF;letter-spacing:0.08em;margin-bottom:12px">PRIJZEN</div>
+      <h2 style="font-family:Newsreader;font-size:42px;font-weight:500;letter-spacing:-0.02em;line-height:1.1">Begin gratis. Upgrade als je klaar bent.</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:780px;margin:0 auto">
+      <div style="background:#fff;border:1px solid #E8E5DD;border-radius:18px;padding:30px;box-shadow:0 1px 3px rgba(20,20,30,.05)">
+        <div style="font-size:14px;font-weight:600;color:#6B6A77">Free</div>
+        <div style="display:flex;align-items:baseline;gap:4px;margin:12px 0 4px"><span style="font-family:Newsreader;font-size:46px;font-weight:500">€0</span><span style="font-size:14px;color:#9A98A2">/maand</span></div>
+        <p style="font-size:13.5px;color:#6B6A77;margin-bottom:22px">Perfect om te starten en je eerste cv te maken.</p>
+        <button class="lp-btn" style="width:100%;background:#fff;color:#1A1A22;font-size:14px;font-weight:600;padding:12px;border-radius:10px;border:1px solid #DDD9CF;margin-bottom:22px">Gratis beginnen</button>
+        <div style="display:flex;flex-direction:column;gap:11px">
+          <div style="display:flex;gap:10px;font-size:13.5px;color:#3b3a42"><span style="color:#1E9E6A">✓</span> 1 cv</div>
+          <div style="display:flex;gap:10px;font-size:13.5px;color:#3b3a42"><span style="color:#1E9E6A">✓</span> 5 basistemplates</div>
+          <div style="display:flex;gap:10px;font-size:13.5px;color:#3b3a42"><span style="color:#1E9E6A">✓</span> PDF-export met watermerk</div>
+          <div style="display:flex;gap:10px;font-size:13.5px;color:#9A98A2"><span style="color:#CFCBC2">✓</span> Beperkte AI-suggesties</div>
+        </div>
+      </div>
+      <div style="background:#15172B;border-radius:18px;padding:30px;position:relative;overflow:hidden;box-shadow:0 20px 50px -16px rgba(20,20,30,.4)">
+        <div style="position:absolute;right:-50px;top:-50px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,#2F6BFF44,transparent 70%)"></div>
+        <div style="position:relative;z-index:1">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:14px;font-weight:600;color:#9DB6FF">Pro</span><span style="font-size:11px;font-weight:600;color:#15172B;background:#5C86FF;padding:4px 10px;border-radius:6px">Aanbevolen</span></div>
+          <div style="display:flex;align-items:baseline;gap:4px;margin:12px 0 4px"><span style="font-family:Newsreader;font-size:46px;font-weight:500;color:#fff">€9</span><span style="font-size:14px;color:#A4A6BC">/maand</span></div>
+          <p style="font-size:13.5px;color:#B8BACB;margin-bottom:22px">Alles wat je nodig hebt om de baan te krijgen.</p>
+          <button class="lp-btn" style="width:100%;background:#2F6BFF;color:#fff;font-size:14px;font-weight:600;padding:12px;border-radius:10px;margin-bottom:22px;box-shadow:0 4px 16px -4px rgba(47,107,255,.6)">Word Pro</button>
+          <div style="display:flex;flex-direction:column;gap:11px">
+            <div style="display:flex;gap:10px;font-size:13.5px;color:#E8E8F0"><span style="color:#5C86FF">✓</span> Onbeperkt cv's</div>
+            <div style="display:flex;gap:10px;font-size:13.5px;color:#E8E8F0"><span style="color:#5C86FF">✓</span> Alle 28 premium templates</div>
+            <div style="display:flex;gap:10px;font-size:13.5px;color:#E8E8F0"><span style="color:#5C86FF">✓</span> Onbeperkte AI &amp; tailoring</div>
+            <div style="display:flex;gap:10px;font-size:13.5px;color:#E8E8F0"><span style="color:#5C86FF">✓</span> Cover letters + DOCX-export</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <div style="max-width:1140px;margin:0 auto;padding:64px 32px 40px">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <div style="background:#fff;border:1px solid #E8E5DD;border-radius:16px;padding:24px;box-shadow:0 1px 3px rgba(20,20,30,.05)">
+        <div style="font-size:15px;line-height:1.55;color:#1A1A22;margin-bottom:18px">"Binnen 15 minuten een cv waar ik trots op was. De ATS-score gaf me eindelijk vertrouwen."</div>
+        <div style="display:flex;align-items:center;gap:11px"><div style="width:36px;height:36px;border-radius:50%;background:#EBF0FF;color:#2F6BFF;display:flex;align-items:center;justify-content:center;font-weight:600;font-family:Newsreader">MV</div><div><div style="font-size:13px;font-weight:600">Mark V.</div><div style="font-size:12px;color:#9A98A2">Data Analist</div></div></div>
+      </div>
+      <div style="background:#fff;border:1px solid #E8E5DD;border-radius:16px;padding:24px;box-shadow:0 1px 3px rgba(20,20,30,.05)">
+        <div style="font-size:15px;line-height:1.55;color:#1A1A22;margin-bottom:18px">"De AI herschreef mijn saaie bullets tot iets dat écht overtuigt. Drie gesprekken in een week."</div>
+        <div style="display:flex;align-items:center;gap:11px"><div style="width:36px;height:36px;border-radius:50%;background:#E6F4EE;color:#1E9E6A;display:flex;align-items:center;justify-content:center;font-weight:600;font-family:Newsreader">LK</div><div><div style="font-size:13px;font-weight:600">Lisa K.</div><div style="font-size:12px;color:#9A98A2">Marketeer</div></div></div>
+      </div>
+      <div style="background:#fff;border:1px solid #E8E5DD;border-radius:16px;padding:24px;box-shadow:0 1px 3px rgba(20,20,30,.05)">
+        <div style="font-size:15px;line-height:1.55;color:#1A1A22;margin-bottom:18px">"Als starter wist ik niet waar te beginnen. De LinkedIn-import deed het zware werk voor me."</div>
+        <div style="display:flex;align-items:center;gap:11px"><div style="width:36px;height:36px;border-radius:50%;background:#FBF0DE;color:#D98A1E;display:flex;align-items:center;justify-content:center;font-weight:600;font-family:Newsreader">SK</div><div><div style="font-size:13px;font-weight:600">Sem K.</div><div style="font-size:12px;color:#9A98A2">Recent afgestudeerd</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FAQ ===== -->
+  <div style="max-width:760px;margin:0 auto;padding:64px 32px 40px">
+    <h2 style="font-family:Newsreader;font-size:36px;font-weight:500;letter-spacing:-0.02em;text-align:center;margin-bottom:36px">Veelgestelde vragen</h2>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:#fff;border:1px solid #E8E5DD;border-radius:13px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:15px;font-weight:600">Is mijn cv echt ATS-proof?</span><span style="color:#2F6BFF;font-size:18px">−</span></div>
+      <div style="background:#fff;border:1px solid #E8E5DD;border-radius:13px;padding:0 20px 18px;margin-top:-12px"><p style="font-size:14px;line-height:1.6;color:#6B6A77;padding-top:4px">Ja. Elke template is getest tegen de meest gebruikte ATS-systemen. De live score laat zien waar je staat en hoe je verbetert.</p></div>
+      <div style="background:#fff;border:1px solid #E8E5DD;border-radius:13px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:15px;font-weight:600">Kan ik mijn LinkedIn importeren?</span><span style="color:#9A98A2;font-size:18px">+</span></div>
+      <div style="background:#fff;border:1px solid #E8E5DD;border-radius:13px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:15px;font-weight:600">Wat kost Pro en kan ik opzeggen?</span><span style="color:#9A98A2;font-size:18px">+</span></div>
+      <div style="background:#fff;border:1px solid #E8E5DD;border-radius:13px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:15px;font-weight:600">In welke talen werkt CVhero?</span><span style="color:#9A98A2;font-size:18px">+</span></div>
+    </div>
+  </div>
+
+  <!-- ===== CTA BAND ===== -->
+  <div style="max-width:1140px;margin:0 auto;padding:48px 32px 80px">
+    <div style="background:#15172B;border-radius:24px;padding:56px;text-align:center;position:relative;overflow:hidden">
+      <div style="position:absolute;left:50%;top:-100px;transform:translateX(-50%);width:400px;height:300px;border-radius:50%;background:radial-gradient(circle,#2F6BFF33,transparent 70%)"></div>
+      <div style="position:relative;z-index:1">
+        <h2 style="font-family:Newsreader;font-size:42px;font-weight:500;color:#fff;letter-spacing:-0.02em;line-height:1.1;max-width:560px;margin:0 auto">Klaar om op te vallen?</h2>
+        <p style="font-size:17px;color:#B8BACB;margin-top:16px;max-width:440px;margin-left:auto;margin-right:auto">Maak vandaag nog je cv. Gratis, geen creditcard nodig.</p>
+        <button class="lp-btn" style="background:#2F6BFF;color:#fff;font-size:16px;font-weight:600;padding:15px 28px;border-radius:12px;margin-top:28px;box-shadow:0 4px 20px -4px rgba(47,107,255,.6)">Maak gratis je cv →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <div style="border-top:1px solid #EDEAE3;background:#fff">
+    <div style="max-width:1140px;margin:0 auto;padding:48px 32px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><div style="width:26px;height:26px;border-radius:7px;background:#15172B;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:14px;font-family:Newsreader">C</div><span style="font-weight:600;font-size:15px">CVhero</span></div>
+        <p style="font-size:13px;color:#9A98A2;line-height:1.55;max-width:240px">AI-gedreven cv-builder. Sneller schrijven, slimmer solliciteren.</p>
+      </div>
+      <div><div style="font-size:12px;font-weight:600;color:#1A1A22;margin-bottom:14px">Product</div><div style="display:flex;flex-direction:column;gap:9px;font-size:13px;color:#6B6A77"><span>Functies</span><span>Templates</span><span>Prijzen</span><span>Cover letters</span></div></div>
+      <div><div style="font-size:12px;font-weight:600;color:#1A1A22;margin-bottom:14px">Bedrijf</div><div style="display:flex;flex-direction:column;gap:9px;font-size:13px;color:#6B6A77"><span>Over ons</span><span>Blog</span><span>Carrière</span><span>Contact</span></div></div>
+      <div><div style="font-size:12px;font-weight:600;color:#1A1A22;margin-bottom:14px">Juridisch</div><div style="display:flex;flex-direction:column;gap:9px;font-size:13px;color:#6B6A77"><span>Privacy</span><span>Voorwaarden</span><span>Cookies</span></div></div>
+    </div>
+    <div style="border-top:1px solid #F0EEE9"><div style="max-width:1140px;margin:0 auto;padding:20px 32px;display:flex;justify-content:space-between;font-size:12px;color:#9A98A2"><span>© 2026 CVhero. Alle rechten voorbehouden.</span><span>Gemaakt in Amsterdam 🇳🇱</span></div></div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

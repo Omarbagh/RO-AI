@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#e7e5df;font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;color:#1A1A22}
+  .a-btn{transition:all .16s cubic-bezier(.4,0,.2,1);cursor:pointer;border:none;font-family:inherit}
+  .a-btn:active{transform:translateY(1px)}
+  .path-card{transition:transform .18s,box-shadow .18s,border-color .18s;cursor:pointer}
+  .path-card:hover{transform:translateY(-4px);box-shadow:0 20px 48px -18px rgba(20,20,30,.28);border-color:#2F6BFF}
+</style>
+</helmet>
+
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df">
+  <div style="display:flex;gap:48px;align-items:flex-start">
+
+    <!-- ============ FRAME 1: AUTH ============ -->
+    <div style="flex:none;width:1040px">
+      <div style="font-size:13px;font-weight:600;color:#23221f;margin-bottom:14px">Auth — Aanmelden</div>
+      <div style="background:#fff;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.08),0 12px 40px -12px rgba(0,0,0,.12);overflow:hidden;display:flex;height:660px">
+
+        <!-- brand panel -->
+        <div style="width:46%;background:#15172B;padding:44px 40px;display:flex;flex-direction:column;position:relative;overflow:hidden">
+          <div style="position:absolute;right:-80px;top:-40px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#2F6BFF33,transparent 70%)"></div>
+          <div style="position:relative;display:flex;align-items:center;gap:10px">
+            <div style="width:28px;height:28px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;color:#15172B;font-weight:600;font-size:15px;font-family:Newsreader">C</div>
+            <span style="font-weight:600;font-size:16px;color:#fff">CVhero</span>
+          </div>
+          <div style="flex:1"></div>
+          <div style="position:relative">
+            <div style="font-family:Newsreader;font-size:34px;font-weight:500;color:#fff;line-height:1.12;letter-spacing:-0.015em">Je volgende baan begint met een <span style="font-style:italic;color:#9DB6FF">sterk</span> cv.</div>
+            <div style="margin-top:28px;background:#ffffff0f;border:1px solid #ffffff1f;border-radius:14px;padding:18px">
+              <p style="font-size:14px;color:#E8E8F0;line-height:1.55">"Binnen 15 minuten een cv waar ik trots op was. De ATS-score gaf me eindelijk vertrouwen."</p>
+              <div style="display:flex;align-items:center;gap:10px;margin-top:14px"><div style="width:32px;height:32px;border-radius:50%;background:#2F6BFF;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px;font-family:Newsreader">MV</div><div><div style="font-size:13px;font-weight:600;color:#fff">Mark V.</div><div style="font-size:11px;color:#A4A6BC">Data Analist · aangenomen bij Adyen</div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- form panel -->
+        <div style="flex:1;padding:48px 56px;display:flex;flex-direction:column;justify-content:center">
+          <div style="max-width:340px;margin:0 auto;width:100%">
+            <h1 style="font-family:Newsreader;font-size:30px;font-weight:500;letter-spacing:-0.015em">Maak je account</h1>
+            <p style="font-size:14px;color:#6B6A77;margin-top:5px;margin-bottom:26px">Gratis. Geen creditcard nodig.</p>
+
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px">
+              <button class="a-btn" style="background:#fff;border:1px solid #DDD9CF;color:#1A1A22;font-size:14px;font-weight:600;padding:11px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:10px"><span style="width:18px;height:18px;border-radius:50%;background:conic-gradient(#EA4335,#FBBC05,#34A853,#4285F4);display:inline-block"></span>Doorgaan met Google</button>
+              <button class="a-btn" style="background:#fff;border:1px solid #DDD9CF;color:#1A1A22;font-size:14px;font-weight:600;padding:11px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:10px"><span style="font-size:16px"></span>Doorgaan met LinkedIn</button>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px"><div style="flex:1;height:1px;background:#E8E5DD"></div><span style="font-size:12px;color:#9A98A2">of met e-mail</span><div style="flex:1;height:1px;background:#E8E5DD"></div></div>
+
+            <label style="font-size:13px;font-weight:500;color:#3b3a42;display:block;margin-bottom:7px">E-mailadres</label>
+            <div style="font-size:14px;color:#1A1A22;background:#fff;border:1px solid #DDD9CF;border-radius:10px;padding:11px 13px;margin-bottom:14px">sanne.bakker@email.nl</div>
+            <label style="font-size:13px;font-weight:500;color:#3b3a42;display:block;margin-bottom:7px">Wachtwoord</label>
+            <div style="font-size:14px;color:#1A1A22;background:#fff;border:1px solid #2F6BFF;border-radius:10px;padding:11px 13px;margin-bottom:8px;box-shadow:0 0 0 3px rgba(47,107,255,.16);display:flex;justify-content:space-between;align-items:center"><span style="letter-spacing:2px">••••••••••</span><span style="font-size:12px;color:#2F6BFF;font-weight:500;cursor:pointer">Toon</span></div>
+            <div style="font-size:12px;color:#1E9E6A;margin-bottom:20px;display:flex;align-items:center;gap:6px">✓ Sterk wachtwoord</div>
+
+            <button class="a-btn" style="width:100%;background:#2F6BFF;color:#fff;font-size:15px;font-weight:600;padding:13px;border-radius:11px;box-shadow:0 4px 16px -4px rgba(47,107,255,.5)">Account aanmaken</button>
+            <p style="font-size:13px;color:#6B6A77;text-align:center;margin-top:18px">Al een account? <span style="color:#2F6BFF;font-weight:600;cursor:pointer">Inloggen</span></p>
+            <p style="font-size:11px;color:#9A98A2;text-align:center;margin-top:18px;line-height:1.5">Door verder te gaan ga je akkoord met onze <span style="text-decoration:underline">Voorwaarden</span> en <span style="text-decoration:underline">Privacy</span>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ FRAME 2: ONBOARDING ============ -->
+    <div style="flex:none;width:1040px">
+      <div style="font-size:13px;font-weight:600;color:#23221f;margin-bottom:14px">Onboarding — Kies je startpunt</div>
+      <div style="background:#FBFAF8;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.08),0 12px 40px -12px rgba(0,0,0,.12);overflow:hidden;height:660px;position:relative">
+
+        <!-- top bar -->
+        <div style="height:56px;background:#fff;border-bottom:1px solid #E8E5DD;display:flex;align-items:center;padding:0 24px;gap:12px">
+          <div style="width:28px;height:28px;border-radius:8px;background:#15172B;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:15px;font-family:Newsreader">C</div>
+          <span style="font-weight:600;font-size:15px">CVhero</span>
+          <div style="flex:1"></div>
+          <!-- step indicator -->
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:#9A98A2"><span style="width:22px;height:22px;border-radius:50%;background:#2F6BFF;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600">1</span><span style="color:#1A1A22;font-weight:500">Start</span><span style="width:24px;height:1px;background:#DDD9CF"></span><span style="width:22px;height:22px;border-radius:50%;background:#F0EEE9;color:#9A98A2;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600">2</span><span>Gegevens</span><span style="width:24px;height:1px;background:#DDD9CF"></span><span style="width:22px;height:22px;border-radius:50%;background:#F0EEE9;color:#9A98A2;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600">3</span><span>Template</span></div>
+          <div style="flex:1"></div>
+          <span style="font-size:13px;color:#9A98A2;cursor:pointer">Overslaan</span>
+        </div>
+
+        <div style="padding:52px 48px;text-align:center">
+          <h1 style="font-family:Newsreader;font-size:36px;font-weight:500;letter-spacing:-0.02em">Hoe wil je beginnen?</h1>
+          <p style="font-size:15px;color:#6B6A77;margin-top:8px">Kies een startpunt — je kunt later altijd alles aanpassen.</p>
+
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px;max-width:860px;margin-left:auto;margin-right:auto">
+
+            <!-- scratch -->
+            <div class="path-card" style="background:#fff;border:1px solid #E8E5DD;border-radius:16px;padding:28px 22px;text-align:left;box-shadow:0 1px 3px rgba(20,20,30,.05)">
+              <div style="width:48px;height:48px;border-radius:13px;background:#EBF0FF;display:flex;align-items:center;justify-content:center;color:#2F6BFF;font-size:22px;margin-bottom:18px">✎</div>
+              <h3 style="font-size:17px;font-weight:600;margin-bottom:7px">Begin from scratch</h3>
+              <p style="font-size:13.5px;color:#6B6A77;line-height:1.5">Bouw je cv stap voor stap op met AI die meeschrijft.</p>
+              <div style="margin-top:18px;font-size:13px;font-weight:600;color:#2F6BFF;display:flex;align-items:center;gap:6px">Start leeg →</div>
+            </div>
+
+            <!-- upload (recommended) -->
+            <div class="path-card" style="background:#fff;border:2px solid #2F6BFF;border-radius:16px;padding:28px 22px;text-align:left;box-shadow:0 12px 32px -14px rgba(47,107,255,.4);position:relative">
+              <div style="position:absolute;top:-11px;left:22px;font-size:11px;font-weight:600;color:#fff;background:#2F6BFF;padding:3px 10px;border-radius:6px">Snelst</div>
+              <div style="width:48px;height:48px;border-radius:13px;background:#15172B;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;margin-bottom:18px">↑</div>
+              <h3 style="font-size:17px;font-weight:600;margin-bottom:7px">Upload bestaande cv</h3>
+              <p style="font-size:13.5px;color:#6B6A77;line-height:1.5">PDF of Word — wij lezen het in en zetten het meteen om.</p>
+              <div style="margin-top:18px;border:1.5px dashed #C7D4F5;background:#F6F8FF;border-radius:10px;padding:14px;text-align:center"><div style="font-size:12.5px;color:#2F6BFF;font-weight:600">Sleep je bestand hierheen</div><div style="font-size:11px;color:#9A98A2;margin-top:3px">PDF, DOCX · max 5MB</div></div>
+            </div>
+
+            <!-- linkedin -->
+            <div class="path-card" style="background:#fff;border:1px solid #E8E5DD;border-radius:16px;padding:28px 22px;text-align:left;box-shadow:0 1px 3px rgba(20,20,30,.05)">
+              <div style="width:48px;height:48px;border-radius:13px;background:#E6F4EE;display:flex;align-items:center;justify-content:center;color:#1E9E6A;font-size:20px;margin-bottom:18px">in</div>
+              <h3 style="font-size:17px;font-weight:600;margin-bottom:7px">Import LinkedIn</h3>
+              <p style="font-size:13.5px;color:#6B6A77;line-height:1.5">Koppel je profiel en haal je ervaring automatisch op.</p>
+              <div style="margin-top:18px;font-size:13px;font-weight:600;color:#2F6BFF;display:flex;align-items:center;gap:6px">Koppel profiel →</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

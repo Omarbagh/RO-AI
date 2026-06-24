@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:#FBFAF8;font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;color:#1A1A22;overflow:hidden}
+  @keyframes edspin{to{transform:rotate(360deg)}}
+  @keyframes edpulse{0%,100%{opacity:1}50%{opacity:.45}}
+  @keyframes edrise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .ed-scroll{overflow-y:auto}
+  .ed-scroll::-webkit-scrollbar{width:9px}
+  .ed-scroll::-webkit-scrollbar-thumb{background:#E0DCD3;border-radius:9px;border:3px solid transparent;background-clip:content-box}
+  .ed-nav{transition:all .14s ease;cursor:pointer}
+  .ed-nav:hover{background:#F4F2ED}
+  .ed-btn{transition:all .16s cubic-bezier(.4,0,.2,1);cursor:pointer;border:none;font-family:inherit}
+  .ed-btn:active{transform:translateY(1px)}
+  .ed-field{transition:border-color .14s,box-shadow .14s}
+  .ed-tab{cursor:pointer;transition:all .14s}
+</style>
+</helmet>
+
+<div style="height:100vh;display:flex;flex-direction:column;background:#FBFAF8">
+
+  <!-- ============ TOP BAR ============ -->
+  <div style="height:56px;flex:none;background:#fff;border-bottom:1px solid #E8E5DD;display:flex;align-items:center;padding:0 16px;gap:14px;z-index:20">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:28px;height:28px;border-radius:8px;background:#15172B;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:15px;font-family:Newsreader">C</div>
+    </div>
+    <div style="width:1px;height:24px;background:#E8E5DD"></div>
+    <div style="display:flex;align-items:center;gap:8px;color:#9A98A2;font-size:13px">
+      <span class="ed-nav" style="padding:4px 8px;border-radius:6px">Dashboard</span>
+      <span style="color:#CFCBC2">/</span>
+      <span style="color:#1A1A22;font-weight:600;font-size:14px">Senior Product Marketeer</span>
+      <span style="color:#9A98A2;cursor:pointer;font-size:12px">✎</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#1E9E6A;margin-left:4px">
+      <span style="width:6px;height:6px;border-radius:50%;background:#1E9E6A;display:inline-block"></span>Opgeslagen
+    </div>
+
+    <div style="flex:1"></div>
+
+    <div style="display:flex;align-items:center;gap:4px;color:#6B6A77">
+      <span class="ed-nav" style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px" title="Ongedaan maken">↺</span>
+      <span class="ed-nav" style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px" title="Opnieuw">↻</span>
+    </div>
+    <button class="ed-btn" style="background:#fff;color:#1A1A22;font-size:13px;font-weight:600;padding:8px 14px;border-radius:8px;border:1px solid #DDD9CF;display:flex;align-items:center;gap:7px">
+      <span style="display:inline-flex;gap:2px"><span style="width:5px;height:11px;background:#9A98A2;border-radius:1px;display:inline-block"></span><span style="width:5px;height:11px;background:#CFCBC2;border-radius:1px;display:inline-block"></span></span>
+      Template
+    </button>
+    <button class="ed-btn" style="background:#15172B;color:#fff;font-size:13px;font-weight:600;padding:8px 16px;border-radius:8px;display:flex;align-items:center;gap:7px">
+      <span style="font-size:13px">↓</span> Exporteer
+    </button>
+    <div style="width:1px;height:24px;background:#E8E5DD;margin:0 2px"></div>
+    <div style="width:32px;height:32px;border-radius:50%;background:#EBF0FF;display:flex;align-items:center;justify-content:center;color:#2F6BFF;font-weight:600;font-size:13px;font-family:Newsreader">SB</div>
+  </div>
+
+  <!-- ============ MAIN ============ -->
+  <div style="flex:1;display:flex;min-height:0">
+
+    <!-- ---- SECTION NAV ---- -->
+    <div class="ed-scroll" style="width:236px;flex:none;background:#fff;border-right:1px solid #E8E5DD;padding:18px 14px">
+      <div style="font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#9A98A2;padding:0 8px;margin-bottom:12px">Secties</div>
+
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <div class="ed-nav" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px">
+          <span style="width:24px;height:24px;border-radius:7px;background:#E6F4EE;color:#1E9E6A;display:flex;align-items:center;justify-content:center;font-size:13px">✓</span>
+          <span style="font-size:13.5px;font-weight:500;color:#3b3a42;flex:1">Persoonlijk</span>
+        </div>
+        <div class="ed-nav" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px">
+          <span style="width:24px;height:24px;border-radius:7px;background:#E6F4EE;color:#1E9E6A;display:flex;align-items:center;justify-content:center;font-size:13px">✓</span>
+          <span style="font-size:13.5px;font-weight:500;color:#3b3a42;flex:1">Profiel</span>
+        </div>
+        <!-- active -->
+        <div style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px;background:#EBF0FF;border:1px solid #D8E2FF">
+          <span style="width:24px;height:24px;border-radius:7px;background:#2F6BFF;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">3</span>
+          <span style="font-size:13.5px;font-weight:600;color:#15172B;flex:1">Werkervaring</span>
+          <span style="font-size:11px;color:#2F6BFF;font-weight:600">2</span>
+        </div>
+        <div class="ed-nav" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px">
+          <span style="width:24px;height:24px;border-radius:7px;background:#FBF0DE;color:#D98A1E;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600">!</span>
+          <span style="font-size:13.5px;font-weight:500;color:#3b3a42;flex:1">Opleiding</span>
+        </div>
+        <div class="ed-nav" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px">
+          <span style="width:24px;height:24px;border-radius:7px;background:#E6F4EE;color:#1E9E6A;display:flex;align-items:center;justify-content:center;font-size:13px">✓</span>
+          <span style="font-size:13.5px;font-weight:500;color:#3b3a42;flex:1">Vaardigheden</span>
+        </div>
+        <div class="ed-nav" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px">
+          <span style="width:24px;height:24px;border-radius:7px;background:#F0EEE9;color:#9A98A2;display:flex;align-items:center;justify-content:center;font-size:12px">+</span>
+          <span style="font-size:13.5px;font-weight:500;color:#9A98A2;flex:1">Talen</span>
+        </div>
+        <div class="ed-nav" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:9px">
+          <span style="width:24px;height:24px;border-radius:7px;background:#F0EEE9;color:#9A98A2;display:flex;align-items:center;justify-content:center;font-size:12px">+</span>
+          <span style="font-size:13.5px;font-weight:500;color:#9A98A2;flex:1">Certificaten</span>
+        </div>
+      </div>
+
+      <div style="height:1px;background:#F0EEE9;margin:16px 4px"></div>
+
+      <button class="ed-btn" style="width:100%;background:#F4F2ED;color:#3b3a42;font-size:13px;font-weight:600;padding:10px;border-radius:9px;display:flex;align-items:center;justify-content:center;gap:7px">
+        <span style="font-size:15px;color:#2F6BFF">+</span> Sectie toevoegen
+      </button>
+
+      <div style="margin-top:18px;background:#15172B;border-radius:12px;padding:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:12px;color:#A4A6BC">CV compleet</span><span style="font-size:12px;font-weight:600;color:#fff">70%</span></div>
+        <div style="height:6px;border-radius:3px;background:#2a2d45;overflow:hidden"><div style="width:70%;height:100%;background:#5C86FF;border-radius:3px"></div></div>
+        <div style="font-size:11px;color:#A4A6BC;margin-top:9px;line-height:1.45">Voeg je opleiding toe om af te ronden.</div>
+      </div>
+    </div>
+
+    <!-- ---- FORM PANEL ---- -->
+    <div class="ed-scroll" style="width:412px;flex:none;border-right:1px solid #E8E5DD;padding:28px 28px 60px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+        <div>
+          <h2 style="font-family:Newsreader;font-size:26px;font-weight:500;letter-spacing:-0.01em">Werkervaring</h2>
+          <p style="font-size:13px;color:#9A98A2;margin-top:3px">Begin met je meest recente functie.</p>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#2F6BFF;background:#EBF0FF;padding:5px 10px;border-radius:7px;display:flex;align-items:center;gap:5px;white-space:nowrap">✦ AI vult aan</span>
+      </div>
+
+      <!-- experience card 1 (expanded) -->
+      <div style="border:1px solid #DDD9CF;border-radius:14px;background:#fff;box-shadow:0 1px 3px rgba(20,20,30,.04);margin-top:20px;overflow:hidden">
+        <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;background:#F4F2ED;border-bottom:1px solid #E8E5DD">
+          <span style="color:#9A98A2;cursor:grab;font-size:14px">⠿</span>
+          <div style="flex:1"><div style="font-size:14px;font-weight:600">Senior Marketeer · Mollie</div><div style="font-size:12px;color:#9A98A2">2021 — heden</div></div>
+          <span style="color:#9A98A2;font-size:13px;cursor:pointer">▴</span>
+        </div>
+        <div style="padding:16px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+            <div>
+              <label style="font-size:12px;font-weight:500;color:#6B6A77;display:block;margin-bottom:6px">Functie</label>
+              <div class="ed-field" style="font-size:13.5px;border:1px solid #DDD9CF;border-radius:8px;padding:9px 11px;background:#fff">Senior Marketeer</div>
+            </div>
+            <div>
+              <label style="font-size:12px;font-weight:500;color:#6B6A77;display:block;margin-bottom:6px">Bedrijf</label>
+              <div class="ed-field" style="font-size:13.5px;border:1px solid #DDD9CF;border-radius:8px;padding:9px 11px;background:#fff">Mollie</div>
+            </div>
+          </div>
+          <div style="margin-bottom:12px">
+            <label style="font-size:12px;font-weight:500;color:#6B6A77;display:block;margin-bottom:6px">Periode</label>
+            <div class="ed-field" style="font-size:13.5px;border:1px solid #DDD9CF;border-radius:8px;padding:9px 11px;background:#fff">jan 2021 — heden</div>
+          </div>
+          <label style="font-size:12px;font-weight:500;color:#6B6A77;display:block;margin-bottom:6px">Beschrijving</label>
+          <div class="ed-field" style="font-size:13.5px;border:1px solid #2F6BFF;border-radius:8px;padding:11px;background:#fff;box-shadow:0 0 0 3px rgba(47,107,255,.14);line-height:1.55;color:#1A1A22">
+            Verantwoordelijk voor de go-to-market van nieuwe betaalproducten. Leidde een team van 6 en liet de activatie met 40% groeien.<span style="border-left:1.5px solid #2F6BFF;margin-left:1px;animation:edpulse 1s infinite"> </span>
+          </div>
+
+          <!-- inline AI suggestion -->
+          <div style="margin-top:10px;border:1px solid #D8E2FF;background:#F6F8FF;border-radius:10px;padding:12px;animation:edrise .25s ease">
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
+              <span style="font-size:12px;color:#2F6BFF">✦</span>
+              <span style="font-size:11.5px;font-weight:600;color:#2F6BFF;letter-spacing:0.02em">AI-suggestie · krachtiger</span>
+            </div>
+            <p style="font-size:13px;color:#3b3a42;line-height:1.55">Stuurde de go-to-market van drie betaalproducten aan en gaf leiding aan een team van zes. <strong style="color:#15172B;background:#E1EAFF;border-radius:3px;padding:0 2px">Verhoogde de activatie met 40% in 12 maanden</strong> via experimentgedreven campagnes.</p>
+            <div style="display:flex;gap:8px;margin-top:11px">
+              <button class="ed-btn" style="background:#2F6BFF;color:#fff;font-size:12px;font-weight:600;padding:7px 13px;border-radius:7px">Vervang</button>
+              <button class="ed-btn" style="background:#fff;color:#3b3a42;font-size:12px;font-weight:600;padding:7px 13px;border-radius:7px;border:1px solid #DDD9CF">Negeer</button>
+            </div>
+          </div>
+
+          <button class="ed-btn" style="margin-top:14px;background:transparent;color:#2F6BFF;font-size:12.5px;font-weight:600;padding:6px 0;display:flex;align-items:center;gap:6px">+ Bullet point toevoegen</button>
+        </div>
+      </div>
+
+      <!-- experience card 2 (collapsed) -->
+      <div style="border:1px solid #DDD9CF;border-radius:14px;background:#fff;box-shadow:0 1px 3px rgba(20,20,30,.04);margin-top:12px">
+        <div style="display:flex;align-items:center;gap:10px;padding:14px 16px">
+          <span style="color:#9A98A2;cursor:grab;font-size:14px">⠿</span>
+          <div style="flex:1"><div style="font-size:14px;font-weight:600">Marketeer · Bol</div><div style="font-size:12px;color:#9A98A2">2018 — 2021</div></div>
+          <span style="color:#9A98A2;font-size:13px;cursor:pointer">▾</span>
+        </div>
+      </div>
+
+      <button class="ed-btn" style="width:100%;margin-top:14px;background:#fff;color:#15172B;font-size:13.5px;font-weight:600;padding:12px;border-radius:11px;border:1.5px dashed #CFCBC2;display:flex;align-items:center;justify-content:center;gap:7px">
+        <span style="font-size:16px;color:#2F6BFF">+</span> Werkervaring toevoegen
+      </button>
+    </div>
+
+    <!-- ---- LIVE PREVIEW ---- -->
+    <div class="ed-scroll" style="flex:1;min-width:0;background:#F4F2ED;padding:32px;display:flex;flex-direction:column;align-items:center">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px;align-self:stretch;justify-content:center">
+        <span style="font-size:12px;color:#9A98A2;font-family:JetBrains Mono">LIVE PREVIEW</span>
+        <span style="font-size:12px;color:#9A98A2">·</span>
+        <span style="font-size:12px;color:#6B6A77">Modern · pagina 1/1</span>
+        <div style="display:inline-flex;background:#fff;border:1px solid #E8E5DD;border-radius:8px;padding:2px;margin-left:8px">
+          <span style="font-size:12px;font-weight:600;padding:4px 9px;border-radius:6px;color:#9A98A2">−</span>
+          <span style="font-size:12px;font-weight:600;padding:4px 9px;color:#3b3a42">100%</span>
+          <span style="font-size:12px;font-weight:600;padding:4px 9px;border-radius:6px;color:#9A98A2">+</span>
+        </div>
+      </div>
+
+      <!-- the resume paper -->
+      <div style="width:520px;flex:none;background:#fff;box-shadow:0 12px 40px -12px rgba(20,20,30,.25);border-radius:3px;overflow:hidden">
+        <!-- header band -->
+        <div style="background:#15172B;color:#fff;padding:34px 40px 28px">
+          <div style="font-family:Newsreader;font-size:30px;font-weight:500;letter-spacing:-0.01em">Sanne Bakker</div>
+          <div style="font-size:14px;color:#9DB6FF;margin-top:4px;font-weight:500">Senior Product Marketeer</div>
+          <div style="display:flex;gap:16px;margin-top:16px;font-size:11.5px;color:#B8BACB;flex-wrap:wrap">
+            <span>sanne.bakker@email.nl</span><span>06 41 22 88 19</span><span>Amsterdam</span><span>linkedin.com/in/sannebakker</span>
+          </div>
+        </div>
+        <div style="padding:28px 40px 40px">
+          <div style="margin-bottom:22px">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;color:#2F6BFF;text-transform:uppercase;margin-bottom:9px">Profiel</div>
+            <p style="font-size:12.5px;line-height:1.6;color:#3b3a42">Product marketeer met 7 jaar ervaring in fintech. Vertaalt complexe producten naar heldere proposities en bouwt go-to-market-strategieën die meetbaar groeien.</p>
+          </div>
+          <div style="margin-bottom:22px">
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;color:#2F6BFF;text-transform:uppercase;margin-bottom:12px">Werkervaring</div>
+            <div style="margin-bottom:16px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:13px;font-weight:600;color:#15172B">Senior Marketeer</span><span style="font-size:11px;color:#9A98A2">2021 — heden</span></div>
+              <div style="font-size:12px;color:#2F6BFF;font-weight:500;margin-bottom:5px">Mollie</div>
+              <p style="font-size:12px;line-height:1.55;color:#4b4a52;background:linear-gradient(90deg,#EBF0FF55,transparent);border-radius:4px">Stuurde de go-to-market van drie betaalproducten aan en gaf leiding aan een team van zes. Verhoogde de activatie met 40% in 12 maanden.</p>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:13px;font-weight:600;color:#15172B">Marketeer</span><span style="font-size:11px;color:#9A98A2">2018 — 2021</span></div>
+              <div style="font-size:12px;color:#2F6BFF;font-weight:500;margin-bottom:5px">Bol</div>
+              <p style="font-size:12px;line-height:1.55;color:#4b4a52">Verantwoordelijk voor lifecycle-campagnes en e-mailmarketing voor 11 miljoen klanten.</p>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;color:#2F6BFF;text-transform:uppercase;margin-bottom:10px">Vaardigheden</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <span style="font-size:11px;color:#3b3a42;background:#F4F2ED;padding:4px 9px;border-radius:5px">Go-to-market</span>
+              <span style="font-size:11px;color:#3b3a42;background:#F4F2ED;padding:4px 9px;border-radius:5px">Positionering</span>
+              <span style="font-size:11px;color:#3b3a42;background:#F4F2ED;padding:4px 9px;border-radius:5px">A/B-testing</span>
+              <span style="font-size:11px;color:#3b3a42;background:#F4F2ED;padding:4px 9px;border-radius:5px">SQL</span>
+              <span style="font-size:11px;color:#3b3a42;background:#F4F2ED;padding:4px 9px;border-radius:5px">Teamleiding</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="height:32px;flex:none"></div>
+    </div>
+
+    <!-- ---- AI PANEL ---- -->
+    <div class="ed-scroll" style="width:316px;flex:none;background:#fff;border-left:1px solid #E8E5DD;padding:0">
+      <div style="padding:18px 20px 0">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:16px">
+          <div style="width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,#2F6BFF,#5C86FF);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px">✦</div>
+          <div style="font-weight:600;font-size:15px">AI-assistent</div>
+        </div>
+        <!-- tabs -->
+        <div style="display:flex;gap:18px;border-bottom:1px solid #E8E5DD">
+          <div class="ed-tab" style="font-size:13px;font-weight:600;color:#15172B;padding-bottom:10px;border-bottom:2px solid #2F6BFF">Suggesties</div>
+          <div class="ed-tab" style="font-size:13px;font-weight:500;color:#9A98A2;padding-bottom:10px">ATS</div>
+          <div class="ed-tab" style="font-size:13px;font-weight:500;color:#9A98A2;padding-bottom:10px">Vacature</div>
+        </div>
+      </div>
+
+      <div style="padding:18px 20px">
+        <!-- ATS score chip -->
+        <div style="border:1px solid #E8E5DD;border-radius:13px;padding:16px;background:#fff;display:flex;align-items:center;gap:16px;margin-bottom:18px">
+          <div style="position:relative;width:64px;height:64px;flex:none">
+            <svg width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="27" fill="none" stroke="#EEF1F8" stroke-width="6"></circle><circle cx="32" cy="32" r="27" fill="none" stroke="#1E9E6A" stroke-width="6" stroke-linecap="round" stroke-dasharray="170" stroke-dashoffset="14" transform="rotate(-90 32 32)"></circle></svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-size:18px;font-weight:700;color:#15172B">92</span></div>
+          </div>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#15172B">ATS-score: sterk</div>
+            <div style="font-size:12px;color:#6B6A77;line-height:1.45;margin-top:3px">Goed leesbaar voor scanners. Nog 8 punten te winnen.</div>
+          </div>
+        </div>
+
+        <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#9A98A2;margin-bottom:12px">3 aanbevelingen</div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="border:1px solid #E8E5DD;border-radius:11px;padding:13px">
+            <div style="display:flex;gap:9px;align-items:flex-start;margin-bottom:9px">
+              <span style="width:20px;height:20px;border-radius:6px;background:#EBF0FF;color:#2F6BFF;display:flex;align-items:center;justify-content:center;font-size:11px;flex:none">✦</span>
+              <p style="font-size:12.5px;line-height:1.45;color:#3b3a42">Voeg meetbare resultaten toe aan je rol bij <strong>Bol</strong>.</p>
+            </div>
+            <button class="ed-btn" style="background:#EBF0FF;color:#2F6BFF;font-size:12px;font-weight:600;padding:6px 11px;border-radius:7px">Genereer met AI</button>
+          </div>
+          <div style="border:1px solid #E8E5DD;border-radius:11px;padding:13px">
+            <div style="display:flex;gap:9px;align-items:flex-start;margin-bottom:9px">
+              <span style="width:20px;height:20px;border-radius:6px;background:#FBF0DE;color:#D98A1E;display:flex;align-items:center;justify-content:center;font-size:11px;flex:none">!</span>
+              <p style="font-size:12.5px;line-height:1.45;color:#3b3a42">Je opleiding ontbreekt — ATS-systemen verwachten dit veld.</p>
+            </div>
+            <button class="ed-btn" style="background:#fff;color:#3b3a42;font-size:12px;font-weight:600;padding:6px 11px;border-radius:7px;border:1px solid #DDD9CF">Naar sectie</button>
+          </div>
+          <div style="border:1px solid #E8E5DD;border-radius:11px;padding:13px">
+            <div style="display:flex;gap:9px;align-items:flex-start;margin-bottom:9px">
+              <span style="width:20px;height:20px;border-radius:6px;background:#EBF0FF;color:#2F6BFF;display:flex;align-items:center;justify-content:center;font-size:11px;flex:none">✦</span>
+              <p style="font-size:12.5px;line-height:1.45;color:#3b3a42">Je profieltekst kan korter en krachtiger.</p>
+            </div>
+            <button class="ed-btn" style="background:#EBF0FF;color:#2F6BFF;font-size:12px;font-weight:600;padding:6px 11px;border-radius:7px">Herschrijf</button>
+          </div>
+        </div>
+
+        <!-- tailor prompt -->
+        <div style="margin-top:20px;border:1px solid #D8E2FF;background:#F6F8FF;border-radius:13px;padding:15px">
+          <div style="font-size:13px;font-weight:600;color:#15172B;margin-bottom:4px">Tailor naar vacature</div>
+          <p style="font-size:12px;color:#6B6A77;line-height:1.45;margin-bottom:11px">Plak een vacaturetekst — AI stemt je cv erop af.</p>
+          <div style="background:#fff;border:1px solid #DDD9CF;border-radius:9px;padding:10px;font-size:12px;color:#9A98A2;height:54px;line-height:1.4">Plak hier de vacature…</div>
+          <button class="ed-btn" style="width:100%;margin-top:10px;background:#2F6BFF;color:#fff;font-size:13px;font-weight:600;padding:9px;border-radius:9px;display:flex;align-items:center;justify-content:center;gap:7px">✦ Stem cv af</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
