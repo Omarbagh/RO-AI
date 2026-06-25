@@ -25,19 +25,24 @@ export async function getAiUsageCount(userId: string): Promise<number> {
   return count ?? 0;
 }
 
-export type AiLimitCheck =
-  | { allowed: true; remaining: number | null }
-  | { allowed: false; limit: number; used: number };
+export interface AiLimitCheck {
+  allowed: boolean;
+  remaining: number | null;
+  limit: number | null;
+  used: number;
+}
 
 /** Check whether the user may make another AI call right now. */
 export async function checkAiLimit(userId: string): Promise<AiLimitCheck> {
   const plan = await getUserPlan(userId);
   const limit = plan.limits.aiCallsPerMonth;
-  if (limit === null) return { allowed: true, remaining: null };
+  if (limit === null) {
+    return { allowed: true, remaining: null, limit: null, used: 0 };
+  }
 
   const used = await getAiUsageCount(userId);
-  if (isOverLimit(used, limit)) return { allowed: false, limit, used };
-  return { allowed: true, remaining: remaining(used, limit) };
+  const allowed = !isOverLimit(used, limit);
+  return { allowed, remaining: remaining(used, limit), limit, used };
 }
 
 /** Record a metered AI call. Call after a successful Claude response. */
