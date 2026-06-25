@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:#FBFAF8;font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;color:#1A1A22;overflow:hidden}
+  .db-scroll{overflow-y:auto}
+  .db-scroll::-webkit-scrollbar{width:9px}
+  .db-scroll::-webkit-scrollbar-thumb{background:#E0DCD3;border-radius:9px;border:3px solid transparent;background-clip:content-box}
+  .db-nav{transition:all .14s ease;cursor:pointer}
+  .db-nav:hover{background:#F4F2ED}
+  .db-btn{transition:all .16s cubic-bezier(.4,0,.2,1);cursor:pointer;border:none;font-family:inherit}
+  .db-btn:active{transform:translateY(1px)}
+  .db-card{transition:transform .2s,box-shadow .2s;cursor:pointer}
+  .db-card:hover{transform:translateY(-3px);box-shadow:0 18px 44px -16px rgba(20,20,30,.2)}
+</style>
+</helmet>
+
+<div style="height:100vh;display:flex;background:#FBFAF8">
+
+  <!-- ===== SIDEBAR ===== -->
+  <div style="width:248px;flex:none;background:#fff;border-right:1px solid #E8E5DD;display:flex;flex-direction:column;padding:18px 14px">
+    <div style="display:flex;align-items:center;gap:10px;padding:4px 8px;margin-bottom:24px">
+      <div style="width:28px;height:28px;border-radius:8px;background:#15172B;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:15px;font-family:Newsreader">C</div>
+      <span style="font-weight:600;font-size:16px;letter-spacing:-0.01em">CVhero</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:2px">
+      <div style="display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px;background:#EBF0FF;border:1px solid #D8E2FF">
+        <span style="width:18px;text-align:center;color:#2F6BFF">▤</span><span style="font-size:13.5px;font-weight:600;color:#15172B">Dashboard</span>
+      </div>
+      <div class="db-nav" style="display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px"><span style="width:18px;text-align:center;color:#9A98A2">▢</span><span style="font-size:13.5px;font-weight:500;color:#3b3a42">Mijn cv's</span><span style="margin-left:auto;font-size:11px;color:#9A98A2;background:#F0EEE9;padding:1px 7px;border-radius:10px">4</span></div>
+      <div class="db-nav" style="display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px"><span style="width:18px;text-align:center;color:#9A98A2">▦</span><span style="font-size:13.5px;font-weight:500;color:#3b3a42">Templates</span></div>
+      <div class="db-nav" style="display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px"><span style="width:18px;text-align:center;color:#9A98A2">✉</span><span style="font-size:13.5px;font-weight:500;color:#3b3a42">Cover letters</span></div>
+      <div class="db-nav" style="display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:9px"><span style="width:18px;text-align:center;color:#9A98A2">⚙</span><span style="font-size:13.5px;font-weight:500;color:#3b3a42">Instellingen</span></div>
+    </div>
+
+    <div style="flex:1"></div>
+
+    <div style="background:linear-gradient(160deg,#1B1E38,#15172B);border-radius:14px;padding:16px;margin-bottom:12px;position:relative;overflow:hidden">
+      <div style="position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#2F6BFF44,transparent 70%)"></div>
+      <div style="position:relative">
+        <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:4px">Upgrade naar Pro</div>
+        <div style="font-size:11.5px;color:#A4A6BC;line-height:1.45;margin-bottom:12px">Onbeperkte cv's, alle templates en AI.</div>
+        <button class="db-btn" style="width:100%;background:#2F6BFF;color:#fff;font-size:12.5px;font-weight:600;padding:8px;border-radius:8px">Word Pro · €9/mnd</button>
+      </div>
+    </div>
+
+    <div class="db-nav" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:9px">
+      <div style="width:30px;height:30px;border-radius:50%;background:#EBF0FF;color:#2F6BFF;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px;font-family:Newsreader">SB</div>
+      <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Sanne Bakker</div><div style="font-size:11px;color:#9A98A2">Free plan</div></div>
+      <span style="color:#9A98A2">⋯</span>
+    </div>
+  </div>
+
+  <!-- ===== MAIN ===== -->
+  <div class="db-scroll" style="flex:1;min-width:0">
+    <div style="max-width:1000px;margin:0 auto;padding:40px 40px 80px">
+
+      <!-- greeting -->
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px">
+        <div>
+          <h1 style="font-family:Newsreader;font-size:36px;font-weight:500;letter-spacing:-0.015em">Goedemiddag, Sanne</h1>
+          <p style="font-size:15px;color:#6B6A77;margin-top:5px">Je hebt 4 cv's. Eén staat klaar om af te ronden.</p>
+        </div>
+        <button class="db-btn" style="background:#2F6BFF;color:#fff;font-size:14px;font-weight:600;padding:11px 18px;border-radius:10px;display:flex;align-items:center;gap:8px;box-shadow:0 4px 14px -4px rgba(47,107,255,.5)"><span style="font-size:16px">+</span> Nieuw cv</button>
+      </div>
+
+      <!-- stat row -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:36px">
+        <div style="background:#fff;border:1px solid #E8E5DD;border-radius:14px;padding:18px;box-shadow:0 1px 3px rgba(20,20,30,.04)">
+          <div style="font-size:13px;color:#9A98A2;margin-bottom:6px">Actieve cv's</div>
+          <div style="font-family:Newsreader;font-size:30px;font-weight:500">4</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E8E5DD;border-radius:14px;padding:18px;box-shadow:0 1px 3px rgba(20,20,30,.04)">
+          <div style="font-size:13px;color:#9A98A2;margin-bottom:6px">Gem. ATS-score</div>
+          <div style="display:flex;align-items:baseline;gap:8px"><span style="font-family:Newsreader;font-size:30px;font-weight:500">88</span><span style="font-size:12px;color:#1E9E6A;font-weight:600">↑ 6</span></div>
+        </div>
+        <div style="background:#fff;border:1px solid #E8E5DD;border-radius:14px;padding:18px;box-shadow:0 1px 3px rgba(20,20,30,.04)">
+          <div style="font-size:13px;color:#9A98A2;margin-bottom:6px">Downloads</div>
+          <div style="font-family:Newsreader;font-size:30px;font-weight:500">12</div>
+        </div>
+      </div>
+
+      <!-- recent -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+        <h2 style="font-size:18px;font-weight:600">Mijn cv's</h2>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div style="display:inline-flex;background:#F4F2ED;border-radius:8px;padding:2px"><span style="font-size:12px;font-weight:600;padding:5px 11px;border-radius:6px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.06)">Recent</span><span style="font-size:12px;font-weight:500;padding:5px 11px;color:#6B6A77">Naam</span></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px">
+
+        <!-- new cv card -->
+        <div class="db-card" style="border:1.5px dashed #CFCBC2;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:280px;background:#fff;gap:12px">
+          <div style="width:46px;height:46px;border-radius:12px;background:#EBF0FF;display:flex;align-items:center;justify-content:center;color:#2F6BFF;font-size:24px">+</div>
+          <div style="font-size:14px;font-weight:600;color:#15172B">Nieuw cv maken</div>
+          <div style="font-size:12px;color:#9A98A2">Scratch · upload · LinkedIn</div>
+        </div>
+
+        <!-- cv 1 -->
+        <div class="db-card" style="background:#fff;border:1px solid #E8E5DD;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(20,20,30,.05)">
+          <div style="aspect-ratio:4/3;background:#F4F2ED;padding:18px 18px 0;position:relative">
+            <div style="background:#fff;border-radius:4px 4px 0 0;height:100%;padding:13px 14px;box-shadow:0 6px 18px -8px rgba(20,20,30,.18)">
+              <div style="background:#15172B;border-radius:3px;height:28px;margin:-13px -14px 8px;padding:7px 14px"><div style="height:6px;width:64px;background:#fff;border-radius:2px;margin-bottom:3px"></div><div style="height:4px;width:42px;background:#9DB6FF;border-radius:2px"></div></div>
+              <div style="height:4px;width:34px;background:#2F6BFF;border-radius:2px;margin-bottom:5px"></div><div style="height:4px;background:#EFEDE7;border-radius:2px;margin-bottom:3px"></div><div style="height:4px;background:#EFEDE7;border-radius:2px;width:80%;margin-bottom:10px"></div>
+              <div style="height:4px;width:40px;background:#2F6BFF;border-radius:2px;margin-bottom:5px"></div><div style="height:4px;background:#EFEDE7;border-radius:2px;width:90%"></div>
+            </div>
+            <span style="position:absolute;top:10px;right:10px;font-size:11px;font-weight:600;color:#1E9E6A;background:#fff;padding:3px 8px;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.1)">ATS 92</span>
+          </div>
+          <div style="padding:14px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #F0EEE9">
+            <div><div style="font-size:14px;font-weight:600">Senior Product Marketeer</div><div style="font-size:12px;color:#9A98A2">Modern · 2 uur geleden</div></div>
+            <span style="color:#9A98A2;font-size:16px">⋯</span>
+          </div>
+        </div>
+
+        <!-- cv 2 -->
+        <div class="db-card" style="background:#fff;border:1px solid #E8E5DD;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(20,20,30,.05)">
+          <div style="aspect-ratio:4/3;background:#F4F2ED;padding:18px 18px 0;position:relative">
+            <div style="background:#fff;border-radius:4px 4px 0 0;height:100%;padding:13px 14px;box-shadow:0 6px 18px -8px rgba(20,20,30,.18);text-align:center">
+              <div style="height:7px;width:70px;background:#1A1A22;border-radius:2px;margin:2px auto 3px"></div><div style="height:4px;width:46px;background:#9A98A2;border-radius:2px;margin:0 auto 8px"></div><div style="height:1px;background:#DDD9CF;margin-bottom:8px"></div>
+              <div style="height:4px;background:#EFEDE7;border-radius:2px;margin-bottom:3px"></div><div style="height:4px;background:#EFEDE7;border-radius:2px;width:75%;margin:0 auto 10px"></div>
+              <div style="height:4px;width:40px;background:#1A1A22;border-radius:2px;margin:0 auto 5px"></div><div style="height:4px;background:#EFEDE7;border-radius:2px;width:85%;margin:0 auto"></div>
+            </div>
+            <span style="position:absolute;top:10px;right:10px;font-size:11px;font-weight:600;color:#D98A1E;background:#fff;padding:3px 8px;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.1)">ATS 74</span>
+          </div>
+          <div style="padding:14px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #F0EEE9">
+            <div><div style="font-size:14px;font-weight:600">Marketing Manager</div><div style="font-size:12px;color:#9A98A2">Classic · gisteren</div></div>
+            <span style="color:#9A98A2;font-size:16px">⋯</span>
+          </div>
+        </div>
+
+        <!-- cv 3 -->
+        <div class="db-card" style="background:#fff;border:1px solid #E8E5DD;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(20,20,30,.05)">
+          <div style="aspect-ratio:4/3;background:#F4F2ED;padding:18px 18px 0;position:relative">
+            <div style="background:#fff;border-radius:4px 4px 0 0;height:100%;display:flex;box-shadow:0 6px 18px -8px rgba(20,20,30,.18);overflow:hidden">
+              <div style="width:38%;background:#15172B;padding:11px 9px"><div style="width:20px;height:20px;border-radius:50%;background:#5C86FF;margin:0 auto 8px"></div><div style="height:3px;background:#ffffff33;border-radius:2px;margin-bottom:3px"></div><div style="height:3px;background:#ffffff33;border-radius:2px;width:70%;margin-bottom:9px"></div><div style="height:3px;background:#5C86FF;border-radius:2px;width:55%;margin-bottom:4px"></div><div style="height:3px;background:#ffffff22;border-radius:2px"></div></div>
+              <div style="flex:1;padding:11px 11px"><div style="height:4px;width:40px;background:#2F6BFF;border-radius:2px;margin-bottom:5px"></div><div style="height:3px;background:#EFEDE7;border-radius:2px;margin-bottom:3px"></div><div style="height:3px;background:#EFEDE7;border-radius:2px;width:80%;margin-bottom:9px"></div><div style="height:4px;width:40px;background:#2F6BFF;border-radius:2px;margin-bottom:5px"></div><div style="height:3px;background:#EFEDE7;border-radius:2px;width:70%"></div></div>
+            </div>
+            <span style="position:absolute;top:10px;right:10px;font-size:11px;font-weight:600;color:#1E9E6A;background:#fff;padding:3px 8px;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.1)">ATS 89</span>
+          </div>
+          <div style="padding:14px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #F0EEE9">
+            <div><div style="font-size:14px;font-weight:600">Growth Lead (EN)</div><div style="font-size:12px;color:#9A98A2">Sidebar · 3 dagen</div></div>
+            <span style="color:#9A98A2;font-size:16px">⋯</span>
+          </div>
+        </div>
+
+        <!-- cv 4 draft -->
+        <div class="db-card" style="background:#fff;border:1px solid #E8E5DD;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(20,20,30,.05)">
+          <div style="aspect-ratio:4/3;background:#F4F2ED;padding:18px 18px 0;position:relative">
+            <div style="background:#fff;border-radius:4px 4px 0 0;height:100%;padding:13px 14px;box-shadow:0 6px 18px -8px rgba(20,20,30,.18);opacity:.7">
+              <div style="height:8px;width:60px;background:#1A1A22;border-radius:2px;margin-bottom:3px"></div><div style="height:4px;width:44px;background:#9A98A2;border-radius:2px;margin-bottom:12px"></div>
+              <div style="height:4px;background:#EFEDE7;border-radius:2px;margin-bottom:4px"></div><div style="height:4px;background:#EFEDE7;border-radius:2px;width:60%"></div>
+            </div>
+            <span style="position:absolute;top:10px;right:10px;font-size:11px;font-weight:600;color:#6B6A77;background:#fff;padding:3px 8px;border-radius:6px;box-shadow:0 1px 3px rgba(0,0,0,.1)">Concept</span>
+          </div>
+          <div style="padding:14px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #F0EEE9">
+            <div><div style="font-size:14px;font-weight:600">Naamloos cv</div><div style="font-size:12px;color:#9A98A2">Minimalist · 1 week</div></div>
+            <span style="color:#9A98A2;font-size:16px">⋯</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

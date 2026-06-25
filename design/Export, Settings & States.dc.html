@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#e7e5df;font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased;color:#1A1A22}
+  @keyframes stspin{to{transform:rotate(360deg)}}
+  @keyframes stshimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+  .skel{background:linear-gradient(90deg,#EFEDE7 25%,#F7F5F1 50%,#EFEDE7 75%);background-size:800px 100%;animation:stshimmer 1.4s infinite linear;border-radius:6px}
+  .s-btn{transition:all .16s cubic-bezier(.4,0,.2,1);cursor:pointer;border:none;font-family:inherit}
+  .s-btn:active{transform:translateY(1px)}
+  .flab{font-size:13px;font-weight:600;color:#23221f;margin-bottom:14px}
+  .frame{background:#fff;border-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.08),0 12px 40px -12px rgba(0,0,0,.12);overflow:hidden}
+</style>
+</helmet>
+
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:48px;background:#e7e5df">
+
+  <!-- ===== ROW A ===== -->
+  <div style="display:flex;gap:48px;align-items:flex-start;margin-bottom:56px">
+
+    <!-- EXPORT FLOW -->
+    <div style="flex:none;width:560px">
+      <div class="flab">Export — Download-flow</div>
+      <div class="frame" style="height:540px;background:#15172B;position:relative;display:flex;align-items:center;justify-content:center">
+        <!-- dimmed preview behind -->
+        <div style="position:absolute;inset:0;opacity:.18;display:flex;align-items:center;justify-content:center"><div style="width:280px;height:380px;background:#fff;border-radius:4px"></div></div>
+        <!-- modal -->
+        <div style="position:relative;z-index:1;background:#fff;border-radius:16px;padding:28px;width:420px;box-shadow:0 24px 60px -12px rgba(0,0,0,.5)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+            <h3 style="font-family:Newsreader;font-size:24px;font-weight:500;letter-spacing:-0.01em">Exporteer je cv</h3>
+            <span style="color:#9A98A2;font-size:18px;cursor:pointer">×</span>
+          </div>
+          <p style="font-size:13.5px;color:#6B6A77;line-height:1.55;margin-bottom:20px">Geoptimaliseerd voor ATS-systemen en print.</p>
+
+          <div style="font-size:12px;font-weight:600;color:#3b3a42;margin-bottom:9px">Formaat</div>
+          <div style="display:flex;gap:10px;margin-bottom:20px">
+            <div style="flex:1;border:1.5px solid #2F6BFF;background:#EBF0FF;border-radius:11px;padding:14px;text-align:center"><div style="font-weight:600;font-size:14px;color:#15172B">PDF</div><div style="font-size:11px;color:#6B6A77;margin-top:2px">Aanbevolen</div></div>
+            <div style="flex:1;border:1px solid #DDD9CF;border-radius:11px;padding:14px;text-align:center"><div style="font-weight:600;font-size:14px;color:#15172B">DOCX</div><div style="font-size:11px;color:#9A98A2;margin-top:2px">Bewerkbaar</div></div>
+            <div style="flex:1;border:1px solid #DDD9CF;border-radius:11px;padding:14px;text-align:center;opacity:.6"><div style="font-weight:600;font-size:14px;color:#15172B">TXT</div><div style="font-size:11px;color:#9A98A2;margin-top:2px">Plain</div></div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:11px;margin-bottom:22px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13.5px;color:#3b3a42">Paginaformaat</span><span style="font-size:13px;font-weight:500;color:#1A1A22;border:1px solid #DDD9CF;border-radius:8px;padding:5px 10px">A4 ▾</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13.5px;color:#3b3a42">Foto opnemen</span><div style="width:38px;height:22px;background:#2F6BFF;border-radius:999px;position:relative"><div style="position:absolute;top:2.5px;right:2.5px;width:17px;height:17px;background:#fff;border-radius:50%"></div></div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13.5px;color:#3b3a42">Watermerk verwijderen</span><span style="font-size:11px;font-weight:600;color:#2F6BFF;background:#EBF0FF;padding:3px 8px;border-radius:6px">Pro</span></div>
+          </div>
+
+          <button class="s-btn" style="width:100%;background:#2F6BFF;color:#fff;font-size:14px;font-weight:600;padding:12px;border-radius:11px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px -4px rgba(47,107,255,.5)">↓ Download PDF</button>
+          <div style="font-size:11px;color:#9A98A2;text-align:center;margin-top:10px;font-family:JetBrains Mono">senior-product-marketeer.pdf · 1 pagina</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COVER LETTER GENERATOR -->
+    <div style="flex:none;width:880px">
+      <div class="flab">Cover letter generator</div>
+      <div class="frame" style="height:540px;display:flex">
+        <!-- left input -->
+        <div style="width:42%;border-right:1px solid #E8E5DD;padding:26px;display:flex;flex-direction:column;background:#FBFAF8">
+          <h3 style="font-family:Newsreader;font-size:22px;font-weight:500;letter-spacing:-0.01em">Sollicitatiebrief</h3>
+          <p style="font-size:13px;color:#9A98A2;margin-top:3px;margin-bottom:20px">AI schrijft op basis van je cv en de vacature.</p>
+
+          <label style="font-size:12px;font-weight:600;color:#3b3a42;margin-bottom:7px">Bedrijf &amp; functie</label>
+          <div style="font-size:13.5px;background:#fff;border:1px solid #DDD9CF;border-radius:9px;padding:10px 12px;margin-bottom:14px">Adyen · Product Marketing Lead</div>
+
+          <label style="font-size:12px;font-weight:600;color:#3b3a42;margin-bottom:7px">Vacaturetekst</label>
+          <div style="flex:1;font-size:12.5px;color:#6B6A77;line-height:1.5;background:#fff;border:1px solid #DDD9CF;border-radius:9px;padding:11px 12px;margin-bottom:14px;overflow:hidden">We zoeken een ervaren product marketeer die complexe betaalproducten kan vertalen naar heldere proposities…</div>
+
+          <label style="font-size:12px;font-weight:600;color:#3b3a42;margin-bottom:9px">Toon</label>
+          <div style="display:flex;gap:7px;margin-bottom:18px">
+            <span style="font-size:12px;font-weight:600;color:#15172B;background:#EBF0FF;border:1px solid #D8E2FF;padding:6px 12px;border-radius:999px">Professioneel</span>
+            <span style="font-size:12px;color:#6B6A77;border:1px solid #DDD9CF;padding:6px 12px;border-radius:999px">Enthousiast</span>
+            <span style="font-size:12px;color:#6B6A77;border:1px solid #DDD9CF;padding:6px 12px;border-radius:999px">Beknopt</span>
+          </div>
+          <button class="s-btn" style="width:100%;background:#2F6BFF;color:#fff;font-size:14px;font-weight:600;padding:12px;border-radius:11px;display:flex;align-items:center;justify-content:center;gap:8px">✦ Genereer brief</button>
+        </div>
+
+        <!-- right preview -->
+        <div style="flex:1;background:#F4F2ED;padding:26px;display:flex;flex-direction:column;align-items:center;overflow:hidden">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;align-self:flex-start"><span style="font-size:11px;color:#9A98A2;font-family:JetBrains Mono">VOORBEELD</span><span style="font-size:11px;color:#1E9E6A;background:#E6F4EE;padding:3px 8px;border-radius:6px;font-weight:600">✦ AI gegenereerd</span></div>
+          <div style="background:#fff;border-radius:3px;box-shadow:0 12px 36px -14px rgba(20,20,30,.28);padding:34px 38px;width:420px">
+            <div style="font-family:Newsreader;font-size:20px;font-weight:500">Sanne Bakker</div>
+            <div style="font-size:11px;color:#9A98A2;margin-bottom:20px">Amsterdam · sanne.bakker@email.nl</div>
+            <div style="font-size:12px;color:#1A1A22;margin-bottom:14px">Geachte heer/mevrouw,</div>
+            <p style="font-size:12px;line-height:1.65;color:#3b3a42;margin-bottom:11px">Met veel interesse reageer ik op de functie van Product Marketing Lead bij Adyen. In mijn rol bij Mollie stuurde ik de go-to-market van drie betaalproducten aan en verhoogde de activatie met 40%.</p>
+            <p style="font-size:12px;line-height:1.65;color:#3b3a42;margin-bottom:11px">Wat mij aantrekt in Adyen is de schaal en de technische diepgang. Ik vertaal complexe producten graag naar heldere, meetbare proposities.</p>
+            <p style="font-size:12px;line-height:1.65;color:#3b3a42">Graag licht ik mijn motivatie persoonlijk toe.</p>
+            <div style="font-size:12px;color:#1A1A22;margin-top:16px">Met vriendelijke groet,<br>Sanne Bakker</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ROW B ===== -->
+  <div style="display:flex;gap:48px;align-items:flex-start">
+
+    <!-- SETTINGS / BILLING -->
+    <div style="flex:none;width:620px">
+      <div class="flab">Account &amp; Billing</div>
+      <div class="frame" style="height:560px;background:#FBFAF8;overflow:hidden">
+        <div style="padding:26px 28px">
+          <h3 style="font-family:Newsreader;font-size:26px;font-weight:500;letter-spacing:-0.01em">Instellingen</h3>
+          <div style="display:flex;gap:22px;border-bottom:1px solid #E8E5DD;margin-top:16px;margin-bottom:22px">
+            <span style="font-size:13.5px;font-weight:600;color:#15172B;padding-bottom:10px;border-bottom:2px solid #2F6BFF">Abonnement</span>
+            <span style="font-size:13.5px;color:#9A98A2;padding-bottom:10px">Profiel</span>
+            <span style="font-size:13.5px;color:#9A98A2;padding-bottom:10px">Meldingen</span>
+          </div>
+
+          <!-- plan card -->
+          <div style="background:#15172B;border-radius:14px;padding:20px;position:relative;overflow:hidden;margin-bottom:18px">
+            <div style="position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,#2F6BFF33,transparent 70%)"></div>
+            <div style="position:relative;display:flex;justify-content:space-between;align-items:flex-start">
+              <div>
+                <div style="font-size:12px;color:#A4A6BC;margin-bottom:4px">Huidig abonnement</div>
+                <div style="font-family:Newsreader;font-size:24px;font-weight:500;color:#fff">Free</div>
+                <div style="font-size:12px;color:#A4A6BC;margin-top:6px">1 cv · 5 templates · beperkte AI</div>
+              </div>
+              <button class="s-btn" style="background:#2F6BFF;color:#fff;font-size:13px;font-weight:600;padding:9px 15px;border-radius:9px">Upgrade naar Pro</button>
+            </div>
+          </div>
+
+          <!-- payment method -->
+          <div style="background:#fff;border:1px solid #E8E5DD;border-radius:13px;padding:16px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+            <div style="display:flex;align-items:center;gap:13px"><div style="width:38px;height:26px;border-radius:5px;background:linear-gradient(135deg,#2F6BFF,#15172B)"></div><div><div style="font-size:13.5px;font-weight:600">Visa ···· 4242</div><div style="font-size:12px;color:#9A98A2">Verloopt 09/27</div></div></div>
+            <span style="font-size:13px;font-weight:600;color:#2F6BFF;cursor:pointer">Wijzig</span>
+          </div>
+
+          <!-- invoices -->
+          <div style="font-size:12px;font-weight:600;color:#3b3a42;margin-bottom:10px">Facturen</div>
+          <div style="background:#fff;border:1px solid #E8E5DD;border-radius:13px;overflow:hidden">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #F0EEE9"><div><div style="font-size:13px;font-weight:500">Mei 2026</div><div style="font-size:11px;color:#9A98A2">Pro · maandelijks</div></div><div style="display:flex;align-items:center;gap:14px"><span style="font-size:13px;font-weight:600">€9,00</span><span style="font-size:11px;color:#1E9E6A;background:#E6F4EE;padding:3px 8px;border-radius:6px;font-weight:600">Betaald</span><span style="font-size:13px;color:#2F6BFF;cursor:pointer">↓</span></div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px"><div><div style="font-size:13px;font-weight:500">April 2026</div><div style="font-size:11px;color:#9A98A2">Pro · maandelijks</div></div><div style="display:flex;align-items:center;gap:14px"><span style="font-size:13px;font-weight:600">€9,00</span><span style="font-size:11px;color:#1E9E6A;background:#E6F4EE;padding:3px 8px;border-radius:6px;font-weight:600">Betaald</span><span style="font-size:13px;color:#2F6BFF;cursor:pointer">↓</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATES -->
+    <div style="flex:none;width:760px">
+      <div class="flab">States — empty · loading · error · success</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+
+        <!-- empty -->
+        <div class="frame" style="height:270px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center;background:#fff">
+          <div style="width:56px;height:56px;border-radius:15px;background:#F4F2ED;display:flex;align-items:center;justify-content:center;font-size:24px;color:#CFCBC2;margin-bottom:16px">▢</div>
+          <div style="font-size:15px;font-weight:600;margin-bottom:5px">Nog geen cv's</div>
+          <div style="font-size:13px;color:#9A98A2;line-height:1.5;max-width:240px;margin-bottom:16px">Maak je eerste cv en zie hier je overzicht verschijnen.</div>
+          <button class="s-btn" style="background:#2F6BFF;color:#fff;font-size:13px;font-weight:600;padding:9px 16px;border-radius:9px">+ Nieuw cv</button>
+        </div>
+
+        <!-- loading -->
+        <div class="frame" style="height:270px;padding:22px;background:#fff">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px"><div style="width:16px;height:16px;border:2px solid #E8E5DD;border-top-color:#2F6BFF;border-radius:50%;animation:stspin .7s linear infinite"></div><span style="font-size:13px;color:#6B6A77;font-weight:500">Cv's laden…</span></div>
+          <div style="display:flex;gap:12px;margin-bottom:14px"><div class="skel" style="width:48px;height:48px;border-radius:11px"></div><div style="flex:1"><div class="skel" style="height:11px;width:70%;margin-bottom:8px"></div><div class="skel" style="height:10px;width:45%"></div></div></div>
+          <div style="display:flex;gap:12px;margin-bottom:14px"><div class="skel" style="width:48px;height:48px;border-radius:11px"></div><div style="flex:1"><div class="skel" style="height:11px;width:60%;margin-bottom:8px"></div><div class="skel" style="height:10px;width:40%"></div></div></div>
+          <div style="display:flex;gap:12px"><div class="skel" style="width:48px;height:48px;border-radius:11px"></div><div style="flex:1"><div class="skel" style="height:11px;width:75%;margin-bottom:8px"></div><div class="skel" style="height:10px;width:50%"></div></div></div>
+        </div>
+
+        <!-- error -->
+        <div class="frame" style="height:270px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center;background:#fff">
+          <div style="width:56px;height:56px;border-radius:15px;background:#FBEAE8;display:flex;align-items:center;justify-content:center;font-size:24px;color:#DC4B3E;margin-bottom:16px">!</div>
+          <div style="font-size:15px;font-weight:600;margin-bottom:5px">Er ging iets mis</div>
+          <div style="font-size:13px;color:#9A98A2;line-height:1.5;max-width:250px;margin-bottom:16px">We konden je cv's niet laden. Controleer je verbinding en probeer opnieuw.</div>
+          <div style="display:flex;gap:9px"><button class="s-btn" style="background:#fff;color:#1A1A22;font-size:13px;font-weight:600;padding:9px 15px;border-radius:9px;border:1px solid #DDD9CF">Opnieuw</button><button class="s-btn" style="background:#15172B;color:#fff;font-size:13px;font-weight:600;padding:9px 15px;border-radius:9px">Support</button></div>
+        </div>
+
+        <!-- success / toasts -->
+        <div class="frame" style="height:270px;padding:22px;background:#FBFAF8;display:flex;flex-direction:column;justify-content:center;gap:12px">
+          <div style="background:#fff;border:1px solid #E8E5DD;border-left:3px solid #1E9E6A;border-radius:11px;padding:13px 15px;box-shadow:0 4px 16px -6px rgba(20,20,30,.14);display:flex;align-items:center;gap:11px"><div style="width:24px;height:24px;border-radius:50%;background:#E6F4EE;color:#1E9E6A;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none">✓</div><div><div style="font-size:13px;font-weight:600">PDF gedownload</div><div style="font-size:12px;color:#9A98A2">senior-product-marketeer.pdf</div></div></div>
+          <div style="background:#15172B;border-radius:11px;padding:13px 15px;box-shadow:0 4px 16px -6px rgba(20,20,30,.2);display:flex;align-items:center;gap:11px"><div style="width:24px;height:24px;border-radius:50%;background:#2F6BFF22;color:#5C86FF;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none">✦</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#fff">AI heeft 3 verbeteringen</div><div style="font-size:12px;color:#A4A6BC">Bekijk de suggesties.</div></div><span style="font-size:12px;color:#5C86FF;font-weight:600;cursor:pointer">Open</span></div>
+          <div style="background:#fff;border:1px solid #E8E5DD;border-left:3px solid #2F6BFF;border-radius:11px;padding:13px 15px;box-shadow:0 4px 16px -6px rgba(20,20,30,.14);display:flex;align-items:center;gap:11px"><div style="width:24px;height:24px;border-radius:50%;background:#EBF0FF;color:#2F6BFF;display:flex;align-items:center;justify-content:center;font-size:13px;flex:none">✓</div><div><div style="font-size:13px;font-weight:600">Wijzigingen opgeslagen</div><div style="font-size:12px;color:#9A98A2">Zojuist · automatisch</div></div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
