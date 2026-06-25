@@ -3,8 +3,24 @@
 AI-driven, production-grade CV builder. A complete rebuild on a modern, fully
 typed, serverless-friendly stack.
 
-> **Status:** rebuild in progress. The data/backend foundation is in place; the
-> UI is implemented against the approved Claude Design (see _Design source_).
+> **Status:** functional rebuild. The whole UI is implemented in the approved
+> "Editorial Ink" design (Poppins, Linear/Notion feel). The app runs in **demo
+> mode** with sample data until you add credentials, then auth, CRUD, autosave,
+> AI, and rate limiting activate automatically.
+>
+> **Wired:** auth (email + Google), dashboard CRUD, editor (data-bound, drag
+> reorder, autosave), 6 templates + live render engine, AI (cover letter,
+> ATS score, tailor-to-vacancy) with plan rate limiting.
+> **Pending:** PDF export (`@react-pdf/renderer`), Mollie subscriptions +
+> webhooks + billing portal, marketing SEO/sitemap, and the TS-strict pass.
+
+## Going live
+
+1. Fill `.env.local` (see table below) with Supabase, Anthropic, and Mollie keys.
+2. Apply `supabase/migrations/0001_init.sql` to your Supabase project.
+3. In Supabase Auth, enable the **Google** provider and add
+   `${NEXT_PUBLIC_APP_URL}/auth/callback` as a redirect URL.
+4. Restart — middleware now enforces auth and all data persists.
 
 ## Tech stack
 
