@@ -25,14 +25,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "src/app/(dashboard)/editor/components/ScanTemplates.cts",
-    "scripts/scanTemplates.ts",
-    "scripts/create-template.js"
-  ],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
