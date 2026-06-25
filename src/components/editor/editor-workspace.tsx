@@ -75,7 +75,10 @@ export function EditorWorkspace({
                 <StylePanel data={data} onSettings={setSettings} isPro={isPro} />
               </TabsContent>
               <TabsContent value="ai" className="mt-0">
-                <AiPanel />
+                <AiPanel
+                  data={data}
+                  onApplySummary={(summary) => setData((d) => ({ ...d, summary }))}
+                />
               </TabsContent>
             </div>
           </Tabs>
